@@ -1,0 +1,6 @@
+@artur_gde_krosi_Vue.Server_HostAddress = http://localhost:5263
+
+GET {{artur_gde_krosi_Vue.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
