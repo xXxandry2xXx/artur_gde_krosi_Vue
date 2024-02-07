@@ -74,7 +74,8 @@ namespace artur_gde_krosi_Vue.Server.Controler
                          quantityInStock = y.quantityInStock,
                          prise = y.prise
                      }).ToList(),
-                     ModelKrosovock = x.ModelKrosovock,
+                     ModelKrosovock_Name = x.ModelKrosovock.name,
+                     Brend_Name = x.ModelKrosovock.Brend.name,
                      Images = x.Images.OrderBy(y => y.ImageId).Take(1).Select(x => new
                      {
                          ImageId = x.ImageId
@@ -145,7 +146,8 @@ namespace artur_gde_krosi_Vue.Server.Controler
                         quantityInStock = y.quantityInStock,
                         prise = y.prise
                     }).ToList(),
-                    ModelKrosovock = x.ModelKrosovock,
+                    ModelKrosovock_Name = x.ModelKrosovock.name,
+                    Brend_Name = x.ModelKrosovock.Brend.name,
                     Images = x.Images.OrderBy(y => y.ImageId).Take(1).Select(x => new
                     {
                         ImageId = x.ImageId
