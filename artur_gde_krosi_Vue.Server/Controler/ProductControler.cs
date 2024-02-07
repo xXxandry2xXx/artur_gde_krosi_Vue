@@ -106,9 +106,9 @@ namespace artur_gde_krosi_Vue.Server.Controler
             return Ok(result);
         }
         [HttpPost]
-        public async Task<IActionResult> GetProduts(int priseDown = 0, int priseUp = 0, [FromForm] List<string> brendsIds = null, [FromForm] List<string> modelKrosovocksIds = null,
-            [FromQuery] List<double> shoeSizesChecked = null, bool availability = false,
-            string PlaceholderContent = null, SortState sortOrder = SortState.NameAsc, int pageProducts = 1)
+        public async Task<IActionResult> GetProduts([FromForm] int priseDown = 0, [FromForm] int priseUp = 0, [FromForm] List<string> brendsIds = null, [FromForm] List<string> modelKrosovocksIds = null,
+            [FromForm] List<double> shoeSizesChecked = null, [FromForm] bool availability = false,
+            [FromForm] string PlaceholderContent = null, [FromForm] SortState sortOrder = SortState.NameAsc, [FromForm] int pageProducts = 1)
         {
 
             if (PlaceholderContent != null) { PlaceholderContent = PlaceholderContent.Trim().ToLower(); }
