@@ -39,7 +39,16 @@ namespace artur_gde_krosi_Vue.Server.Controler
         [Route("/ModelKrosovocks")]
         public async Task<IActionResult> GetModelKrosovocks([FromForm] List<string> brendsIds = null)
         {
-            var modelKrosovocks = db.ModelKrosovocks.ToList();
+            var modelKrosovocks = db.Brends.Where(x=> (brendsIds == null || brendsIds.Count == 0) || brendsIds.Any(y=>y == x.BrendId))
+                .Include(x=>x.ModelKrosovocks)
+                .Select(x=> new
+                {
+                    Name = x.name,
+                    ModelKrosovocks = x.ModelKrosovocks.Select(y => new { 
+                        name = y.name,
+                        modelKrosovockId = y.ModelKrosovockId
+                    })
+                }).ToList();
 
             return Ok(modelKrosovocks);
         }
@@ -54,7 +63,6 @@ namespace artur_gde_krosi_Vue.Server.Controler
         public async Task<IActionResult> GetShoeSizes()
         {
             List<double> shoeSizes = db.Variants.Select(x => x.shoeSize).Distinct().ToList();
-
             return Ok(shoeSizes);
         }
         [HttpGet]
