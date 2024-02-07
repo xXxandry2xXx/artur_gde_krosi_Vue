@@ -84,7 +84,7 @@
         methods: {
             fetchProducts() {
                 axios
-                    .get('http://localhost:5263/Produts')
+                    .get('http://localhost:5263/Produts/')
                     .then(response => {
                         console.log(response.data);
                     })
