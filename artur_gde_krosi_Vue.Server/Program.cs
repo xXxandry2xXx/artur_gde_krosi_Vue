@@ -5,6 +5,7 @@ using Quartz.Impl;
 using Quartz.Spi;
 using Quartz;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +47,11 @@ var app = builder.Build();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.MapControllers();
+app.UseCors(builder =>
+{
+    builder.WithOrigins("http://localhost:5263").AllowAnyMethod()
+           .AllowAnyHeader();
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
