@@ -1,47 +1,99 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
-<template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+﻿<template>
+    <AppHeader />
+    <span class="title">Кроссовки</span>
+    <div class="content">
+        <main>
+            <ProductList :products="products" />
+        </main>
+        <FiltersPanel :filters="filters"/>
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
 </template>
 
+<script lang="ts">
+    import { defineComponent } from 'vue';
+    import AppHeader from './components/AppHeader.vue';
+    import ProductList from './components/ProductList.vue';
+    import FiltersPanel from './components/FiltersPanel.vue';
+
+    export default defineComponent({
+        components: { AppHeader, ProductList, FiltersPanel },
+        data() {
+            return {
+                filters: {
+                    brands: { id: 0, name: 'Бренды', items: ['Adidas', 'Puma', 'Nike', 'New Balance', 'Bape']},
+                    models: { id: 1, name: 'Модели', items: ['Air Max (Аир Максы)', 'Yeezy (Изики)', 'Air Jordan(Джорданы)', 'Blazer (Блейзеры)', 'Air Force 1 (Форсы)'] },
+                    sizes: { id: 2, name: 'Размеры', items: ['27', '33', '39', '41', '43', '33', '39', '41', '43', '33', '39', '41', '43', '33', '39', '41', '43'] }
+                },
+
+                products: [
+                    {
+                        id: 0,
+                        brand: 'Nike',
+                        name: 'Nike Dunk Low WMNS "Purple Pulse"',
+                        previewSrc: '/src/assets/img/productPreviews/nike_preview.jpg',
+                        price: 5999
+                    },
+                    {
+                        id: 1,
+                        brand: 'Nike',
+                        name: 'Nike Dunk Low WMNS "Purple Pulse"',
+                        previewSrc: '/src/assets/img/productPreviews/nike_preview.jpg',
+                        price: 5999
+                    },
+                    {
+                        id: 2,
+                        brand: 'Nike',
+                        name: 'Nike Dunk Low WMNS "Purple Pulse"',
+                        previewSrc: '/src/assets/img/productPreviews/nike_preview.jpg',
+                        price: 5999
+                    },
+                    {
+                        id: 3,
+                        brand: 'Nike',
+                        name: 'Nike Dunk Low WMNS "Purple Pulse"',
+                        previewSrc: '/src/assets/img/productPreviews/nike_preview.jpg',
+                        price: 5999
+                    },
+                    {
+                        id: 4,
+                        brand: 'Nike',
+                        name: 'Nike Dunk Low WMNS "Purple Pulse"',
+                        previewSrc: '/src/assets/img/productPreviews/nike_preview.jpg',
+                        price: 5999
+                    },
+                    {
+                        id: 5,
+                        brand: 'Nike',
+                        name: 'Nike Dunk Low WMNS "Purple Pulse"',
+                        previewSrc: '/src/assets/img/productPreviews/nike_preview.jpg',
+                        price: 5999
+                    },
+                    {
+                        id: 6,
+                        brand: 'Nike',
+                        name: 'Nike Dunk Low WMNS "Purple Pulse"',
+                        previewSrc: '/src/assets/img/productPreviews/nike_preview.jpg',
+                        price: 5999
+                    },
+                    
+                ],
+            }
+        }
+    })
+</script>
+
 <style scoped>
-header {
-  line-height: 1.5;
-}
+    .content {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-around;
+        margin-top: 50px;
+    }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
+    .title {
+        margin-left: 80px;
+        font-size: 50px;
+        font-weight: 400;
+        color: #947704;
+    }
 </style>
