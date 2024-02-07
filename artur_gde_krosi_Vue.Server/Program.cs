@@ -25,6 +25,15 @@ string connection = builder.Configuration.GetConnectionString("DefaultConnection
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
 
 IServiceCollection services = builder.Services;
+
+services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("https://localhost:5173")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod());
+});
+
 // Add Quartz servicesò è
 services.AddHostedService<QuartzHostedService>();
 services.AddSingleton<IJobFactory, SingletonJobFactory>();
@@ -47,11 +56,8 @@ var app = builder.Build();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.MapControllers();
-app.UseCors(builder =>
-{
-    builder.WithOrigins("http://localhost:5263").AllowAnyMethod()
-           .AllowAnyHeader();
-});
+app.UseCors("AllowSpecificOrigin");
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
