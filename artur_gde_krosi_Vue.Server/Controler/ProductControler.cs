@@ -35,9 +35,9 @@ namespace artur_gde_krosi_Vue.Server.Controler
 
             return Ok(Brends);
         }
-        [HttpGet]
+        [HttpPost]
         [Route("/ModelKrosovocks")]
-        public async Task<IActionResult> GetModelKrosovocks()
+        public async Task<IActionResult> GetModelKrosovocks([FromForm] List<string> brendsIds = null)
         {
             var modelKrosovocks = db.ModelKrosovocks.ToList();
 
@@ -51,7 +51,7 @@ namespace artur_gde_krosi_Vue.Server.Controler
         }
         [HttpGet]
         [Route("/ShoeSizes")]
-        public async Task<IActionResult> GetShoeSizes(string id)
+        public async Task<IActionResult> GetShoeSizes()
         {
             List<double> shoeSizes = db.Variants.Select(x => x.shoeSize).Distinct().ToList();
 
@@ -106,7 +106,7 @@ namespace artur_gde_krosi_Vue.Server.Controler
             return Ok(result);
         }
         [HttpPost]
-        public async Task<IActionResult> GetProduts(int priseDown = 0, int priseUp = 0, [FromQuery] List<string> brendsIds = null, [FromQuery] List<string> modelKrosovocksIds = null,
+        public async Task<IActionResult> GetProduts(int priseDown = 0, int priseUp = 0, [FromForm] List<string> brendsIds = null, [FromForm] List<string> modelKrosovocksIds = null,
             [FromQuery] List<double> shoeSizesChecked = null, bool availability = false,
             string PlaceholderContent = null, SortState sortOrder = SortState.NameAsc, int pageProducts = 1)
         {
