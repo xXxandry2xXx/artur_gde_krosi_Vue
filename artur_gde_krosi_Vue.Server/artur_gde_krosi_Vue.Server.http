@@ -15,4 +15,7 @@ Accept: image/json
 GET {{artur_gde_krosi_Vue.Server_HostAddress}}/ModelKrosovocks/
 Accept: image/json
 ###
+GET {{artur_gde_krosi_Vue.Server_HostAddress}}/ShoeSizes/
+Accept: image/json
+###
 

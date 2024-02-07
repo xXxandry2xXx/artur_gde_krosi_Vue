@@ -29,7 +29,7 @@ namespace artur_gde_krosi_Vue.Server.Controler
 
         [HttpGet]
         [Route("/Brends")]
-        public IActionResult GetBrends()
+        public async Task<IActionResult> GetBrends()
         {
             var Brends = db.Brends.ToList();
 
@@ -37,18 +37,25 @@ namespace artur_gde_krosi_Vue.Server.Controler
         }
         [HttpGet]
         [Route("/ModelKrosovocks")]
-        public IActionResult GetModelKrosovocks()
+        public async Task<IActionResult> GetModelKrosovocks()
         {
             var modelKrosovocks = db.ModelKrosovocks.ToList();
 
             return Ok(modelKrosovocks);
         }
-
         [HttpGet]
         [Route("/ImageProduct")]
-        public IActionResult GetImageProduct(string id)
+        public async Task<IActionResult> GetImageProduct(string id)
         {
             return File(db.Images.FirstOrDefault(x => x.ProductId == id && x.Index == 0).ImageData, "image/jpeg");
+        }
+        [HttpGet]
+        [Route("/ShoeSizes")]
+        public async Task<IActionResult> GetShoeSizes(string id)
+        {
+            List<double> shoeSizes = db.Variants.Select(x => x.shoeSize).Distinct().ToList();
+
+            return Ok(shoeSizes);
         }
         [HttpGet]
         public async Task<IActionResult> GetProduts()
