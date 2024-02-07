@@ -51,8 +51,8 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '^/weatherforecast': {
-                target,
+            '/Produts': {
+                target: 'http://localhost:5263/Produts',
                 secure: false
             }
         },
