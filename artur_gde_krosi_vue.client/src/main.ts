@@ -5,7 +5,6 @@ import App from './App.vue'
 import uiComponents from '@/components/ui/index';
 
 const app = createApp(App);
-app.use(cors());
 
 uiComponents.forEach(component => {
     app.component(component.name, component);

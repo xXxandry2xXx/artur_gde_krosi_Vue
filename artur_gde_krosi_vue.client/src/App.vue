@@ -26,58 +26,7 @@
                     sizes: { id: 2, name: 'Размеры', items: ['27', '33', '39', '41', '43', '33', '39', '41', '43', '33', '39', '41', '43', '33', '39', '41', '43'] }
                 },
 
-                products: [
-                    {
-                        id: 0,
-                        brand: 'Nike',
-                        name: 'Nike Dunk Low WMNS "Purple Pulse"',
-                        previewSrc: '/src/assets/img/productPreviews/nike_preview.jpg',
-                        price: 5999
-                    },
-                    {
-                        id: 1,
-                        brand: 'Nike',
-                        name: 'Nike Dunk Low WMNS "Purple Pulse"',
-                        previewSrc: '/src/assets/img/productPreviews/nike_preview.jpg',
-                        price: 5999
-                    },
-                    {
-                        id: 2,
-                        brand: 'Nike',
-                        name: 'Nike Dunk Low WMNS "Purple Pulse"',
-                        previewSrc: '/src/assets/img/productPreviews/nike_preview.jpg',
-                        price: 5999
-                    },
-                    {
-                        id: 3,
-                        brand: 'Nike',
-                        name: 'Nike Dunk Low WMNS "Purple Pulse"',
-                        previewSrc: '/src/assets/img/productPreviews/nike_preview.jpg',
-                        price: 5999
-                    },
-                    {
-                        id: 4,
-                        brand: 'Nike',
-                        name: 'Nike Dunk Low WMNS "Purple Pulse"',
-                        previewSrc: '/src/assets/img/productPreviews/nike_preview.jpg',
-                        price: 5999
-                    },
-                    {
-                        id: 5,
-                        brand: 'Nike',
-                        name: 'Nike Dunk Low WMNS "Purple Pulse"',
-                        previewSrc: '/src/assets/img/productPreviews/nike_preview.jpg',
-                        price: 5999
-                    },
-                    {
-                        id: 6,
-                        brand: 'Nike',
-                        name: 'Nike Dunk Low WMNS "Purple Pulse"',
-                        previewSrc: '/src/assets/img/productPreviews/nike_preview.jpg',
-                        price: 5999
-                    },
-
-                ],
+                products: {},
             }
         },
 
@@ -86,16 +35,36 @@
                 axios
                     .get('http://localhost:5263/Produts/')
                     .then(response => {
-                        console.log(response.data);
+                        //this.products = response.data;
+
                     })
                     .catch(error => {
                         console.log(error);
                     })
+            },
+            foo() {
+                let config = {
+                    method: 'get',
+                    maxBodyLength: Infinity,
+                    url: 'https://api.moysklad.ru/api/remap/1.2/download/29dacef2-93b9-47ed-a357-f1f8ac562d32',
+                    headers: {
+                        'Authorization': 'Bearer ad4bc311f51bafdc7357e20ece905d282f6fe448'
+                    }
+                };
+
+                axios.request(config)
+                    .then((response) => {
+                        console.log(JSON.stringify(response.data));
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
             }
         },
 
         mounted() {
             this.fetchProducts();
+            this.foo();
         }
     })
 </script>
