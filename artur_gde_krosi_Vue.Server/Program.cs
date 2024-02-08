@@ -32,10 +32,6 @@ services.AddCors(options =>
         builder => builder.WithOrigins("https://localhost:5173")
                           .AllowAnyHeader()
                           .AllowAnyMethod());
-    options.AddPolicy("AllowSpecificOrigin",
-        builder => builder.WithOrigins("https://api.moysklad.ru/api/remap/1.2/download/29dacef2-93b9-47ed-a357-f1f8ac562d32")
-                          .AllowAnyHeader()
-                          .AllowAnyMethod());
 });
 
 // Add Quartz servicesò è
