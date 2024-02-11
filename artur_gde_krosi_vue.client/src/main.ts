@@ -2,7 +2,7 @@ import './assets/main.css'
 
 import { createApp } from 'vue'
 import App from './App.vue'
-import uiComponents from '@/components/ui/index';
+import uiComponents from '@/components/ui';
 
 const app = createApp(App);
 

@@ -3,7 +3,8 @@
         <label class="filter-item">
             <input class="filter-item-checkbox" type="checkbox" />
             <span class="filter-item-checkbox-fake"></span>
-            <span class="filter-item-name">{{ item }}</span>
+            <span v-if="item.name" class="filter-item-name">{{ item.name }}</span>
+            <span v-else class="filter-item-name">{{ item }}</span>
         </label>
     </div>
 </template>
@@ -14,7 +15,7 @@
     export default defineComponent({
         props: {
             item: {
-                type: String,
+                type: [Object, Number],
                 required: true
             }
         }
@@ -32,7 +33,7 @@
     }
 
     .filter-item-container {
-        width: fit-content;
+        width: 100%;
         margin: 10px 0;
     }
 

@@ -4,8 +4,6 @@
     "allowJs": true
   },
 
-  "strict": false,
-
   "files": [],
   "references": [
     {

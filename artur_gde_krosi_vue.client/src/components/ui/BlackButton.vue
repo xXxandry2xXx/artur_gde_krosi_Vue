@@ -1,23 +1,14 @@
 <template>
-    <button class="black-button-default">{{ buttonValue }}</button>
+    <button class="black-button-default">
+        <slot></slot>
+    </button>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 
     export default defineComponent({
-        data() {
-            return {
-                name: 'black-button'
-            }
-        },
-
-        props: {
-            buttonValue: {
-                type: String,
-                required: true
-            }
-        }
+        name: 'BlackButton'
     })
 </script>
 

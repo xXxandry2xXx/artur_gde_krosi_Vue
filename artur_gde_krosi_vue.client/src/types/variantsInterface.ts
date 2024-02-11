@@ -3,5 +3,5 @@ export default interface VariantsInterface {
         shoeSize: number,
         quantityInStock: number,
         prise: number
-    }
+    }[]
 }

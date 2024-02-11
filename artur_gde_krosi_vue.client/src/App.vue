@@ -1,12 +1,29 @@
-﻿<template>
-    <AppHeader />
-    <span class="title">Кроссовки</span>
+﻿<template>  
+    <div class="filters-container">
+        <transition name="slide">
+            <FiltersPanel v-show="filtersPanelVisible" :filterBrands="brands" :filterSizes="sizes" />
+        </transition>
+        <transition name="fade">
+            <div class="filters-background" v-show="filtersPanelVisible" @click="openFiltersPanel"></div>
+        </transition>
+    </div>
+
+    <AppHeader/>
+
+    <div class="top-bar">
+        <h2 class="category-name">Кроссовки</h2>
+        <div class="sorting-and-filters">
+            <SearchAndSort :sortingOptions="sortingOptions" />
+            <button class="show-filters-button" @click="openFiltersPanel"><i class="fas fa-filter"></i> ФИЛЬТРЫ</button>
+        </div>
+    </div>
+
     <div class="content">
         <main>
-            <ProductList :products="products" />
+            <ProductList v-if="productsData.products" :products="productsData.products"/>
         </main>
-        <FiltersPanel :filters="filters" />
     </div>
+
 </template>
 
 <script lang="ts">
@@ -15,50 +32,99 @@
     import AppHeader from './components/AppHeader.vue';
     import ProductList from './components/ProductList.vue';
     import FiltersPanel from './components/FiltersPanel.vue';
-    import type ProductInterface from '@/types/productInterface';
+    import SearchAndSort from './components/SearchAndSort.vue'
+    import type ProductsDataInterface from '@/types/productsDataInterface';
+    import type BrandsInterface from './types/brandsInterface';
+    import type SizesInterface from '@/types/sizesInterface'
 
     export default defineComponent({
-        components: { AppHeader, ProductList, FiltersPanel },
+        components: { AppHeader, ProductList, FiltersPanel, SearchAndSort },
         data() {
             return {
-                products: [] as ProductInterface[],
+                sortingOptions: ['Алфавиту (А-Я)', 'Алфавиту (Я-А)', 'Цене (Дороже)', 'Цене (Дешевле)'],
+                filtersPanelVisible: false,
+                productsData: {} as ProductsDataInterface,
+                brands: {} as BrandsInterface,
+                sizes: {} as SizesInterface
             }
         },
 
         methods: {
-            fetchProducts() {
+            openFiltersPanel(this: { filtersPanelVisible: boolean}) {
+                this.filtersPanelVisible = !this.filtersPanelVisible;
+            },
+
+            fetchProducts(this: { productsData: ProductsDataInterface }) {
                 axios
                     .get('http://localhost:5263/Produts/')
                     .then(response => {
-                        this.products = response.data as ProductInterface[];
+                        this.productsData = response.data;
 
                     })
                     .catch(error => {
                         console.log(error);
                     })
             },
-            
+
+            fetchBrands(this: { brands: BrandsInterface }) {
+                axios
+                    .get('http://localhost:5263/Brends')
+                    .then(response => {
+                        this.brands = response.data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+            },
+
+            fetchSizes(this: { sizes: SizesInterface }) {
+                axios
+                    .get('http://localhost:5263/ShoeSizes')
+                    .then(response => {
+                        this.sizes = response.data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+            }
         },
 
         mounted() {
             this.fetchProducts();
-            this.foo();
+            this.fetchBrands();
+            this.fetchSizes();
         }
     })
 </script>
 
 <style scoped>
-    .content {
-        display: flex;
-        flex-direction: row-reverse;
-        justify-content: space-around;
-        margin-top: 50px;
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: opacity 0.3s ease;
     }
 
-    .title {
-        margin-left: 80px;
-        font-size: 50px;
-        font-weight: 400;
-        color: #947704;
+    .fade-enter-from,
+    .fade-leave-to {
+        opacity: 0;
+    }
+
+    .fade-enter-to,
+    .fade-leave-from {
+        opacity: 0.5;
+    }
+
+    .slide-enter-active,
+    .slide-leave-active {
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .slide-enter-from,
+    .slide-leave-to {
+        transform: translateX(100%);
+    }
+
+    .slide-enter-to,
+    .slide-leave-from {
+        transform: translateX(0);
     }
 </style>
