@@ -31,7 +31,6 @@ namespace artur_gde_krosi_Vue.Server.Models.ProjecktSetings
                 .HasOne(f => f.Variant)
                 .WithMany(p => p.ImageVariant)
                 .HasForeignKey(f => f.VariantId);
-
             modelBuilder.Entity<Variant>()
                 .HasOne(f => f.Product)
                 .WithMany(p => p.Variants)

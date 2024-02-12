@@ -8,7 +8,7 @@ namespace artur_gde_krosi_Vue.Server.Models.BdModel
     {
         public string ImageId { get; set; }
         public int Index { get; set; }
-        public byte[] ImageData { get; set; }
+        public string ImageSrc { get; set; }
         [NotMapped]
         public System.Drawing.Image img { get; set; }
 

@@ -1,4 +1,6 @@
-﻿using artur_gde_krosi_Vue.Server.Models;
+﻿using Amazon.S3.Model;
+using Amazon.S3;
+using artur_gde_krosi_Vue.Server.Models;
 using artur_gde_krosi_Vue.Server.Models.BdModel;
 using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
 using Azure.Identity;
@@ -10,6 +12,7 @@ using Microsoft.VisualBasic;
 using System.Collections.Generic;
 using System.Drawing;
 using Image = System.Drawing.Image;
+using static Yandex.Cloud.Mdb.Clickhouse.V1.Config.ClickhouseConfig.Types.ExternalDictionary.Types.Structure.Types;
 
 
 namespace artur_gde_krosi_Vue.Server.Controler
@@ -25,45 +28,6 @@ namespace artur_gde_krosi_Vue.Server.Controler
         {
             _logger = logger;
             db = context;
-        }
-
-        [HttpGet]
-        [Route("/Brends")]
-        public async Task<IActionResult> GetBrends()
-        {
-            var Brends = db.Brends.ToList();
-
-            return Ok(Brends);
-        }
-        [HttpPost]
-        [Route("/ModelKrosovocks")]
-        public async Task<IActionResult> GetModelKrosovocks([FromForm] List<string> brendsIds = null)
-        {
-            var modelKrosovocks = db.Brends.Where(x=> (brendsIds == null || brendsIds.Count == 0) || brendsIds.Any(y=>y == x.BrendId))
-                .Include(x=>x.ModelKrosovocks)
-                .Select(x=> new
-                {
-                    Name = x.name,
-                    ModelKrosovocks = x.ModelKrosovocks.Select(y => new { 
-                        name = y.name,
-                        modelKrosovockId = y.ModelKrosovockId
-                    })
-                }).ToList();
-
-            return Ok(modelKrosovocks);
-        }
-        [HttpGet]
-        [Route("/ImageProduct")]
-        public async Task<IActionResult> GetImageProduct(string id)
-        {
-            return File(db.Images.FirstOrDefault(x => x.ProductId == id && x.Index == 0).ImageData, "image/jpeg");
-        }
-        [HttpGet]
-        [Route("/ShoeSizes")]
-        public async Task<IActionResult> GetShoeSizes()
-        {
-            List<double> shoeSizes = db.Variants.Select(x => x.shoeSize).Distinct().ToList();
-            return Ok(shoeSizes);
         }
         [HttpGet]
         public async Task<IActionResult> GetProduts()
@@ -86,7 +50,7 @@ namespace artur_gde_krosi_Vue.Server.Controler
                      Brend_Name = x.ModelKrosovock.Brend.name,
                      Images = x.Images.OrderBy(y => y.ImageId).Take(1).Select(x => new
                      {
-                         ImageId = x.ImageId
+                         ImgSrc = x.ImageSrc,
                      })
                  })
                  .ToList();
@@ -113,6 +77,7 @@ namespace artur_gde_krosi_Vue.Server.Controler
             };
             return Ok(result);
         }
+
         [HttpPost]
         public async Task<IActionResult> GetProduts([FromForm] int priseDown = 0, [FromForm] int priseUp = 0, [FromForm] List<string> brendsIds = null, [FromForm] List<string> modelKrosovocksIds = null,
             [FromForm] List<double> shoeSizesChecked = null, [FromForm] bool availability = false,
