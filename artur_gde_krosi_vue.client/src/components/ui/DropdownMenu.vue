@@ -1,6 +1,7 @@
-<template>
+﻿<template>
     <select>
-        <option v-for="option in options" :key="option.id">{{ option }}</option>
+        <option disabled>Сортировать по</option>
+        <option v-for="option in options">{{ option }}</option>
     </select>
 </template>
 
@@ -8,11 +9,7 @@
     import { defineComponent } from "vue";
 
     export default defineComponent({
-        data() {
-            return {
-                name: 'dropdown-menu'
-            }
-        },
+        name: 'DropdownMenu',
 
         props: {
             options: {

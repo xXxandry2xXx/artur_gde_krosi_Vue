@@ -1,24 +1,29 @@
 ﻿<template>
     <article class="product">
-        <img class="product-preview-image" :src="product.previewSrc" alt="preview" />
+        <img class="product-preview-image" :src="`http://localhost:5263/ImageProduct?id=${product.productId}`" alt="preview" />
         <div class="product-info">
-            <h3 class="product-info-brand">{{ product.brand }}</h3>
+            <h3 class="product-info-brand">{{ product.brend_Name }}</h3>
             <span class="product-info-name">{{ product.name }}</span>
-            <span class="product-info-price">{{ product.price }} </span>
+            <span class="product-info-price">{{ product.variants[0].prise / 100 }} </span>
         </div>
     </article>
 </template>
 
 <script lang="ts">
     import { defineComponent } from 'vue';
-import type { ProductInterface } from '../types/productInterface';
+    import type ProductInterface from '@/types/productInterface';
 
     export default defineComponent({
         props: {
             product: {
-                type: Object,
+                type: Object as () => ProductInterface,
                 require: true
             }
+        },
+
+        mounted() {
+            //this.log()
+            //this.fetchImage()
         }
     })
 </script>
@@ -30,7 +35,6 @@ import type { ProductInterface } from '../types/productInterface';
         align-items: center;
         border-radius: 7px;
         box-shadow: 4px 4px 7px 1px rgb(0, 0, 0, 20%);
-        justify-content: center;
         background: #fff;
     }
 

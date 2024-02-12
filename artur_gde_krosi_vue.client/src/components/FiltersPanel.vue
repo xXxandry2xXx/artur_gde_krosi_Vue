@@ -1,11 +1,11 @@
 ﻿<template>
     <aside class="filter-panel">
-        <div class="filters-header">
-            <h4>Фильтры</h4>
-            <span>X</span>
+        <div class="filters-panel-top-bar">
+            <button class="confirm-filters-button">Применить фильтры</button>
         </div>
         <div class="filters-list">
-            <Filter v-for="filter in filters" :filter="filter" />
+            <Filter :filter="filterBrands" :filterName="filterBrandsName" />
+            <Filter class="sizes-filter" :filter="filterSizes" :filterName="filterSizesName" />
         </div>
     </aside>
 </template>
@@ -17,39 +17,20 @@
     export default defineComponent({
         components: { Filter },
         props: {
-            filters: {
+            filterBrands: {
                 type: Object,
                 required: true
+            },
+            filterSizes: {
+                type: Object,
+                required: true
+            },
+        },
+        data() {
+            return {
+                filterBrandsName: 'Бренды',
+                filterSizesName: 'Размеры',
             }
-        }
+        },
     })
 </script>
-
-<style>
-    .filters-header {
-        display: flex;
-        justify-content: space-between;
-        background: #FDDD00;
-        padding: 5px 10px;
-        font-size: 19px;
-        color: #947704;
-        font-weight: 500;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-    }
-
-    .filters-list {
-        padding: 0 30px;
-    }
-
-    .filter-panel {
-        box-sizing: border-box;
-        height: fit-content;
-        background: #fff;
-        border-radius: 10px;
-        box-shadow: 4px 4px 7px 1px rgb(0, 0, 0, 20%);
-        padding-bottom: 20px;
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
-    }
-</style>

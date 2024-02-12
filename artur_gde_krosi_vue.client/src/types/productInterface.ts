@@ -1,11 +1,12 @@
+import type VariantsInterface from '@/types/variantsInterface';
+import type ProductImagesInterface from '@/types/productImagesInterface';
+
 export default interface ProductInterface {
-    product: {
-        productId: any,
-        name: string,
-        prise: number,
-        variants: Array<Object>,
-        modelKrosovock_Name: string,
-        brend_Name: string,
-        images: Array<Object>
-    }
+    productId: string,
+    name: string,
+    prise: number,
+    variants: VariantsInterface[],
+    modelKrosovock_Name: string,
+    brend_Name: string,
+    images: ProductImagesInterface
 }

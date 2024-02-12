@@ -15,7 +15,6 @@
         justify-content: space-between;
         align-items: center;
         padding: 0 30px;
-        margin-bottom: 40px;
         width: 100%;
         height: 70px;
         background: #FDDD00;

@@ -1,8 +1,8 @@
 ﻿<template>
     <div class="filter">
-        <h2 class="filter-title">{{ filter.name }}</h2>
-        <div :class="filter.name == 'Размеры' ? 'sizes-filter-items' : 'filter-items'">
-            <FilterItem v-for="item in filter.items" :item="item" />
+        <h2 class="filter-title">{{ filterName }}</h2>
+        <div class="filter-items">
+            <FilterItem v-for="item in filter" :item="item" />
         </div>
     </div>
 </template>
@@ -17,6 +17,10 @@
             filter: {
                 type: Object,
                 required: true
+            },
+            filterName: {
+                type: String,
+                required: true
             }
         }
     })
@@ -24,12 +28,17 @@
 
 <style>
     .filter {
-    background: #fff;
-    border-radius: 7px;
+        background: #fff;
+        border-radius: 7px;
     }
 
     .filter-title {
         margin-top: 20px;
+        padding: 0 30px;
         margin-bottom: 10px;
+    }
+
+    .filter-items {
+        padding: 0px 30px;
     }
 </style>
