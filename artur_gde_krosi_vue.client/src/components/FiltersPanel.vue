@@ -1,8 +1,5 @@
 ﻿<template>
     <aside class="filter-panel">
-        <div class="filters-panel-top-bar">
-            <button class="confirm-filters-button">Применить фильтры</button>
-        </div>
         <div class="filters-list">
             <Filter :filter="filterBrands" :filterName="filterBrandsName" />
             <Filter class="sizes-filter" :filter="filterSizes" :filterName="filterSizesName" />

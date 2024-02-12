@@ -22,23 +22,12 @@
                 type: String,
                 required: true
             }
+        },
+
+        methods: {
+            addFilterValue() {
+                
+            }
         }
     })
 </script>
-
-<style>
-    .filter {
-        background: #fff;
-        border-radius: 7px;
-    }
-
-    .filter-title {
-        margin-top: 20px;
-        padding: 0 30px;
-        margin-bottom: 10px;
-    }
-
-    .filter-items {
-        padding: 0px 30px;
-    }
-</style>

@@ -29,6 +29,10 @@ input {
     outline: none;
 }
 
+.container {
+    max-width: 1920px;
+}
+
 #app {
     position: relative;
 }
@@ -37,15 +41,20 @@ body::-webkit-scrollbar {
     width: 0px;
 }
 
+.top-bar {
+    padding: 0 35px;
+    margin-top: 15px;
+    margin-bottom: 35px;
+}
+
 .category-name {
     font-size: 60px;
-    margin-bottom: 45px;
     font-weight: 800;
 }
 
-.top-bar {
-    padding: 0 105px;
-    margin: 30px 0;
+.products-content {
+    display: flex;
+    flex-direction: column;
 }
 
 .sorting-and-filters {
@@ -64,16 +73,19 @@ body::-webkit-scrollbar {
     color: #947704;
 }
 
-.content {
+.main-content {
     display: flex;
-    flex-direction: row-reverse;
     justify-content: space-around;
 }
 
 .search-and-sort {
-    width: 70%;
     display: flex;
     justify-content: space-between;
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 4px 4px 7px 1px rgb(0, 0, 0, 20%);
 }
 
 .search-input-wrapper {
@@ -106,16 +118,16 @@ body::-webkit-scrollbar {
 
 .search-input {
     width: 100%;
-    font-size: 22px;
-    padding: 7px 10px;
+    font-size: 19px;
+    padding: 0 10px;
     border-radius: 10px;
     outline: none;
 }
 
-.sortDropdown {
+.sort-dropdown {
     border: 2px solid var(--featured-color);
     font-size: 19px;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 0 3px;
     outline: none;
 }
@@ -124,45 +136,17 @@ body::-webkit-scrollbar {
         cursor: pointer;
     }
 
-.show-filters-button {
-    background: var(--featured-color);
-    color: var(--border-font-color);
-    border: none;
-    height: inherit;
-    padding: 10px;
-    font-size: 17px;
-    font-weight: 600;
-    border-radius: 10px;
-    transition: 0.2s;
-}
-
-.show-filters-button:hover {
-    cursor: pointer;
-    background: #ffe742;
-}
-
-.filters-background {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    opacity: 0.5;
-}
-
 .filter-panel {
-    position: fixed;
-    right: 0;
-    z-index: 10;
     box-sizing: border-box;
     background: #fff;
-    box-shadow: 4px 4px 7px 12px rgb(0, 0, 0, 20%);
+    box-shadow: 4px 4px 7px 1px rgb(0, 0, 0, 20%);
+    height: fit-content;
+    border-radius: 10px;
     padding-bottom: 20px;
-    height: 100vh;
 }
 
 .filters-list {
-    height: 95%;
-    overflow-y: scroll;
+    
 }
 
     .filters-list::-webkit-scrollbar {
@@ -175,24 +159,79 @@ body::-webkit-scrollbar {
         box-shadow: 4px 4px 7px 1px rgb(0, 0, 0, 20%);
     }
 
-.filters-panel-top-bar {
+.filter {
+    background: #fff;
+    border-radius: 7px;
+    padding: 0 30px
 }
 
-.confirm-filters-button {
-    width: 100%;
-    padding: 10px;
-    background: var(--featured-color);
-    border: none;
-    font-size: 19px;
-    color: var(--border-font-color);
+.filter-title {
+    margin-top: 15px;
+    font-size: 18px;
+    color: rgb(185 147 0);
     font-weight: 500;
-    transition: 0.2s;
+    margin-bottom: 10px;
 }
 
-    .confirm-filters-button:hover {
+.filter-items {
+    
+}
+
+.filter-item {
+    display: flex;
+    align-items: center;
+}
+
+    .filter-item:hover {
         cursor: pointer;
-        background: #ffe742;
     }
+
+.filter-item-container {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.filter-item-name {
+    font-size: 15px;
+}
+
+.filter-item-checkbox {
+    display: none;
+}
+
+.filter-item-checkbox-fake {
+    position: relative;
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    border-radius: 3px;
+    border: 1px solid rgb(185 147 0);
+}
+
+    .filter-item-checkbox-fake::after {
+        content: '';
+        position: absolute;
+        display: none;
+        border-right: 3px solid rgb(185 147 0);
+        border-bottom: 3px solid rgb(185 147 0);
+        right: 4px;
+        bottom: 3px;
+        width: 6px;
+        height: 11px;
+        transform: rotate(35deg);
+    }
+
+.filter-item-checkbox:checked ~ .filter-item-checkbox-fake {
+    background: rgb(241 221 83);
+}
+
+    .filter-item-checkbox:checked ~ .filter-item-checkbox-fake::after {
+        display: block;
+    }
+
+.filter-item-checkbox-fake {
+    margin-right: 10px;
+}
 
 .sizes-filter .filter-items {
     display: grid;

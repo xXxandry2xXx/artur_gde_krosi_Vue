@@ -1,28 +1,17 @@
 ﻿<template>  
-    <div class="filters-container">
-        <transition name="slide">
-            <FiltersPanel v-show="filtersPanelVisible" :filterBrands="brands" :filterSizes="sizes" />
-        </transition>
-        <transition name="fade">
-            <div class="filters-background" v-show="filtersPanelVisible" @click="openFiltersPanel"></div>
-        </transition>
-    </div>
-
     <AppHeader/>
 
     <div class="top-bar">
         <h2 class="category-name">Кроссовки</h2>
-        <div class="sorting-and-filters">
-            <SearchAndSort :sortingOptions="sortingOptions" />
-            <button class="show-filters-button" @click="openFiltersPanel"><i class="fas fa-filter"></i> ФИЛЬТРЫ</button>
-        </div>
     </div>
 
-    <div class="content">
-        <main>
-            <ProductList v-if="productsData.products" :products="productsData.products"/>
-        </main>
-    </div>
+    <main class="main-content">
+        <FiltersPanel :filterBrands="brands" :filterSizes="sizes" />
+        <div class="products-content">
+            <SearchAndSort :sortingOptions="sortingOptions" />
+            <ProductList v-if="productsData.products" :products="productsData.products" />
+        </div>
+    </main>
 
 </template>
 
@@ -41,11 +30,20 @@
         components: { AppHeader, ProductList, FiltersPanel, SearchAndSort },
         data() {
             return {
-                sortingOptions: ['Алфавиту (А-Я)', 'Алфавиту (Я-А)', 'Цене (Дороже)', 'Цене (Дешевле)'],
-                filtersPanelVisible: false,
+                sortingOptions: ['По алфавиту (А-Я)', 'По алфавиту (Я-А)', 'По цене (Дороже)', 'По цене (Дешевле)'],
                 productsData: {} as ProductsDataInterface,
                 brands: {} as BrandsInterface,
-                sizes: {} as SizesInterface
+                sizes: {} as SizesInterface,
+                filterOptions: {
+                    priceMin: Number,
+                    priceMax: Number,
+                    brandIDs: [],
+                    productModels: [],
+                    checkedSizes: [],
+                    inStock: Boolean,
+                    searchValue: String,
+                    sortOrder: Number
+                }
             }
         },
 

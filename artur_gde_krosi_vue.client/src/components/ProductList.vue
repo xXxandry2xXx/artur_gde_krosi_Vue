@@ -24,7 +24,7 @@
 <style scoped>
     .product-list {
         display: grid;
-        grid-template-columns: 20% 20% 20% 20%;
+        grid-template-columns: 300px 300px 300px;
         gap: 20px;
         justify-content: center;
     }

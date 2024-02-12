@@ -4,7 +4,7 @@
             <DefaultInput class="search-input" placeholder="Введите название или бренд..." />
             <button class="search-button"><i class="fas fa-search"></i></button>
         </div>
-        <DropdownMenu class="sortDropdown" :options="sortingOptions"/>
+        <DropdownMenu class="sort-dropdown" :options="sortingOptions"/>
     </div>
 </template>
 
