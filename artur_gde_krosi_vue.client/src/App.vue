@@ -42,7 +42,6 @@
 
         mounted() {
             this.fetchProducts();
-            this.foo();
         }
     })
 </script>

@@ -11,6 +11,16 @@ using Azure;
 using System.Net.Http.Headers;
 using System;
 using System.Text;
+using AspNetCore.Yandex.ObjectStorage.Configuration;
+using AspNetCore.Yandex.ObjectStorage.Object.Responses;
+using AspNetCore.Yandex.ObjectStorage;
+using System.Drawing.Imaging;
+using System.Drawing;
+using Image = artur_gde_krosi_Vue.Server.Models.BdModel.Image;
+using System.Configuration;
+using Amazon.S3.Model;
+using Amazon.S3;
+
 
 namespace artur_gde_krosi_Vue.Server.Schedulers
 {
@@ -59,6 +69,94 @@ namespace artur_gde_krosi_Vue.Server.Schedulers
                 var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
 
 
+                int width = 200;
+                int height = 200;
+                Color color = Color.Red;
+
+                byte[] imageBytes2;
+
+                // Создание нового изображения
+                using (Bitmap bitmap = new Bitmap(width, height))
+                {
+                    // Заполнение всего изображения одним цветом
+                    using (Graphics graphics = Graphics.FromImage(bitmap))
+                    {
+                        using (SolidBrush brush = new SolidBrush(color))
+                        {
+                            graphics.FillRectangle(brush, 0, 0, width, height);
+                        }
+                    }
+
+                    // Кодируем изображение в формат PNG и записываем его в MemoryStream
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        bitmap.Save(memoryStream, ImageFormat.Png);
+                        imageBytes2 = memoryStream.ToArray();
+                    }
+                }
+
+                var credentials = new Amazon.Runtime.BasicAWSCredentials("YCAJEnMCyt7hPSgY7tU1BjQkN", "YCO21uxIJ0H2hn9jEIhGc71TnbKfmul9jlFO8qyU");
+
+                AmazonS3Config configsS3 = new AmazonS3Config
+                {
+                    ServiceURL = "https://s3.yandexcloud.net"
+                };
+
+                using (var client = new AmazonS3Client("YCAJE48UBzauWHZirRHnF-WGB", "YCP8Jh2UT_grJjhcADcciAW0BUA_GW86OuxDr53d", configsS3)) // Укажите соответствующий регион
+                {
+                    var request = new GetObjectRequest
+                    {
+                        BucketName = "bucetimg",
+                        Key = "bdbe5189ed262d3cc850ee3b2f54a524.jpeg" ,
+
+                    };
+
+                    try
+                    {
+                        using (var response = await client.GetObjectAsync(request))
+                        using (var responseStream = response.ResponseStream)
+                        {
+                            using (var memoryStream = new MemoryStream())
+                            {
+                                  await responseStream.CopyToAsync(memoryStream);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                        throw;
+                    }
+                    //var request = new PutObjectRequest
+                    //{
+                    //    BucketName = "bucetimg",
+                    //    Key = "bdbe5189ed262d3cc850ee3b2f54a524.jpeg" ,
+
+                    //};
+
+                    //try
+                    //{
+                    //    await client.PutObjectAsync(request)
+                    //    //using ( var response = await client.PutObjectAsync(request))
+                    //    //using (var responseStream = response.ResponseStream)
+                    //    //{
+                    //    //    using (var memoryStream = new MemoryStream())
+                    //    //    {
+                    //    //        await responseStream.CopyToAsync(memoryStream);
+                    //    //    }
+                    //    //}
+                    //}
+                    //catch (Exception ex)
+                    //{
+
+                    //    throw;
+                    //}
+                }
+
+                //var options = scope.ServiceProvider.Configure<YandexStorageOptions>(Configuration.GetSection("YandexStorageOptions"));
+
+
+                
 
                 var serviceProviderWithLogger = new ServiceCollection()
                     .AddLogging(builder => builder.AddConsole())

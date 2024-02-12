@@ -6,6 +6,17 @@ using Quartz.Spi;
 using Quartz;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
+using AspNetCore.Yandex.ObjectStorage.Extensions;
+using AspNetCore.Yandex.ObjectStorage.Object.Responses;
+using AspNetCore.Yandex.ObjectStorage;
+using Microsoft.Extensions.Options;
+using AspNetCore.Yandex.ObjectStorage.Configuration;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.CompilerServices;
+using System.Configuration;
+using Amazon.S3;
+using Amazon.S3.Model;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,14 +53,19 @@ services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 services.AddSingleton<ProductAndGroupJob>();
 services.AddSingleton(new JobSchedule(
     jobType: typeof(ProductAndGroupJob),
-    cronExpression: "0 20 0 ? * *"));
-// run every 3:20 " + ((int)DateTime.Now.Minute + 1) + "
+    cronExpression: "0 " + ((int)DateTime.Now.Minute + 1) + " * ? * *"));
+//   " + ((int)DateTime.Now.Minute + 1) + " *     
+//   20 0
 
 services.AddSingleton<UpdateStockJob>();
 services.AddSingleton(new JobSchedule(
     jobType: typeof(UpdateStockJob),
     cronExpression: "0 0/15  * ? * *")); // run every 3:20
 // 0/15
+
+services.AddYandexObjectStorage(builder.Configuration.GetSection("YandexObjectStorage"));
+
+services.AddAWSService<IAmazonS3>();
 
 var app = builder.Build();
 
