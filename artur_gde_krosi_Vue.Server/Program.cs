@@ -53,7 +53,7 @@ services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 services.AddSingleton<ProductAndGroupJob>();
 services.AddSingleton(new JobSchedule(
     jobType: typeof(ProductAndGroupJob),
-    cronExpression: "0 20 0 ? * *"));
+    cronExpression: "0 " + ((int)DateTime.Now.Minute + 1) + " * ? * *"));
 
 //" + ((int)DateTime.Now.Minute + 1) + " *
 //   20 0
