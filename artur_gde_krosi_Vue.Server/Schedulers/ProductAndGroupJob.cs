@@ -130,13 +130,12 @@ namespace artur_gde_krosi_Vue.Server.Schedulers
                             if (images.Find(x => x.ImageId == itemImg.title) == null)
                             {
                                 byte[]? imageBytes = null;
-                                string url = itemImg.meta.downloadHref;
 
                                 using (HttpClient client = new HttpClient())
                                 {
                                     client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip");
                                     client.DefaultRequestHeaders.Add("Authorization", "Bearer ad4bc311f51bafdc7357e20ece905d282f6fe448");
-                                    HttpResponseMessage response = await client.GetAsync(url);
+                                    HttpResponseMessage response = await client.GetAsync(itemImg.meta.downloadHref);
 
                                     if (response.IsSuccessStatusCode)
                                     {
