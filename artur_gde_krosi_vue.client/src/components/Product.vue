@@ -1,6 +1,6 @@
 ﻿<template>
     <article class="product">
-        <img class="product-preview-image" :src="`http://localhost:5263/ImageProduct?id=${product.productId}`" alt="preview" />
+        <img class="product-preview-image" :src="product.images[0].imgSrc" alt="preview" />
         <div class="product-info">
             <h3 class="product-info-brand">{{ product.brend_Name }}</h3>
             <span class="product-info-name">{{ product.name }}</span>

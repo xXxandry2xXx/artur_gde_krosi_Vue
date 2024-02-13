@@ -34,16 +34,6 @@
                 productsData: {} as ProductsDataInterface,
                 brands: {} as BrandsInterface,
                 sizes: {} as SizesInterface,
-                filterOptions: {
-                    priceMin: Number,
-                    priceMax: Number,
-                    brandIDs: [],
-                    productModels: [],
-                    checkedSizes: [],
-                    inStock: Boolean,
-                    searchValue: String,
-                    sortOrder: Number
-                }
             }
         },
 
@@ -89,7 +79,8 @@
 
         mounted() {
             this.fetchProducts();
-            this.foo();
+            this.fetchBrands();
+            this.fetchSizes();
         }
     })
 </script>
