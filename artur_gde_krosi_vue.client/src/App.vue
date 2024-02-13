@@ -38,12 +38,9 @@
         },
 
         methods: {
-            openFiltersPanel(this: { filtersPanelVisible: boolean}) {
-                this.filtersPanelVisible = !this.filtersPanelVisible;
-            },
 
-            fetchProducts(this: { productsData: ProductsDataInterface }) {
-                axios
+            async fetchProducts(this: { productsData: ProductsDataInterface }) {
+                await axios
                     .get('http://localhost:5263/Produts/')
                     .then(response => {
                         this.productsData = response.data;
@@ -54,8 +51,8 @@
                     })
             },
 
-            fetchBrands(this: { brands: BrandsInterface }) {
-                axios
+            async fetchBrands(this: { brands: BrandsInterface }) {
+                await axios
                     .get('http://localhost:5263/Brends')
                     .then(response => {
                         this.brands = response.data;
@@ -65,8 +62,8 @@
                     })
             },
 
-            fetchSizes(this: { sizes: SizesInterface }) {
-                axios
+            async fetchSizes(this: { sizes: SizesInterface }) {
+                await axios
                     .get('http://localhost:5263/ShoeSizes')
                     .then(response => {
                         this.sizes = response.data;
