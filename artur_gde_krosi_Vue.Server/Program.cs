@@ -27,6 +27,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services.AddAuthentication("Bearer").AddJwtBearer();   
+
 builder.WebHost.UseKestrel(options =>
 {
     options.Limits.MaxRequestBodySize = null; // Без ограничения размера, или укажите нужный размер в байтах
@@ -61,8 +63,7 @@ services.AddSingleton(new JobSchedule(
 services.AddSingleton<UpdateStockJob>();
 services.AddSingleton(new JobSchedule(
     jobType: typeof(UpdateStockJob),
-    cronExpression: "0 0/15  * ? * *")); // run every 3:20
-// 0/15
+    cronExpression: "0 0/15  * ? * *")); 
 
 services.AddYandexObjectStorage(builder.Configuration.GetSection("YandexObjectStorage"));
 

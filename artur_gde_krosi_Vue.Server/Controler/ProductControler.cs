@@ -50,7 +50,7 @@ namespace artur_gde_krosi_Vue.Server.Controler
                      Brend_Name = x.ModelKrosovock.Brend.name,
                      Images = x.Images.Where(y => y.Index == 0).Select(x => new
                      {
-                         ImgSrc = x.ImageSrc,
+                         ImgSrc = x.ImageSrc
                      })
                  })
                  .ToList();
@@ -123,7 +123,7 @@ namespace artur_gde_krosi_Vue.Server.Controler
                     Brend_Name = x.ModelKrosovock.Brend.name,
                     Images = x.Images.Where(y => y.Index == 0).Take(1).Select(x => new
                     {
-                        ImageId = x.ImageId
+                        ImgSrc = x.ImageSrc
                     })
                 })
                 .ToList();
