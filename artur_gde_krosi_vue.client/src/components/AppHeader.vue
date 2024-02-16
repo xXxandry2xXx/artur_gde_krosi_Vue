@@ -1,7 +1,10 @@
 ﻿<template>
     <header>
         <img class="logo" src="../assets/img/logo.jpg">
-        <div>
+        <nav class="appheader-navbar">
+            <button class="nav-button" @click="$router.push('/products')">Кроссовки</button>
+        </nav>
+        <div class="autorization-buttons">
             <button class="login-button">Вход</button>
             <button class="login-button">Регистрация</button>
         </div>
@@ -36,5 +39,19 @@
         font-weight: 600;
         border-radius: 7px;
         margin: 0px 10px;
+    }
+
+    .nav-button {
+        background: none;
+        border: none;
+        font-size: 20px;
+        font-weight: 800;
+        color: #000;
+        transition: 0.2s;
+    }
+
+    .nav-button:hover {
+        cursor: pointer;
+        text-decoration: underline;
     }
 </style>

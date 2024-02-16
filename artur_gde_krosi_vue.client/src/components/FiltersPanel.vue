@@ -3,6 +3,7 @@
         <div class="filters-list">
             <Filter :filter="filterBrands" :filterName="filterBrandsName" />
             <Filter class="sizes-filter" :filter="filterSizes" :filterName="filterSizesName" />
+            <BlackButton @click="$store.dispatch('applyFilters')">Применить</BlackButton>
         </div>
     </aside>
 </template>
@@ -13,6 +14,7 @@
 
     export default defineComponent({
         components: { Filter },
+
         props: {
             filterBrands: {
                 type: Object,
@@ -21,7 +23,7 @@
             filterSizes: {
                 type: Object,
                 required: true
-            },
+            }
         },
         data() {
             return {

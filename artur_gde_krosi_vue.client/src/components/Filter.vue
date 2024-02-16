@@ -2,7 +2,7 @@
     <div class="filter">
         <h2 class="filter-title">{{ filterName }}</h2>
         <div class="filter-items">
-            <FilterItem v-for="item in filter" :item="item" />
+            <FilterItem v-for="item in filter" :item="item"/>
         </div>
     </div>
 </template>
@@ -21,12 +21,6 @@
             filterName: {
                 type: String,
                 required: true
-            }
-        },
-
-        methods: {
-            addFilterValue() {
-                
             }
         }
     })

@@ -1,7 +1,7 @@
 ﻿<template>
     <select>
         <option disabled>Сортировать по</option>
-        <option v-for="option in options">{{ option }}</option>
+        <option v-for="option in options">{{ option.name }}</option>
     </select>
 </template>
 
