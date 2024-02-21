@@ -23,7 +23,10 @@
         components: { ProductList, FiltersPanel, SearchAndSort },
 
         mounted() {
-            this.$store.dispatch('fetchProducts');
+            let selectedFiltersCache: any = localStorage.getItem('selectedFilters');
+            
+            this.$store.dispatch('applyFilters');
+            
             this.$store.dispatch('fetchBrands');
             this.$store.dispatch('fetchSizes');
         }

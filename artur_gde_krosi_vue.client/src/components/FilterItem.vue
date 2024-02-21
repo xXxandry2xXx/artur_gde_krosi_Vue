@@ -3,7 +3,7 @@
         <label class="filter-item">
             <input class="filter-item-checkbox"
                    type="checkbox"
-                   :checked="isChecked(item)"
+                   :checked="isChecked"
                    :value="typeof item === 'number' ? item: item.brendId"
                    @change="toggleFilter" />
             <span class="filter-item-checkbox-fake"></span>
@@ -16,7 +16,6 @@
 <script lang="ts">
     import { defineComponent } from "vue";
     import type BrandIdInterface from '@/types/brandIDInterface';
-    import router from '@/router/router';
     import store from '@/store';
 
     export default defineComponent({
@@ -40,18 +39,20 @@
                     store.commit('addFilter', Number(value));
                 }
             },
-
-            isChecked(this: { item: number | BrandIdInterface }) {
-                if (typeof this.item !== 'number') {
-                    if (router.currentRoute.value.query.brands) return router.currentRoute.value.query.brands.includes(this.item.brendId);
-                } else {
-                    if (router.currentRoute.value.query.sizes) return router.currentRoute.value.query.sizes.includes(this.item);
-                }
-            }
         },
 
         computed: {
-            
+            isChecked(this: { item: number | BrandIdInterface }) {
+                let selectedFiltersCache = localStorage.getItem('selectedFilters');
+                let selectedFilters = selectedFiltersCache ? JSON.parse(selectedFiltersCache) : store.state.selectedFilters;
+
+                if (typeof this.item !== 'number') {
+                    return selectedFilters.brandIDs.includes(this.item.brendId);
+                } else {
+                    return selectedFilters.checkedSizes.includes(this.item);
+                }
+            }
         }
+
     })
 </script>

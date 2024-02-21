@@ -1,7 +1,7 @@
 ﻿import { createStore } from 'vuex';
 import FormData from 'form-data';
 import axios from 'axios';
-import router from '@/router/router';
+import { getSelectedFiltersFromLocalStorage } from '@/helper';
 import type SelectedFiltersInterface from '@/types/selectedFiltersInterface';
 import type ProductsDataInterface from '@/types/productsDataInterface';
 import type BrandsInterface from '@/types/brandsInterface';
@@ -15,7 +15,7 @@ export default createStore({
             brandIDs: [],
             modelIDs: [],
             checkedSizes: [],
-            inStock: true,
+            inStock: false,
             searchValue: '',
             sortOrder: 0,
         } as SelectedFiltersInterface,
@@ -23,8 +23,8 @@ export default createStore({
         sortingOptions: [
             { value: 0, name: 'По алфавиту (А-Я)' },
             { value: 1, name: 'По алфавиту (Я-А)' },
-            { value: 2, name: 'По цене (Дороже)' },
-            { value: 3, name: 'По цене (Дешевле)' }
+            { value: 2, name: 'По цене (Сначала дешевле)' },
+            { value: 3, name: 'По цене (Сначала дороже)' }
         ],
         productsData: {} as ProductsDataInterface,
         brands: {} as BrandsInterface,
@@ -32,28 +32,34 @@ export default createStore({
     },
 
     mutations: {
+
+        clearFilters() {
+            let filters = document.querySelectorAll<HTMLInputElement>('.filter-item-checkbox');
+            filters.forEach(filter => {
+                if (filter.checked) {
+                    console.log(filter.value)
+                }
+            })
+        },
+
         addFilter(state, value) {
-            let selectedFiltersCache: any = localStorage.getItem('selectedFilters');
-            let parsedSelectedFiltersCache = JSON.parse(selectedFiltersCache);
+            let selectedFilters = getSelectedFiltersFromLocalStorage();
+            let targetFiltersArray = typeof value !== 'number' ? selectedFilters.brandIDs : selectedFilters.checkedSizes;
 
-            let selectedFilters = state.selectedFilters;
-            if (selectedFiltersCache) {
-                selectedFilters = parsedSelectedFiltersCache;
-            }
-
-            if (typeof value === 'number') {
-                if (selectedFilters.checkedSizes.includes(value)) {
-                    selectedFilters.checkedSizes = selectedFilters.checkedSizes.filter(selectedFilter => selectedFilter !== value);
-                } else {
-                    selectedFilters.checkedSizes.push(value);
-                }
+            if (targetFiltersArray.includes(value)) {
+                targetFiltersArray = targetFiltersArray.splice(targetFiltersArray.indexOf(value), 1);
             } else {
-                if (selectedFilters.brandIDs.includes(value)) {
-                    selectedFilters.brandIDs = selectedFilters.brandIDs.filter(selectedFilter => selectedFilter !== value);
-                } else {
-                    selectedFilters.brandIDs.push(value);
-                }
+                targetFiltersArray.push(value);
             }
+
+            localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters));
+        },
+
+        addStockFilter() {
+            let selectedFilters = getSelectedFiltersFromLocalStorage();
+
+            selectedFilters.inStock = !selectedFilters.inStock
+            localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters));
         },
 
         setProducts(state, targetProducts) {
@@ -70,44 +76,19 @@ export default createStore({
     },
 
     actions: {
-        async updateUrlParams(state) {
-            const queryParams: Record<string, string> = {};
-
-            let selectedFiltersCache: any = localStorage.getItem('selectedFilters');
-            let parsedSelectedFiltersCache = JSON.parse(selectedFiltersCache);
-
-            let selectedFilters = this.state.selectedFilters;
-
-            if (selectedFilters.brandIDs.length > 0) {
-                queryParams.brands = this.state.selectedFilters.brandIDs.join(',');
-            }
-            if (selectedFilters.checkedSizes.length > 0) {
-                queryParams.sizes = this.state.selectedFilters.checkedSizes.join(',');
-            }
-
-            await router.replace({ query: queryParams });
-        },
 
         async applyFilters() {
             const form = new FormData();
+            let selectedFilters = getSelectedFiltersFromLocalStorage();
 
-            if (Object.keys(this.state.selectedFilters).length !== 0) {
-                localStorage.setItem('selectedFilters', JSON.stringify(this.state.selectedFilters))
-            }
+            selectedFilters.brandIDs.forEach((brand: string) => form.append('brendsIds', brand.toString()));
+            selectedFilters.checkedSizes.forEach((size: string) => form.append('shoeSizesChecked', size.toString()));
+            form.append('availability', selectedFilters.inStock);
+            form.append('PlaceholderContent', selectedFilters.searchValue.toString());
+            form.append('sortOrder', selectedFilters.sortOrder.toString());
 
-            await this.dispatch('updateUrlParams');
-
-
-            if (router.currentRoute.value.query.brands) {
-                router.currentRoute.value.query.brands.split(',').forEach((brand: string) => {
-                    form.append('brendsIds', brand);
-                })
-            }
-            if (router.currentRoute.value.query.sizes) {
-                router.currentRoute.value.query.sizes.split(',').forEach((size: string) => {
-                    form.append('shoeSizesChecked', size);
-                })
-            }
+            let prelodader = document.querySelector('.product-list-wrapper .preloader');
+            if (prelodader) prelodader.classList.remove('disabled');
 
             let response = await axios.post(
                 'http://localhost:5263/Produts',
@@ -118,8 +99,13 @@ export default createStore({
                         'accept': '*/*'
                     }
                 }
-            );
-            console.log(response.data)
+            )
+                .then(response => {
+                    this.commit('setProducts', response.data);
+                    if (prelodader) prelodader.classList.add('disabled');
+                })
+                .catch(error => console.log(error))
+
         },
 
         async fetchProducts() {

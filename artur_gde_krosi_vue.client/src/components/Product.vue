@@ -32,6 +32,7 @@
     .product {
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
         align-items: center;
         border-radius: 7px;
         box-shadow: 4px 4px 7px 1px rgb(0, 0, 0, 20%);
@@ -40,15 +41,20 @@
 
     .product-preview-image {
         width: 100%;
+        height: 300px;
         object-fit: cover;
         border-top-left-radius: 7px;
         border-top-right-radius: 7px;
     }
 
     .product-info {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
         display: flex;
         flex-direction: column;
         padding: 10px 20px;
+        justify-content: space-between;
     }
 
     .product-info h3 {

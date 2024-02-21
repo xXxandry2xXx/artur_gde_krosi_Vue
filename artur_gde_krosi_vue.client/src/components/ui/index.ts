@@ -1,9 +1,11 @@
 import BlackButton from '@/components/ui/BlackButton.vue';
 import DefaultInput from '@/components/ui/DefaultInput.vue';
 import DropdownMenu from '@/components/ui/DropdownMenu.vue';
+import Preloader from '@/components/ui/Preloader.vue';
 
 export default [
     BlackButton,
     DefaultInput,
-    DropdownMenu
+    DropdownMenu,
+    Preloader
 ]
