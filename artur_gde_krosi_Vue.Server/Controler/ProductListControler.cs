@@ -19,12 +19,12 @@ namespace artur_gde_krosi_Vue.Server.Controler
 {
     [ApiController]
     [Route("/Produts")]
-    public class ProductControler : ControllerBase
+    public class ProductListControler : ControllerBase
     {
-        private readonly ILogger<ProductControler> _logger;
+        private readonly ILogger<ProductListControler> _logger;
         ApplicationContext db;
 
-        public ProductControler(ILogger<ProductControler> logger, ApplicationContext context)
+        public ProductListControler(ILogger<ProductListControler> logger, ApplicationContext context)
         {
             _logger = logger;
             db = context;

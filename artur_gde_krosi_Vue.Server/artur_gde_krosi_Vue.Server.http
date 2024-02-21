@@ -12,6 +12,10 @@ Accept: image/json
 GET {{artur_gde_krosi_Vue.Server_HostAddress}}/ImageProductS3
 Accept: image/json
 ###
+GET {{artur_gde_krosi_Vue.Server_HostAddress}}/BEBEBE
+Authorization:  "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYW5kcmV5MjI4IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MDgyNTk0MDIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTI2MyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTI2MyJ9.EdFnuEdVEnPnO2oCloVvwZuMt1yVnij-IzdASq0CPr8"
+Accept: image/json
+###
 GET {{artur_gde_krosi_Vue.Server_HostAddress}}/Brends/
 Accept: application/json
 ###

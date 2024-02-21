@@ -5,18 +5,12 @@ using Quartz.Impl;
 using Quartz.Spi;
 using Quartz;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Builder;
-using AspNetCore.Yandex.ObjectStorage.Extensions;
-using AspNetCore.Yandex.ObjectStorage.Object.Responses;
-using AspNetCore.Yandex.ObjectStorage;
-using Microsoft.Extensions.Options;
-using AspNetCore.Yandex.ObjectStorage.Configuration;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Runtime.CompilerServices;
-using System.Configuration;
 using Amazon.S3;
-using Amazon.S3.Model;
+using Microsoft.AspNetCore.Identity;
+using artur_gde_krosi_Vue.Server.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +21,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-builder.Services.AddAuthentication("Bearer").AddJwtBearer();   
 
 builder.WebHost.UseKestrel(options =>
 {
@@ -36,6 +29,32 @@ builder.WebHost.UseKestrel(options =>
 
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
+
+builder.Services.AddDbContext<ApplicationIdentityContext>(options => options.UseSqlServer(connection));
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+ .AddEntityFrameworkStores<ApplicationIdentityContext>();
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy("UserPolicy", policy => policy.RequireRole("Administrator", "PowerUser", "BackupAdministrator"));
+//});
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters()
+{
+    ValidateActor = true,
+    ValidateIssuer = true,
+    ValidateAudience = true,
+    ValidateIssuerSigningKey = true,
+    ValidIssuer = builder.Configuration.GetSection("JWT:Issuer").Value,
+    ValidAudience = builder.Configuration.GetSection("JWT:Audience").Value,
+    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JWT:key").Value))
+});
+
+builder.Services.AddTransient<IAccountService, AccountService>();
 
 IServiceCollection services = builder.Services;
 
@@ -47,34 +66,34 @@ services.AddCors(options =>
                           .AllowAnyMethod());
 });
 
+
+
 // Add Quartz servicesò è
 services.AddHostedService<QuartzHostedService>();
 services.AddSingleton<IJobFactory, SingletonJobFactory>();
 services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
-// Add our job
+
 services.AddSingleton<ProductAndGroupJob>();
 services.AddSingleton(new JobSchedule(
     jobType: typeof(ProductAndGroupJob),
-    cronExpression: "0 " + ((int)DateTime.Now.Minute + 1) + " * ? * *"));
-
+    cronExpression: "0 20 0 ? * *"));
 //" + ((int)DateTime.Now.Minute + 1) + " *
 //   20 0
 
 services.AddSingleton<UpdateStockJob>();
 services.AddSingleton(new JobSchedule(
     jobType: typeof(UpdateStockJob),
-    cronExpression: "0 0/15  * ? * *")); 
-
-services.AddYandexObjectStorage(builder.Configuration.GetSection("YandexObjectStorage"));
+    cronExpression: "0 0/15  * ? * *"));
 
 services.AddAWSService<IAmazonS3>();
 
 var app = builder.Build();
 
-app.UseDefaultFiles();
+app.UseDefaultFiles(); 
 app.UseStaticFiles();
 app.MapControllers();
 app.UseCors("AllowSpecificOrigin");
+app.UseAuthorization(); 
 
 
 // Configure the HTTP request pipeline.
