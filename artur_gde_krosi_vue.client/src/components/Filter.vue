@@ -1,8 +1,11 @@
 ﻿<template>
     <div class="filter">
-        <h2 class="filter-title">{{ filterName }}</h2>
-        <div class="filter-items">
-            <FilterItem v-for="item in filter" :item="item" />
+        <div class="filter-opener" @click="colapseExpandFilter">
+            <h2 class="filter-title">{{ filterName }}</h2>
+            <span :class="{'filter-collapse-expand-button-expanded': !isCollapsed}"><i class="fa-solid fa-angle-down"></i></span>
+        </div>
+        <div class="filter-items" v-show="!isCollapsed">
+            <FilterItem v-for="item in filter" :item="item"/>
         </div>
     </div>
 </template>
@@ -13,6 +16,13 @@
 
     export default defineComponent({
         components: { FilterItem },
+
+        data() {
+            return {
+                isCollapsed: false,
+            }
+        },
+
         props: {
             filter: {
                 type: Object,
@@ -25,8 +35,8 @@
         },
 
         methods: {
-            addFilterValue() {
-                
+            colapseExpandFilter(this: { isCollapsed: boolean }) {
+                this.isCollapsed = !this.isCollapsed;
             }
         }
     })

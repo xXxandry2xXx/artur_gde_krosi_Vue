@@ -1,6 +1,15 @@
-<template>
-    <div class="product-list">
-        <Product v-for="product in products" :key="product.productId" :product="product"/>
+﻿<template>
+    <div class="product-list-wrapper">
+        <Preloader/>
+        <div v-if="products.length > 0" class="product-list">
+            <Product v-for="product in products" :key="product.productId" :product="product" />
+        </div>
+        <div v-else class="nothing-found">
+            <div class="nothing-found-content">
+                <span><i class="far fa-times-circle"></i></span>
+                <p>По вашему запросу ничего не найдено. Попробуйте сбросить фильтры или ввести другой поисковой запрос.</p>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -20,12 +29,3 @@
     })
 
 </script>
-
-<style scoped>
-    .product-list {
-        display: grid;
-        grid-template-columns: 300px 300px 300px;
-        gap: 20px;
-        justify-content: center;
-    }
-</style>

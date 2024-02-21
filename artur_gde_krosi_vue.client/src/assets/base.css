@@ -2,6 +2,7 @@
 
 :root {
     --featured-color: #FDDD00;
+    --featured-hover-color: #ffe742;
     --border-font-color: rgb(185 147 0);
 }
 
@@ -41,6 +42,54 @@ body::-webkit-scrollbar {
     width: 0px;
 }
 
+.disabled {
+    display: none;
+}
+
+header {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    width: 100%;
+    height: 70px;
+    background: #FDDD00;
+    box-shadow: 4px 4px 7px 1px rgb(0, 0, 0, 20%);
+}
+
+.logo {
+    width: 200px;
+    height: 70px;
+    object-fit: cover;
+}
+
+.login-button {
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 10px 25px;
+    font-size: 17px;
+    font-weight: 600;
+    border-radius: 7px;
+    margin: 0px 10px;
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    font-weight: 500;
+    color: #000;
+    transition: 0.2s;
+    margin: 0 10px;
+}
+
+    .nav-button:hover {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
 .top-bar {
     padding: 0 35px;
     margin-top: 15px;
@@ -52,10 +101,42 @@ body::-webkit-scrollbar {
     font-weight: 800;
 }
 
+.products-main {
+    display: flex;
+    justify-content: space-around;
+}
+
+.product-list-wrapper {
+    position: relative;
+}
+
+.product-list {
+    display: grid;
+    grid-template-columns: 300px 300px 300px;
+    gap: 20px;
+    justify-content: center;
+}
+
 .products-content {
+    width: 70%;
     display: flex;
     flex-direction: column;
 }
+
+.nothing-found-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+    .nothing-found-content span {
+        font-size: 170px;
+    }
+
+    .nothing-found-content p {
+        font-size: 35px;
+    }
 
 .sorting-and-filters {
     background: #fff;
@@ -73,11 +154,6 @@ body::-webkit-scrollbar {
     color: #947704;
 }
 
-.main-content {
-    display: flex;
-    justify-content: space-around;
-}
-
 .search-and-sort {
     display: flex;
     justify-content: space-between;
@@ -89,7 +165,7 @@ body::-webkit-scrollbar {
 }
 
 .search-input-wrapper {
-    width: 70%;
+    width: 65%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -97,6 +173,17 @@ body::-webkit-scrollbar {
     border-radius: 10px;
     background: #fff;
 }
+
+.clear-search-value {
+    padding: 0 10px;
+    padding-bottom: 2px;
+    font-size: 20px;
+    color: #d2a805;
+}
+
+    .clear-search-value:hover {
+        cursor: pointer;
+    }
 
 .search-button {
     border: none;
@@ -113,12 +200,12 @@ body::-webkit-scrollbar {
 
     .search-button:hover {
         cursor: pointer;
-        background: #ffe742;
+        background: var(--featured-hover-color);
     }
 
 .search-input {
     width: 100%;
-    font-size: 19px;
+    font-size: 18px;
     padding: 0 10px;
     border-radius: 10px;
     outline: none;
@@ -126,17 +213,18 @@ body::-webkit-scrollbar {
 
 .sort-dropdown {
     border: 2px solid var(--featured-color);
-    font-size: 19px;
+    font-size: 18px;
     border-radius: 10px;
     padding: 0 3px;
     outline: none;
 }
 
-    .sortDropdown:hover {
-        cursor: pointer;
-    }
+.sortDropdown:hover {
+    cursor: pointer;
+}
 
 .filter-panel {
+    width: 22%;
     box-sizing: border-box;
     background: #fff;
     box-shadow: 4px 4px 7px 1px rgb(0, 0, 0, 20%);
@@ -145,8 +233,29 @@ body::-webkit-scrollbar {
     padding-bottom: 20px;
 }
 
+.filters-apply-button {
+    width: 100%;
+    background: var(--featured-color);
+    color: var(--border-font-color);
+    border: none;
+    border-radius: 10px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    padding: 10px 25px;
+    font-size: 17px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+    .filters-apply-button:hover {
+        cursor: pointer;
+        background: var(--featured-hover-color);
+    }
+
 .filters-list {
-    
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
 }
 
     .filters-list::-webkit-scrollbar {
@@ -162,19 +271,40 @@ body::-webkit-scrollbar {
 .filter {
     background: #fff;
     border-radius: 7px;
-    padding: 0 30px
+    border-top: 1px solid rgb(185 147 0);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    padding: 0 5px;
+    margin-bottom: 5px;
 }
 
+.instock-filter {
+    border: none;
+}
+
+.filter-opener {
+    display: flex;
+    justify-content: space-between;
+    color: var(--border-font-color);
+    align-items: center;
+    margin: 10px 0;
+}
+
+    .filter-opener:hover {
+        cursor: pointer;
+    }
+
 .filter-title {
-    margin-top: 15px;
     font-size: 18px;
-    color: rgb(185 147 0);
     font-weight: 500;
-    margin-bottom: 10px;
+}
+
+.filter-collapse-expand-button-expanded {
+    transform: rotate(180deg);
 }
 
 .filter-items {
-    
+    margin-top: 15px;
 }
 
 .filter-item {
@@ -234,9 +364,8 @@ body::-webkit-scrollbar {
 }
 
 .sizes-filter .filter-items {
-    display: grid;
-    justify-items: center;
-    grid-template-columns: 25% 25% 25% 25%;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .sizes-filter .filter-item {
@@ -244,13 +373,17 @@ body::-webkit-scrollbar {
 }
 
 .sizes-filter .filter-items .filter-item-container {
-    margin: 5px;
+    width: 24%;
+    flex-shrink: 0;
+    border: 1px solid #d2a805;
+    margin: 0;
 }
 
 .sizes-filter .filter-items .filter-item-name {
-    border: 1px solid transparent;
-    border-radius: 3px;
-    padding: 0 5px;
+    width: 100%;
+    font-size: 16px;
+    text-align: center;
+    padding: 8px;
     transition: 0.2s;
 }
 
@@ -258,17 +391,12 @@ body::-webkit-scrollbar {
     display: none;
 }
 
-    .sizes-filter .filter-items .filter-item-name:hover,
-    .sizes-filter .filter-items .filter-item-checkbox:checked ~ .filter-item-name {
-        border-radius: 3px;
-        border: 1px solid #d1a705;
-    }
-
-.sizes-filter .filter-items .filter-item-name:hover {
-    color: #d1a705;
-}
-
+.sizes-filter .filter-items .filter-item-name:hover,
 .sizes-filter .filter-items .filter-item-checkbox:checked ~ .filter-item-name {
     color: var(--border-font-color);
     background: rgb(241 221 83);
+}
+
+.sizes-filter .filter-items .filter-item-name:hover {
+    color: #d1a705;
 }

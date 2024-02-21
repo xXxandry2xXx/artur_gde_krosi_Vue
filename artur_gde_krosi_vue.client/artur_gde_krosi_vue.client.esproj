@@ -10,5 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\assets\fonts\" />
+    <Folder Include="src\router\" />
   </ItemGroup>
 </Project>
