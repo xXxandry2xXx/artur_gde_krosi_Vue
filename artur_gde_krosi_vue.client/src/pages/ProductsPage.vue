@@ -4,13 +4,17 @@
         <h2 class="category-name">Кроссовки</h2>
     </div>
     <div class="products-main">
-        <FiltersPanel :filterBrands="$store.state.brands" :filterSizes="$store.state.sizes" />
+        <FiltersPanel/>
         <div class="products-content">
             <SearchAndSort :sortingOptions="$store.state.sortingOptions" />
             <ProductList v-if="$store.state.productsData.products" :products="$store.state.productsData.products" />
         </div>
     </div>
-
+    <footer>
+        <div class="footer-content">
+            КАКАЯ-НИБУДЬ ИНФА И КОНТАКТЫ В ФУТЕРЕ
+        </div>
+    </footer>
 </template>
 
 <script lang="ts">
@@ -22,11 +26,9 @@
     export default defineComponent({
         components: { ProductList, FiltersPanel, SearchAndSort },
 
-        mounted() {
-            let selectedFiltersCache: any = localStorage.getItem('selectedFilters');
-            
-            this.$store.dispatch('applyFilters');
-            
+        async mounted() {           
+            this.$store.dispatch('loadAppliedFilters');    
+            this.$store.dispatch('fetchPrices');
             this.$store.dispatch('fetchBrands');
             this.$store.dispatch('fetchSizes');
         }

@@ -11,6 +11,7 @@
 
 <script lang="ts">
     import { defineComponent } from "vue";
+    import store from '@/store';
     import { getSelectedFiltersFromLocalStorage } from '@/helper';
 
     export default defineComponent({
@@ -31,31 +32,22 @@
 
         methods: {
             addSearchValue(this: { searchQuery: string, showClearButton: boolean }) {
-                let selectedFilters = getSelectedFiltersFromLocalStorage();
-
-                this.showClearButton = this.searchQuery != '' ? true : false;
-
-                selectedFilters.searchValue = this.searchQuery;
-                localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters));
+               this.showClearButton = this.searchQuery != '' ? true : false;
+                store.state.selectedFilters.searchValue = this.searchQuery;
             },
 
             clearSearchValue(this: { searchQuery: string, showClearButton: boolean }) {
-                let selectedFilters = getSelectedFiltersFromLocalStorage();
-
-                selectedFilters.searchValue = '';
-                this.searchQuery = selectedFilters.searchValue;
-                localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters));
+                store.state.selectedFilters.searchValue = '';
+                this.searchQuery = store.state.selectedFilters.searchValue;
                 this.showClearButton = false;
             }
         },
 
         mounted: function () {
-            let selectedFilters = getSelectedFiltersFromLocalStorage();
+            this.showClearButton = store.state.selectedFilters.searchValue != '' ? true : false;
 
-            this.showClearButton = selectedFilters.searchValue != '' ? true : false;
-
-            if (selectedFilters) {
-                this.searchQuery = selectedFilters.searchValue;
+            if (store.state.selectedFilters) {
+                this.searchQuery = store.state.selectedFilters.searchValue;
             }
         },
     })
