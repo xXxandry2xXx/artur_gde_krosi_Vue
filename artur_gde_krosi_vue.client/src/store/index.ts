@@ -125,6 +125,8 @@ export default createStore({
             form.append('sortOrder', selectedFilters.sortOrder.toString());
             form.append('priseDown', selectedFilters.priceMin.toString());
             form.append('priseUp', selectedFilters.priceMax.toString());
+            //form.append('pageProducts', '2');
+
 
             let prelodader = document.querySelector('.product-list-wrapper .preloader');
             if (prelodader) prelodader.classList.remove('disabled');

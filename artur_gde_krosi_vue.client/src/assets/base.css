@@ -123,6 +123,96 @@ header {
     flex-direction: column;
 }
 
+.product {
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 7px;
+    box-shadow: 4px 4px 7px 1px rgb(0, 0, 0, 20%);
+    background: #fff;
+}
+
+.product-preview-image {
+    width: 100%;
+    height: 286px;
+    object-fit: cover;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+}
+
+.product-info {
+    position: relative;
+    width: 100%;
+    height: 50%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+    justify-content: center;
+}
+
+    .product-info h3 {
+        text-align: center;
+        font-size: 25px;
+        font-weight: 800;
+    }
+
+    .product-info span {
+        text-align: center;
+    }
+
+.product-info-price {
+    font-size: 30px;
+    font-weight: 400;
+    color: #d2a805;
+}
+
+.product-info-main {
+    height: 100%;
+    display: flex;
+    z-index: 1;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-info-sizes {
+    right: 25%;
+    left: 0;
+    box-sizing: border-box;
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    padding: 0 10px;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 100%;
+}
+
+.product-info-sizes-title {
+    font-size: 19px;
+    color: #947704;
+    font-weight: 500;
+}
+
+.product-info-sizes-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.product-size {
+    padding: 0px 12px;
+    margin: 6px;
+    font-size: 17px;
+    border-radius: 5px;
+    border: 1px solid var(--border-font-color);
+}
+
 .nothing-found-content {
     display: flex;
     flex-direction: column;
@@ -313,6 +403,10 @@ header {
     -webkit-appearance: none;
 }
 
+    .price-ranger-range-inputs input:hover {
+        cursor: pointer;
+    }
+
     .price-ranger-range-inputs input[type="range"]::-webkit-slider-thumb {
         width: 17px;
         height: 17px;
@@ -381,6 +475,10 @@ header {
     .filter-opener:hover {
         cursor: pointer;
     }
+
+.in-stock-opener:hover {
+    cursor: default;
+}
 
 .filter-title {
     font-size: 18px;

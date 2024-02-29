@@ -13,7 +13,7 @@
                 <PriceRanger />
             </div>
             <div class="filter">
-                <div class="filter-opener">
+                <div class="filter-opener in-stock-opener">
                     <h2 class="filter-title">Наличие</h2>
                 </div>
                 <div class="filter-item-container">
