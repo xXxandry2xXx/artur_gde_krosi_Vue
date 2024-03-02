@@ -32,7 +32,8 @@ builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServe
 
 builder.Services.AddDbContext<ApplicationIdentityContext>(options => options.UseSqlServer(connection));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddDefaultTokenProviders()
  .AddEntityFrameworkStores<ApplicationIdentityContext>();
 //builder.Services.AddAuthorization(options =>
 //{
@@ -55,6 +56,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddTransient<IAccountService, AccountService>();
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 IServiceCollection services = builder.Services;
 

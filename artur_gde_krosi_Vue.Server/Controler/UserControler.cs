@@ -1,6 +1,7 @@
 ﻿using artur_gde_krosi_Vue.Server.Models;
 using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
 using artur_gde_krosi_Vue.Server.Services;
+using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,18 +38,29 @@ namespace artur_gde_krosi_Vue.Server.Controler
             return Ok("bebebe");
         }
 
-        [HttpPost("/login")]
-        public async Task<IActionResult> login([FromForm] RegisterModel model)
+        [HttpGet("/giveTokenEmeil")]
+        public async Task<IActionResult> giveTokenEmeil(string email)
         {
-            var result = await _accountService.LoginAsync(model.Username, model.Password, model.RememberMe);
-            if (result.Succeeded)
+            return Ok(await _accountService.CodeOnEmailAsync(email));
+        }
+        [HttpGet("/regEmeil")]
+        public async Task<IActionResult> regEmeil(string email,string token)
+        {
+            return Ok( await _accountService.CheckingEmailTokenAsync(email, token));
+        }
+
+        [HttpPost("/login")]
+        public async Task<IActionResult> login(string usernameOrEmail, string password)
+        {
+            var result = await _accountService.LoginAsync(usernameOrEmail, password);
+            if (result.result.Succeeded)
             {
-                var Token = _accountService.GenerateToken(model.Username, model.Email, model.Password);
-                return Ok(Token);
+                var Token = _accountService.GenerateToken(result.user);
+                return Ok(new { Token , result.user }); 
             }
             else
             {
-                return Unauthorized("Invalid login attempt");
+                return Ok(result.result);
             }
         }
 

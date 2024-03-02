@@ -1,0 +1,59 @@
+﻿using Microsoft.AspNetCore.Identity;
+using System.Net.Mail;
+using System.Net;
+
+namespace artur_gde_krosi_Vue.Server.Services
+{
+    public class EmailService : IEmailService
+    {
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IConfiguration _configuration;
+
+        public EmailService(UserManager<IdentityUser> userManager, IConfiguration configuration)
+        {
+            _userManager = userManager;
+            _configuration = configuration;
+        }
+
+        public async Task<bool> SendEmailAsync(string email, string subject , string body)
+        {
+            try
+            {
+                string smtpHost = _configuration["SmtpSettings:Host"];
+                int smtpPort = _configuration.GetValue<int>("SmtpSettings:Port");
+                string smtpUsername = _configuration["SmtpSettings:Username"];
+                string smtpPassword = _configuration["SmtpSettings:Password"];
+                bool enableSsl = _configuration.GetValue<bool>("SmtpSettings:EnableSsl");
+
+                using (var smtpClient = new SmtpClient(smtpHost, smtpPort))
+                {
+                    smtpClient.UseDefaultCredentials = false;
+                    smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
+                    smtpClient.EnableSsl = enableSsl;
+
+                    var mailMessage = new MailMessage();
+                    mailMessage.From = new MailAddress(smtpUsername);
+                    mailMessage.To.Add(email);
+                    mailMessage.Subject = subject;
+                    mailMessage.Body = body;
+                    mailMessage.IsBodyHtml = true;
+
+                    try
+                    {
+                        smtpClient.Send(mailMessage);
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
+    }
+}
