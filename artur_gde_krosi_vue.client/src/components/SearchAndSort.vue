@@ -44,10 +44,10 @@
         },
 
         mounted: function () {
-            this.showClearButton = store.state.selectedFilters.searchValue != '' ? true : false;
+            this.showClearButton = store.getters.currentSelectedFilters.searchValue != '' ? true : false;
 
-            if (store.state.selectedFilters) {
-                this.searchQuery = store.state.selectedFilters.searchValue;
+            if (store.getters.currentSelectedFilters) {
+                this.searchQuery = store.getters.currentSelectedFilters.searchValue;
             }
         },
     })

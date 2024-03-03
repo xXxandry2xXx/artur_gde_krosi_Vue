@@ -1,6 +1,6 @@
 ﻿<template>
+    <Preloader v-show="$store.state.showPreloader" />
     <AppHeader />
-
     <main class="main-content">
         <router-view>
 

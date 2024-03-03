@@ -3,7 +3,9 @@
         <img class="logo" src="../assets/img/logo.jpg">
         <nav class="appheader-navbar">
             <button class="nav-button" @click="$router.push('/')">Главная</button>
-            <button class="nav-button" @click="$router.push('/products')">Кроссовки</button>
+            <router-link :to="{ name: 'productsPage', params: { page: 1 } }">
+                <button class="nav-button">Кроссовки</button>
+            </router-link>
         </nav>
         <div class="autorization-buttons">
             <button class="login-button">Вход</button>

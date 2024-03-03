@@ -1,15 +1,17 @@
-ï»¿import { createStore } from 'vuex';
+import type { Module } from 'vuex';
 import FormData from 'form-data';
 import axios from 'axios';
+import type ProductsBrowsingState from '@/store/types';
 import type SelectedFiltersInterface from '@/types/selectedFiltersInterface';
 import type ProductsDataInterface from '@/types/productsDataInterface';
 import type BrandsInterface from '@/types/brandsInterface';
 import type ModelInterface from '@/types/modelInterface';
+import type ModelsInterface from '@/types/modelsInterface';
 import type SizesInterface from '@/types/sizesInterface';
 
-export default createStore({
+
+const productsBrowsing: Module<ProductsBrowsingState, any> = {
     state: {
-        showPreloader: false,
         selectedFilters: {
             priceMin: 0,
             priceMax: 0,
@@ -21,16 +23,16 @@ export default createStore({
             sortOrder: 0,
         } as SelectedFiltersInterface,
         sortingOptions: [
-            { value: 0, name: 'ÐŸÐ¾ Ð°Ð»Ñ„Ð°Ð²Ð¸Ñ‚Ñƒ (Ð-Ð¯)' },
-            { value: 1, name: 'ÐŸÐ¾ Ð°Ð»Ñ„Ð°Ð²Ð¸Ñ‚Ñƒ (Ð¯-Ð)' },
-            { value: 2, name: 'ÐŸÐ¾ Ñ†ÐµÐ½Ðµ (Ð¡Ð½Ð°Ñ‡Ð°Ð»Ð° Ð´ÐµÑˆÐµÐ²Ð»Ðµ)' },
-            { value: 3, name: 'ÐŸÐ¾ Ñ†ÐµÐ½Ðµ (Ð¡Ð½Ð°Ñ‡Ð°Ð»Ð° Ð´Ð¾Ñ€Ð¾Ð¶Ðµ)' }
+            { value: 0, name: 'Ïî àëôàâèòó (À-ß)' },
+            { value: 1, name: 'Ïî àëôàâèòó (ß-À)' },
+            { value: 2, name: 'Ïî öåíå (Ñíà÷àëà äåøåâëå)' },
+            { value: 3, name: 'Ïî öåíå (Ñíà÷àëà äîðîæå)' }
         ],
         filteredProductsData: {} as ProductsDataInterface,
         productsData: {} as ProductsDataInterface,
         brands: {} as BrandsInterface,
         sizes: {} as SizesInterface,
-        models: {},
+        models: {} as ModelsInterface,
         currentPage: 1,
         totalPages: 0,
     },
@@ -174,7 +176,7 @@ export default createStore({
             let selectedFilters = this.state.selectedFilters;
 
             if (selectedFilters.brandIDs) {
-                selectedFilters.brandIDs.forEach((brand) => form.append('brendsIds', brand.toString()));
+                selectedFilters.brandIDs.forEach((brand: string) => form.append('brendsIds', brand.toString()));
 
                 await axios.post(
                     'http://localhost:5263/ModelKrosovocks',
@@ -219,4 +221,6 @@ export default createStore({
                 })
         },
     }
-})
+};
+
+export default productsBrowsing;

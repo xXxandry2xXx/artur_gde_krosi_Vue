@@ -16,7 +16,6 @@
 
 <script lang="ts">
     import { defineComponent } from "vue";
-    import { getSelectedFiltersFromLocalStorage } from '@/helper';
     import store from '@/store';
 
     export default defineComponent({

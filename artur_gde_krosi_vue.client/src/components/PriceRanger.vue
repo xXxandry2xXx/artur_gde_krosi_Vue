@@ -138,8 +138,8 @@
                     const rangeMaxInput = document.querySelector('.range-price-max') as HTMLInputElement;
 
                     if (rangeMinInput && rangeMaxInput) {
-                        rangeMinInput.value = this.minRangerValue.toString();
-                        rangeMaxInput.value = this.maxRangerValue.toString();
+                        rangeMinInput.value = this.minRangerValue;
+                        rangeMaxInput.value = this.maxRangerValue;
                     }
                 }, 100);
             }
