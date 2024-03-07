@@ -1,5 +1,14 @@
 ﻿<template>
     <div class="search-and-sort">
+
+        <div class="filter-item-container">
+            <label class="filter-item">
+                <input class="filter-item-checkbox" type="checkbox" @click="$store.commit('addStockFilter')" :checked="isChecked">
+                <span class="filter-item-checkbox-fake"></span>
+                <span class="filter-item-name">В наличии</span>
+            </label>
+        </div>
+
         <div class="search-input-wrapper">
             <DefaultInput class="search-input" v-model="searchQuery" :value="searchQuery" @input="addSearchValue" placeholder="Введите название или бренд..." />
             <span class="clear-search-value" v-show="showClearButton" @click="clearSearchValue"><i class="fa-solid fa-xmark"></i></span>
@@ -12,7 +21,6 @@
 <script lang="ts">
     import { defineComponent } from "vue";
     import store from '@/store';
-    import { getSelectedFiltersFromLocalStorage } from '@/helper';
 
     export default defineComponent({
 
@@ -32,7 +40,7 @@
 
         methods: {
             addSearchValue(this: { searchQuery: string, showClearButton: boolean }) {
-               this.showClearButton = this.searchQuery != '' ? true : false;
+                this.showClearButton = this.searchQuery != '' ? true : false;
                 store.state.selectedFilters.searchValue = this.searchQuery;
             },
 
@@ -40,6 +48,13 @@
                 store.state.selectedFilters.searchValue = '';
                 this.searchQuery = store.state.selectedFilters.searchValue;
                 this.showClearButton = false;
+            }
+        },
+
+        computed: {
+            isChecked() {
+                let selectedFilters = store.state.selectedFilters;
+                return selectedFilters.inStock;
             }
         },
 

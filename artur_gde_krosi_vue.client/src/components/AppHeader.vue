@@ -1,15 +1,20 @@
 ﻿<template>
     <header>
-        <img class="logo" src="../assets/img/logo.jpg">
-        <nav class="appheader-navbar">
-            <button class="nav-button" @click="$router.push('/')">Главная</button>
-            <router-link :to="{ name: 'productsPage', params: { page: 1 } }">
-                <button class="nav-button">Кроссовки</button>
-            </router-link>
-        </nav>
-        <div class="autorization-buttons">
-            <button class="login-button">Вход</button>
-            <button class="login-button">Регистрация</button>
+        <div class="appheader-top-bar">
+            <div class="autorization-buttons">
+                <button class="login-button">Вход</button>
+                <button class="login-button">Регистрация</button>
+            </div>
         </div>
+        <nav class="appheader-navbar">
+            <router-link :to="{ name: 'productsPage', params: { page: 1 } }">
+                <button class="nav-button">Все кроссовки</button>
+            </router-link>
+            <div class="logo" @click="$router.push('/')">
+                <span class="logo-top">АРТУР, ГДЕ МОИ </span>
+                <span class="logo-bottom">КРОССОВКИ?</span>
+            </div>
+            <button class="nav-button">Контакты</button>
+        </nav>
     </header>
 </template>

@@ -1,6 +1,13 @@
 ﻿<template>
     <div class="top-bar">
-        <h2 class="category-name">Кроссовки</h2>
+        <span class="bread-crumb" @click="$router.push('/')">На главную</span>
+        <div class="bread-crumbs">
+            <span class="bread-crumb" @click="$router.push('/')">Главная</span>
+            /
+            <router-link :to="{ name: 'productsPage', params: { page: 1 } }" class="bread-crumb">
+                <span>Все кроссовки</span>
+            </router-link>
+        </div>
     </div>
     <div class="products-main">
         <FiltersPanel />

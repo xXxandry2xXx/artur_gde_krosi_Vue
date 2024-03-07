@@ -3,19 +3,13 @@
         <img class="product-preview-image" :src="product.images[0].imgSrc" alt="preview" />
         <div class="product-info">
             <transition name="fade-main">
-                <div class="product-info-main" v-show="!showSizes">
-                    <h3 class="product-info-brand">{{ product.brend_Name }}</h3>
+                <div class="product-info-main">
+                    <div class="product-info-categories">
+                        <span class="product-info-category">{{ product.brend_Name }}, </span>
+                        <span class="product-info-category">{{ product.modelKrosovock_Name }}</span>
+                    </div>
                     <span class="product-info-name">{{ product.name }}</span>
                     <span class="product-info-price">{{ product.variants[0].prise / 100 }} </span>
-                </div>
-            </transition>
-
-            <transition name="fade-sizes">
-                <div class="product-info-sizes" v-show="showSizes">
-                    <span class="product-info-sizes-title">Размеры</span>
-                    <div class="product-info-sizes-list">
-                        <span class="product-size" v-for="size in availableProductSizes">{{ size }}</span>
-                    </div>
                 </div>
             </transition>
         </div>
@@ -29,7 +23,7 @@
     export default defineComponent({
         data() {
             return {
-                showSizes: false,
+
             }
         },
 
