@@ -1,10 +1,12 @@
 <template>
-    <div class="preloader disabled">
-        <div class="lds-ring">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+    <div class="preloader_wrapper">
+        <div class="preloader">
+            <div class="lds-ring">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
         </div>
     </div>
 </template>
@@ -19,17 +21,26 @@ import { defineComponent } from "vue";
 
 <style>
 
-    .preloader {
+    .preloader_wrapper {
         width: 100%;
         height: 100%;
         position: absolute;
-        background: rgb(255,255,255, 0.5);
+        background: rgb(255,255,255, 0.8);
         z-index: 5;
+    }
+
+    .preloader {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 40%;
+        right: 35%;
+        left: 25%;
     }
 
     .lds-ring {
         display: inline-block;
-        position: absolute;
         top: 10%;
         left: 45%;
     }
@@ -38,10 +49,10 @@ import { defineComponent } from "vue";
             box-sizing: border-box;
             display: block;
             position: absolute;
-            width: 64px;
-            height: 64px;
+            width: 90px;
+            height: 90px;
             margin: 8px;
-            border: 8px solid #ffe742;
+            border: 10px solid #ffe742;
             border-radius: 50%;
             animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
             border-color: #ffe742 transparent transparent transparent;

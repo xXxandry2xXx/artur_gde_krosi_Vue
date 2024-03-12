@@ -1,10 +1,17 @@
 ﻿<template>
-    <article class="product">
+    <article class="product" @mouseenter="toggleSizesPanel" @mouseleave="toggleSizesPanel">
         <img class="product-preview-image" :src="product.images[0].imgSrc" alt="preview" />
         <div class="product-info">
-            <h3 class="product-info-brand">{{ product.brend_Name }}</h3>
-            <span class="product-info-name">{{ product.name }}</span>
-            <span class="product-info-price">{{ product.variants[0].prise / 100 }} </span>
+            <transition name="fade-main">
+                <div class="product-info-main">
+                    <div class="product-info-categories">
+                        <span class="product-info-category">{{ product.brend_Name }}, </span>
+                        <span class="product-info-category">{{ product.modelKrosovock_Name }}</span>
+                    </div>
+                    <span class="product-info-name">{{ product.name }}</span>
+                    <span class="product-info-price">{{ product.variants[0].prise / 100 }} </span>
+                </div>
+            </transition>
         </div>
     </article>
 </template>
@@ -14,6 +21,12 @@
     import type ProductInterface from '@/types/productInterface';
 
     export default defineComponent({
+        data() {
+            return {
+
+            }
+        },
+
         props: {
             product: {
                 type: Object as () => ProductInterface,
@@ -21,56 +34,39 @@
             }
         },
 
-        mounted() {
-            //this.log()
-            //this.fetchImage()
+        methods: {
+            toggleSizesPanel(this: any) {
+                this.showSizes = !this.showSizes;
+            }
+        },
+
+        computed: {
+            availableProductSizes(this: any) {
+                let gatheredProductSizes = this.product.variants.map((variant: any) => variant.shoeSize);
+                return gatheredProductSizes;
+            }
         }
     })
 </script>
 
 <style scoped>
-    .product {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        border-radius: 7px;
-        box-shadow: 4px 4px 7px 1px rgb(0, 0, 0, 20%);
-        background: #fff;
+    .fade-main-enter-active,
+    .fade-main-leave-active {
+        transition: opacity 0.2s ease;
     }
 
-    .product-preview-image {
-        width: 100%;
-        height: 300px;
-        object-fit: cover;
-        border-top-left-radius: 7px;
-        border-top-right-radius: 7px;
+    .fade-main-enter-from,
+    .fade-main-leave-to {
+        opacity: 0;
     }
 
-    .product-info {
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        padding: 10px 20px;
-        justify-content: space-between;
+    .fade-sizes-enter-active,
+    .fade-sizes-leave-active {
+        transition: opacity 0.2s ease;
     }
 
-    .product-info h3 {
-        text-align: center;
-        font-size: 25px;
-        font-weight: 800;
+    .fade-sizes-enter-from,
+    .fade-sizes-leave-to {
+        opacity: 0;
     }
-
-    .product-info span {
-        text-align: center;
-    }
-
-    .product-info-price {
-        font-size: 30px;
-        font-weight: 400;
-        color: #d2a805;
-    }
-
 </style>

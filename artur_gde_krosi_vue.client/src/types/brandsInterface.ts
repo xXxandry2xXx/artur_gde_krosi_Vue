@@ -1,7 +1,5 @@
+import type BrandInterface from '@/types/brandIDInterface';
+
 export default interface BrandsInterface {
-    brands: {
-        brendId: string,
-        name: string,
-        modelKrosovocks: null
-    }[]
+    brands: BrandInterface[]
 }

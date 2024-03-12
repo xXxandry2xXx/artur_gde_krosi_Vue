@@ -1,8 +1,7 @@
 ﻿<template>
     <div class="product-list-wrapper">
-        <Preloader/>
         <div v-if="products.length > 0" class="product-list">
-            <Product v-for="product in products" :key="product.productId" :product="product" />
+            <Product v-for="product in products" :key="product.productId" :product="product" @click="$router.push(`/products/productId=${product.productId}`)"/>
         </div>
         <div v-else class="nothing-found">
             <div class="nothing-found-content">

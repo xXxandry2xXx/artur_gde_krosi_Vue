@@ -1,56 +1,33 @@
 ﻿<template>
     <aside class="filter-panel">
-        <button class="filters-apply-button" @click="$store.dispatch('applyFilters')">Применить</button>
-        <button class="filters-apply-button disabled" @click="$store.commit('clearFilters')">Очистить фильтры</button>
+        <div class="filter-panel-butons disabled">
+            <button class="filters-apply-button" @click="$store.dispatch('applyFilters')">Применить</button>
+            <button class="filters-apply-button" @click="$store.dispatch('clearFilters')">Очистить</button>
+        </div>
+
         <div class="filters-list">
-            <div class="filter instock-filter">
+            <div class="filter price-ranger-filter">
                 <div class="filter-opener">
-                    <h2 class="filter-title">Наличие</h2>
+                    <h2 class="filter-title">Цена</h2>
                 </div>
-                <div class="filter-item-container">
-                    <label class="filter-item">
-                        <input class="filter-item-checkbox" type="checkbox" @click="$store.commit('addStockFilter')" :checked="isChecked">
-                        <span class="filter-item-checkbox-fake"></span>
-                        <span class="filter-item-name">В наличии</span>
-                    </label>
-                </div>
+                <PriceRanger />
             </div>
-            <Filter :filter="filterBrands" :filterName="filterBrandsName" />
-            <Filter class="sizes-filter" :filter="filterSizes" :filterName="filterSizesName" />
+
+            <Filter :filter="$store.state.brands" :filterName="'Бренды'" />
+
+            <Filter v-show="$store.state.models.length > 0" :filter="$store.state.models" :filterName="'Модели'" />
+
+            <Filter class="sizes-filter" :filter="$store.state.sizes" :filterName="'Размеры'" />
         </div>
     </aside>
 </template>
 
 <script lang="ts">
     import { defineComponent } from "vue";
-    import { getSelectedFiltersFromLocalStorage } from '@/helper';
+    import PriceRanger from './PriceRanger.vue'
     import Filter from './Filter.vue';
 
     export default defineComponent({
-        components: { Filter },
-
-        props: {
-            filterBrands: {
-                type: Object,
-                required: true
-            },
-            filterSizes: {
-                type: Object,
-                required: true
-            }
-        },
-        data() {
-            return {
-                filterBrandsName: 'Бренды',
-                filterSizesName: 'Размеры',
-            }
-        },
-
-        computed: {
-            isChecked() {
-                let selectedFilters = getSelectedFiltersFromLocalStorage();
-                return selectedFilters.inStock;
-            }
-        }
+        components: { PriceRanger, Filter },
     })
 </script>
