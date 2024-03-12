@@ -8,13 +8,13 @@
         </div>
         <nav class="appheader-navbar">
             <router-link :to="{ name: 'productsPage', params: { page: 1 } }">
-                <button class="nav-button">Все кроссовки</button>
+                <button class="nav-button">ВСЕ КРОССОВКИ</button>
             </router-link>
             <div class="logo" @click="$router.push('/')">
                 <span class="logo-top">АРТУР, ГДЕ МОИ </span>
                 <span class="logo-bottom">КРОССОВКИ?</span>
             </div>
-            <button class="nav-button">Контакты</button>
+            <button class="nav-button">КОНТАКТЫ</button>
         </nav>
     </header>
 </template>
