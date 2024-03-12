@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace artur_gde_krosi_Vue.Server.Models.BdModel
 {
     public class ShoppingСart
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string ShoppingСartId { get; set; }
 
         public string UserId { get; set; }

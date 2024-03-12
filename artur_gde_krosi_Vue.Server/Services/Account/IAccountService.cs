@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace artur_gde_krosi_Vue.Server.Services
+namespace artur_gde_krosi_Vue.Server.Services.Account
 {
     public interface IAccountService
     {

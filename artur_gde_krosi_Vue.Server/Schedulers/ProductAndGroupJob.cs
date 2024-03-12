@@ -66,7 +66,7 @@ namespace artur_gde_krosi_Vue.Server.Schedulers
 
             using (var scope = _provider.CreateScope())
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationIdentityContext>();
 
                 var serviceProviderWithLogger = new ServiceCollection()
                     .AddLogging(builder => builder.AddConsole())
@@ -117,12 +117,12 @@ namespace artur_gde_krosi_Vue.Server.Schedulers
                 {
                     if (item.productFolder != null && modelKrosovoks.Find(x => x.ModelKrosovockId == item.productFolder.id) != null)
                     {
-                        products.Add(new Product()
+                        products.Add(new Product() 
                         {
                             ProductId = item.id,
                             name = item.name,
-                            prise = 12,
-                            ModelKrosovockId = item.productFolder.id
+                            ModelKrosovockId = item.productFolder.id,
+                            description = item.description
                         });
                         int index = 0;
                         foreach (var itemImg in item.images.rows)

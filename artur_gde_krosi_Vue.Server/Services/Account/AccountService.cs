@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using artur_gde_krosi_Vue.Server.Models.BdModel;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -8,9 +9,10 @@ using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
+using Yandex.Cloud.Serverless.Triggers.V1;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
-namespace artur_gde_krosi_Vue.Server.Services
+namespace artur_gde_krosi_Vue.Server.Services.Account
 {
     public class AccountService : IAccountService
     {
@@ -18,6 +20,7 @@ namespace artur_gde_krosi_Vue.Server.Services
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IConfiguration _configuration;
         private readonly IEmailService _emailService;
+
 
         public AccountService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration configuration, IEmailService emailService)
         {
@@ -40,11 +43,11 @@ namespace artur_gde_krosi_Vue.Server.Services
             {
                 await _userManager.AddToRoleAsync(user, "User");
 
-            }
+            } 
             return result;
         }
 
-        
+
 
         public async Task<bool> CodeOnEmailAsync(string email)
         {
@@ -58,7 +61,7 @@ namespace artur_gde_krosi_Vue.Server.Services
                 return rez;
             }
             catch (Exception ex)
-            { 
+            {
                 Console.WriteLine(ex.ToString());
                 return false;
             }
@@ -67,7 +70,7 @@ namespace artur_gde_krosi_Vue.Server.Services
         public async Task<bool> CheckingEmailTokenAsync(string email, string tokinToEmail)
         {
             var user = await _userManager.FindByEmailAsync(email);
-            var result = await _userManager.ConfirmEmailAsync(user,  tokinToEmail);
+            var result = await _userManager.ConfirmEmailAsync(user, tokinToEmail);
             return result.Succeeded;
         }
 
@@ -85,12 +88,11 @@ namespace artur_gde_krosi_Vue.Server.Services
 
         public async Task<string> GenerateToken(IdentityUser user)
         {
-
-            IEnumerable<System.Security.Claims.Claim> claims = new List<Claim>
+            IEnumerable<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.UserName),   
-                
+                new Claim(ClaimTypes.Name, user.UserName),
+
                 new Claim(ClaimTypes.Role,"User")
             };
             SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JWT:key").Value));

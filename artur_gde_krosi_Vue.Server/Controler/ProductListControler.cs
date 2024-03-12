@@ -18,13 +18,13 @@ using static Yandex.Cloud.Mdb.Clickhouse.V1.Config.ClickhouseConfig.Types.Extern
 namespace artur_gde_krosi_Vue.Server.Controler
 {
     [ApiController]
-    [Route("/Produts")]
+    [Route("/ProdutList")]
     public class ProductListControler : ControllerBase
     {
         private readonly ILogger<ProductListControler> _logger;
-        ApplicationContext db;
+        ApplicationIdentityContext db;
 
-        public ProductListControler(ILogger<ProductListControler> logger, ApplicationContext context)
+        public ProductListControler(ILogger<ProductListControler> logger, ApplicationIdentityContext context)
         {
             _logger = logger;
             db = context;
@@ -39,7 +39,6 @@ namespace artur_gde_krosi_Vue.Server.Controler
                  {
                      ProductId = x.ProductId,
                      name = x.name,
-                     prise = x.prise,
                      Variants = x.Variants.Select(y => new
                      {
                          shoeSize = y.shoeSize,
@@ -112,7 +111,6 @@ namespace artur_gde_krosi_Vue.Server.Controler
                 {
                     ProductId = x.ProductId,
                     name = x.name,
-                    prise = x.prise,
                     Variants = x.Variants.Select(y => new
                     {
                         shoeSize = y.shoeSize,

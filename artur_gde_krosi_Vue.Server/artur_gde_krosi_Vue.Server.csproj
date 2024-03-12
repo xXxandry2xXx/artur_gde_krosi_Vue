@@ -42,7 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\ApplicationIdentity\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

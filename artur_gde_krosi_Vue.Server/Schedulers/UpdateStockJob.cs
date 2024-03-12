@@ -39,7 +39,7 @@ namespace artur_gde_krosi_Vue.Server.Schedulers
 
             using (var scope = _provider.CreateScope())
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationIdentityContext>();
 
                 var serviceProviderWithLogger = new ServiceCollection()
                     .AddLogging(builder => builder.AddConsole())
@@ -66,7 +66,7 @@ namespace artur_gde_krosi_Vue.Server.Schedulers
                         {
                             Console.WriteLine(ex+"");
                         }
-                    }
+                    } 
                 }
                 Console.WriteLine("после");
 
