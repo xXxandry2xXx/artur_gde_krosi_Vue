@@ -13,7 +13,7 @@ const state: ProductsCatalogState = {
         brandIDs: [],
         modelIDs: [],
         checkedSizes: [],
-        inStock: true,
+        inStock: false,
         searchValue: '',
         sortOrder: '0',
     },

@@ -8,7 +8,7 @@
                 <span>Все кроссовки</span>
             </router-link>
             /
-            <span class="bread-crumb bread-crumb-current">Кроссовок</span>
+            <span class="bread-crumb bread-crumb-current">{{ productData.name }}</span>
         </div>
     </div>
     <div class="product-page-content">
@@ -18,29 +18,35 @@
 
 <script lang="ts">
     import { defineComponent } from 'vue';
-    import { mapGetters, mapActions } from 'vuex';
+    import { mapMutations } from 'vuex';
+    import axios from 'axios';
     import type { ProductInterface } from '@/store/modules/productsCatalog/types';
 
     export default defineComponent({
         data() {
             return {
                 productId: this.$route.params.productId,
+                productData: {}
             }
         },
 
         methods: {
-            ...mapGetters(['getProductsData']),
-            ...mapActions(['fetchProducts']),
-        },
+            ...mapMutations(['setPreloaderVisibility']),
 
-        computed: {
-            currentProduct(this: any) {
-                
+            async fetchProduct(this: any) {
+                try {
+                    const response = await axios.get('http://localhost:5263/Produt', { params: { 'ProductId': this.productId }, headers: { 'accept': '*/*' } });
+                    this.productData = response.data[0]
+                } catch (error) {
+                    console.log(error)
+                }
             }
         },
 
-        async mounted() {
-            
+        async beforeMount() {
+            this.setPreloaderVisibility(true);
+            await this.fetchProduct().then(this.setPreloaderVisibility(false));
+            //console.log(this.productData);
         }
     })
 </script>

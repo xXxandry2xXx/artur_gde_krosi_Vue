@@ -18,7 +18,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
             brandIDs: [],
             modelIDs: [],
             checkedSizes: [],
-            inStock: true,
+            inStock: false,
             searchValue: '',
             sortOrder: '0',
         }
@@ -47,7 +47,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
 
     async getFilteredData(state, filledFormData) {
         try {
-            const response = await axios.post('http://localhost:5263/Produts', filledFormData, { headers: { 'Content-Type': 'multipart/form-data', 'accept': '*/*' }});
+            const response = await axios.post('http://localhost:5263/ProdutList', filledFormData, { headers: { 'Content-Type': 'multipart/form-data', 'accept': '*/*' }});
             return response.data;
         } catch (error) {
             console.log(error);
@@ -57,7 +57,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
 
     async fetchProducts() {
         try {
-            const response = await axios.get('http://localhost:5263/Produts/');
+            const response = await axios.get('http://localhost:5263/ProdutList/');
             this.commit('setProducts', response.data);
         } catch (error) {
             console.log(error);
