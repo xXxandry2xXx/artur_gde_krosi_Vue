@@ -1,5 +1,6 @@
 ﻿using artur_gde_krosi_Vue.Server.Services.Account;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Common;
 
 namespace artur_gde_krosi_Vue.Server.Controler.identity
 {
@@ -30,9 +31,9 @@ namespace artur_gde_krosi_Vue.Server.Controler.identity
             return Ok(await _accountSetingsService.PasswordResetTokenOnEmailAsync(email));
         }
         [HttpGet("/passwordReset")]
-        public async Task<IActionResult> passwordReset(string email)
+        public async Task<IActionResult> passwordReset(string email,string token,string newPassword)
         {
-            return Ok(await _accountSetingsService.PasswordResetTokenOnEmailAsync(email));
+            return Ok(await _accountSetingsService.PasswordResetCheckingEmailTokenAsync(email, token, newPassword));
         }
     }
 }
