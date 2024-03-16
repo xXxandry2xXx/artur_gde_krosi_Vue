@@ -20,18 +20,29 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IConfiguration _configuration;
         private readonly IEmailService _emailService;
+        private readonly IAccountValidationChangeService _accountValidationChangeService;
 
-
-        public AccountService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration configuration, IEmailService emailService)
+        public AccountService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration configuration, IEmailService emailService, IAccountValidationChangeService accountValidationChangeService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
             _emailService = emailService;
+            _accountValidationChangeService = accountValidationChangeService;
         }
 
-        public async Task<IdentityResult> RegisterAsync(string username, string email, string password)
+        public async Task<bool> RegisterAsync(string username, string email, string password)
         {
+            (bool Succeeded, string) checkUsername = await _accountValidationChangeService.PreliminaryCheckUsername(username);
+            if (!checkUsername.Succeeded)
+            {
+                return false;
+            }
+            (bool Succeeded, string) checkEmail = await _accountValidationChangeService.PreliminaryCheckEmeil(email);
+            if (!checkEmail.Succeeded)
+            {
+                return false;
+            }
             var user = new IdentityUser
             {
                 UserName = username,
@@ -42,9 +53,9 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, "User");
-
+                return true;
             } 
-            return result;
+            return result.Succeeded;
         }
 
 
