@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using NuGet.Versioning;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Net.Mail;
@@ -19,30 +20,22 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IConfiguration _configuration;
-        private readonly IEmailService _emailService;
         private readonly IAccountValidationService _accountValidationChangeService;
 
-        public AccountService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration configuration, IEmailService emailService, IAccountValidationService accountValidationChangeService)
+        public AccountService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration configuration, IAccountValidationService accountValidationChangeService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
-            _emailService = emailService;
             _accountValidationChangeService = accountValidationChangeService;
         }
 
         public async Task<bool> RegisterAsync(string username, string email, string password)
         {
             (bool Succeeded, string) checkUsername = await _accountValidationChangeService.PreliminaryCheckUsername(username);
-            if (!checkUsername.Succeeded)
-            {
-                return false;
-            }
+            if (!checkUsername.Succeeded) return false;
             (bool Succeeded, string) checkEmail = await _accountValidationChangeService.PreliminaryCheckEmeil(email);
-            if (!checkEmail.Succeeded)
-            {
-                return false;
-            }
+            if (!checkEmail.Succeeded) return false;
             var user = new IdentityUser
             {
                 UserName = username,
@@ -54,10 +47,10 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
             {
                 await _userManager.AddToRoleAsync(user, "User");
                 return true;
-            } 
+            }
             return result.Succeeded;
         }
-
+        
         public async Task<(IdentityUser user, SignInResult result, IList<string> role)> LoginAsync(string usernameOrEmail, string password)
         {
             var user = await _userManager.FindByNameAsync(usernameOrEmail) ?? await _userManager.FindByEmailAsync(usernameOrEmail);
@@ -69,16 +62,38 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
             }
             return (null, SignInResult.Failed, null);
         }
-
-        public async Task<string> GenerateToken(IdentityUser user)
+        public async Task<IdentityResult> AddRoleAsync(string username,  string role)
         {
-            IEnumerable<Claim> claims = new List<Claim>
+            var user = await _userManager.FindByNameAsync(username);
+            if (user != null){
+                IdentityResult rez = await _userManager.AddToRoleAsync(user, role);
+                return rez;
+            }
+            return IdentityResult.Failed(new IdentityError { Description = "Пользователь не найден." });
+        }
+        public async Task<IdentityResult> DeleteRoleAsync(string username,  string role)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user != null){
+                IdentityResult rez = await _userManager.AddToRoleAsync(user, role);
+                return rez;
+            }
+            return IdentityResult.Failed(new IdentityError { Description = "Пользователь не найден." });
+        }
+
+        public async Task<string> GenerateTokenAsync(IdentityUser user)
+        {
+            IList<string> roles = await _userManager.GetRolesAsync(user);
+
+            List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.UserName),
-
-                new Claim(ClaimTypes.Role,"User")
+                new Claim(ClaimTypes.Name, user.UserName)
             };
+            foreach (var item in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, item));
+            }
             SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JWT:key").Value));
             SigningCredentials sigincredetiols = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 

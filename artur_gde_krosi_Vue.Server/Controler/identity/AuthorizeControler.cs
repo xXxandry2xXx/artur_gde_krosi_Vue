@@ -5,15 +5,26 @@ using Microsoft.AspNetCore.Mvc;
 namespace artur_gde_krosi_Vue.Server.Controler.identity
 {
     [ApiController]
-    public class UserControler : ControllerBase
+    public class AuthorizeControler : ControllerBase
     {
         private readonly IAccountService _accountService;
         private readonly IAccountValidationService _accountValidationChangeService;
 
-        public UserControler(IAccountService accountService, IAccountValidationService accountValidationChangeService)
+        public AuthorizeControler(IAccountService accountService, IAccountValidationService accountValidationChangeService)
         {
             _accountService = accountService;
             _accountValidationChangeService = accountValidationChangeService;
+        }
+
+        [HttpGet("/addRole")]
+        public async Task<IActionResult> addRole(string username,string role)
+        {
+            return Ok(await _accountService.AddRoleAsync(username, role));
+        }
+        [HttpGet("/deleteRole")]
+        public async Task<IActionResult> deleteRole(string username, string role)
+        {
+            return Ok(await _accountService.DeleteRoleAsync(username, role));
         }
 
         [HttpPost("/register")]
@@ -31,12 +42,12 @@ namespace artur_gde_krosi_Vue.Server.Controler.identity
         }
 
         [HttpPost("/login")]
-        public async Task<IActionResult> login(string usernameOrEmail, string password)
+        public async Task<IActionResult> login(string usernameOrEmail, string password)   
         {
             var result = await _accountService.LoginAsync(usernameOrEmail, password);
             if (result.result.Succeeded)
             {
-                var Token = _accountService.GenerateToken(result.user);
+                var Token = _accountService.GenerateTokenAsync(result.user); 
                 return Ok(new { Token, result.user });
             }
             else

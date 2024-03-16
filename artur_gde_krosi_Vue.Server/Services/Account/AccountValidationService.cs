@@ -40,7 +40,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
                 if (addr.Address == trimmedEmail)
                 {
                     var user = await _userManager.FindByEmailAsync(email);
-                    if (user != null)
+                    if (user == null)
                     {
                         return (true, "");
                     }
