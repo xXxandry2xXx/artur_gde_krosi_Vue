@@ -20,9 +20,9 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IConfiguration _configuration;
         private readonly IEmailService _emailService;
-        private readonly IAccountValidationChangeService _accountValidationChangeService;
+        private readonly IAccountValidationService _accountValidationChangeService;
 
-        public AccountService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration configuration, IEmailService emailService, IAccountValidationChangeService accountValidationChangeService)
+        public AccountService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration configuration, IEmailService emailService, IAccountValidationService accountValidationChangeService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -55,33 +55,6 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
                 await _userManager.AddToRoleAsync(user, "User");
                 return true;
             } 
-            return result.Succeeded;
-        }
-
-
-
-        public async Task<bool> CodeOnEmailAsync(string email)
-        {
-            try
-            {
-                var user = await _userManager.FindByEmailAsync(email);
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var rez = await _emailService.SendEmailAsync(email,
-                    "твой токен",
-                    "\r\nHello [name/email address]\r\n\r\nAre you ready to gain access to all of the assets we prepared for clients of [company]?\r\n\r\nFirst, you must complete your registration by clicking on the button below:\r\n\r\n[button]\r\n\r\nThis link will verify your email address, and then you’ll officially be a part of the [customer portal] community.\r\n\r\nSee you there!\r\n\r\nBest regards, the [company] team" + token);
-                return rez;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return false;
-            }
-        }
-
-        public async Task<bool> CheckingEmailTokenAsync(string email, string tokinToEmail)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-            var result = await _userManager.ConfirmEmailAsync(user, tokinToEmail);
             return result.Succeeded;
         }
 

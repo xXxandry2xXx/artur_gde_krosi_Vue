@@ -8,12 +8,12 @@ using System.Text.RegularExpressions;
 
 namespace artur_gde_krosi_Vue.Server.Services.Account
 {
-    public class AccountValidationChangeService : IAccountValidationChangeService
+    public class AccountValidationService : IAccountValidationService
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly PasswordValidator<IdentityUser> _passwordValidator;
 
-        public AccountValidationChangeService(UserManager<IdentityUser> userManager)
+        public AccountValidationService(UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
             _passwordValidator = new PasswordValidator<IdentityUser>();

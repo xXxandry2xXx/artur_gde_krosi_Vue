@@ -61,7 +61,8 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddTransient<IAccountService, AccountService>();
-builder.Services.AddTransient<IAccountValidationChangeService, AccountValidationChangeService>();
+builder.Services.AddTransient<IAccountValidationService, AccountValidationService>();
+builder.Services.AddTransient<IAccountSetingsService, AccountSetingsService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 
 IServiceCollection services = builder.Services;
@@ -84,7 +85,7 @@ services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 services.AddSingleton<ProductAndGroupJob>();
 services.AddSingleton(new JobSchedule(
     jobType: typeof(ProductAndGroupJob),
-    cronExpression: "0 " + ((int)DateTime.Now.Minute + 1) + " *  ? * *"));
+    cronExpression: "0 20 0  ? * *"));
 //" + ((int)DateTime.Now.Minute + 1) + " *
 //   20 0
 

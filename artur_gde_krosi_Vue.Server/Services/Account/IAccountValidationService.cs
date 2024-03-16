@@ -2,7 +2,7 @@
 
 namespace artur_gde_krosi_Vue.Server.Services.Account
 {
-    public interface IAccountValidationChangeService
+    public interface IAccountValidationService
     {
         Task<(bool, string)> PreliminaryCheckEmeil(string email);
         Task<(bool, string)> PreliminaryCheckUsername(string username);

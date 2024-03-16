@@ -8,9 +8,9 @@ namespace artur_gde_krosi_Vue.Server.Controler.identity
     public class UserControler : ControllerBase
     {
         private readonly IAccountService _accountService;
-        private readonly IAccountValidationChangeService _accountValidationChangeService;
+        private readonly IAccountValidationService _accountValidationChangeService;
 
-        public UserControler(IAccountService accountService, IAccountValidationChangeService accountValidationChangeService)
+        public UserControler(IAccountService accountService, IAccountValidationService accountValidationChangeService)
         {
             _accountService = accountService;
             _accountValidationChangeService = accountValidationChangeService;

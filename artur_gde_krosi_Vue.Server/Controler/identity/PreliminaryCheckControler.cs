@@ -11,9 +11,9 @@ namespace artur_gde_krosi_Vue.Server.Controler.identity
     public class PreliminaryCheckControler : ControllerBase
     {
         private readonly IAccountService _accountService;
-        private readonly IAccountValidationChangeService _accountValidationChangeService;
+        private readonly IAccountValidationService _accountValidationChangeService;
 
-        public PreliminaryCheckControler(IAccountService accountService, IAccountValidationChangeService accountValidationChangeService)
+        public PreliminaryCheckControler(IAccountService accountService, IAccountValidationService accountValidationChangeService)
         {
             _accountService = accountService;
             _accountValidationChangeService = accountValidationChangeService;

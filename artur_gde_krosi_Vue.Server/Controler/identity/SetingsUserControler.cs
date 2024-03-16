@@ -6,23 +6,33 @@ namespace artur_gde_krosi_Vue.Server.Controler.identity
     public class SetingsUserControler : ControllerBase
     {
         private readonly IAccountService _accountService;
-        private readonly IAccountValidationChangeService _accountValidationChangeService;
+        private readonly IAccountSetingsService _accountSetingsService;
 
-        public SetingsUserControler(IAccountService accountService, IAccountValidationChangeService accountValidationChangeService)
+        public SetingsUserControler(IAccountService accountService, IAccountSetingsService accountSetingsService)
         {
             _accountService = accountService;
-            _accountValidationChangeService = accountValidationChangeService;
+            _accountSetingsService = accountSetingsService;
         }
 
-        [HttpGet("/giveTokenEmeil")]
-        public async Task<IActionResult> giveTokenEmeil(string email)
+        [HttpGet("/generateTokenOnChangeEmeil")]
+        public async Task<IActionResult> generateTokenOnChangeEmeil(string email)
         {
-            return Ok(await _accountService.CodeOnEmailAsync(email));
+            return Ok(await _accountSetingsService.RegEmailTokenOnEmailAsync(email));
         }
         [HttpGet("/regEmeil")]
         public async Task<IActionResult> regEmeil(string email, string token)
         {
-            return Ok(await _accountService.CheckingEmailTokenAsync(email, token));
+            return Ok(await _accountSetingsService.RegEmailCheckingEmailTokenAsync(email, token));
+        }
+        [HttpGet("/generateTokenOnPasswordReset")]
+        public async Task<IActionResult> generateTokenOnPasswordReset(string email)
+        {
+            return Ok(await _accountSetingsService.PasswordResetTokenOnEmailAsync(email));
+        }
+        [HttpGet("/passwordReset")]
+        public async Task<IActionResult> passwordReset(string email)
+        {
+            return Ok(await _accountSetingsService.PasswordResetTokenOnEmailAsync(email));
         }
     }
 }
