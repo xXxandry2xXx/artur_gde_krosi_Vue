@@ -15,10 +15,10 @@ namespace artur_gde_krosi_Vue.Server.Controler
     public class ShoppingСartController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly ILogger<ProductListControler> _logger;
+        private readonly ILogger<ShoppingСartController> _logger;
         private readonly ApplicationIdentityContext db;
 
-        public ShoppingСartController(ILogger<ProductListControler> logger, ApplicationIdentityContext context, UserManager<IdentityUser> userManager)
+        public ShoppingСartController(ILogger<ShoppingСartController> logger, ApplicationIdentityContext context, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
             db = context;

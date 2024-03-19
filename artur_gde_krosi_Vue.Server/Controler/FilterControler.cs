@@ -9,10 +9,10 @@ namespace artur_gde_krosi_Vue.Server.Controler
     [ApiController]
     public class FilterControler : ControllerBase
     {
-        private readonly ILogger<ProductListControler> _logger;
+        private readonly ILogger<FilterControler> _logger;
         ApplicationIdentityContext db;
 
-        public FilterControler(ILogger<ProductListControler> logger, ApplicationIdentityContext context)
+        public FilterControler(ILogger<FilterControler> logger, ApplicationIdentityContext context)
         {
             _logger = logger;
             db = context;
