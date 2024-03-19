@@ -6,30 +6,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace artur_gde_krosi_Vue.Server.Controler
 {
+    [Route("api/[controller]/")]
     [ApiController]
-    public class FilterControler : ControllerBase
+    public class FilterController : ControllerBase
     {
-        private readonly ILogger<FilterControler> _logger;
+        private readonly ILogger<FilterController> _logger;
         ApplicationIdentityContext db;
 
-        public FilterControler(ILogger<FilterControler> logger, ApplicationIdentityContext context)
+        public FilterController(ILogger<FilterController> logger, ApplicationIdentityContext context)
         {
             _logger = logger;
             db = context;
         }
 
         [HttpGet]
-        [Route("/Brends")]
+        [Route("Brends")]
         public async Task<IActionResult> GetBrends()
         {
-
-            var Brends = db.Brends.ToList();
-
-            return Ok(Brends);
+            return Ok(db.Brends);
         }
 
         [HttpPost]
-        [Route("/ModelKrosovocks")]
+        [Route("ModelKrosovocks")]
         public async Task<IActionResult> GetModelKrosovocks([FromForm] List<string> brendsIds = null)
         {
             var modelKrosovocks = db.Brends.Where(x => (brendsIds == null || brendsIds.Count == 0) || brendsIds.Any(y => y == x.BrendId))
@@ -46,7 +44,7 @@ namespace artur_gde_krosi_Vue.Server.Controler
             return Ok(modelKrosovocks);
         }
         [HttpGet]
-        [Route("/ShoeSizes")]
+        [Route("ShoeSizes")]
         public async Task<IActionResult> GetShoeSizes()
         {
             List<double> shoeSizes = db.Variants.Select(x => x.shoeSize).Distinct().ToList();

@@ -1,24 +1,27 @@
 ﻿using artur_gde_krosi_Vue.Server.Models.BdModel;
 using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace artur_gde_krosi_Vue.Server.Controler.CharacteristicProductFlouder
 {
+    //[Authorize(Roles = "Manager")]
+    [Route("api/CharacteristicProductFlouder/[controller]/")]
     [ApiController]
-    public class CharacteristicProductsControler : ControllerBase
+    public class CharacteristicProductsController : ControllerBase
     {
-        private readonly ILogger<CharacteristicProductsControler> _logger;
+        private readonly ILogger<CharacteristicProductsController> _logger;
         ApplicationIdentityContext db;
 
-        public CharacteristicProductsControler(ILogger<CharacteristicProductsControler> logger, ApplicationIdentityContext context)
+        public CharacteristicProductsController(ILogger<CharacteristicProductsController> logger, ApplicationIdentityContext context)
         {
             _logger = logger;
             db = context; 
         }
         [HttpGet]
-        [Route("/AddCharacteristicProducts")]
-        public async Task<IActionResult> AddCharacteristicProducts(string name, string ProductId)
+        [Route("AddCharacteristicProducts")]
+        public async Task<IActionResult> AddCharacteristicProducts( string ProductId, string name)
         {
             try
             {
@@ -37,16 +40,14 @@ namespace artur_gde_krosi_Vue.Server.Controler.CharacteristicProductFlouder
             }
         }
         [HttpGet]
-        [Route("/EditCharacteristicProducts")]
-        public async Task<IActionResult> EditCharacteristicProducts(string name, string ProductId)
+        [Route("EditCharacteristicProducts")]
+        public async Task<IActionResult> EditCharacteristicProducts(string CharacteristicProductId, string name)
         {
             try
             {
-                db.CharacteristicProducts.Add(new CharacteristicProduct
-                {
-                    name = name,
-                    ProductId = ProductId
-                }); 
+                CharacteristicProduct? characteristic =  db.CharacteristicProducts.Where(x => x.CharacteristicProductId == CharacteristicProductId)
+                    .FirstOrDefault();
+                characteristic.name = name;
                 await db.SaveChangesAsync();
                 return Ok();
             }
@@ -58,7 +59,7 @@ namespace artur_gde_krosi_Vue.Server.Controler.CharacteristicProductFlouder
         }
 
         [HttpGet]
-        [Route("/DeleteCharacteristicProducts")]
+        [Route("DeleteCharacteristicProducts")]
         public async Task<IActionResult> DeleteCharacteristicProducts(string CharacteristicProductId)
         {
             try

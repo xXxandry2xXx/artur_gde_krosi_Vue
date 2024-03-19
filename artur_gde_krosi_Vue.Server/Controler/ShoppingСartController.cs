@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 namespace artur_gde_krosi_Vue.Server.Controler
 {
     [Authorize(Roles = "User")]
+    [Route("api/[controller]/")]
     [ApiController]
     public class ShoppingСartController : ControllerBase
     {
@@ -25,7 +26,7 @@ namespace artur_gde_krosi_Vue.Server.Controler
             _userManager = userManager;
         }
 
-        [Route("/[controller]")]
+        [Route("Get")]
         [HttpGet]
         public async Task<IActionResult> GetShoppingСarts()
         {
@@ -37,7 +38,7 @@ namespace artur_gde_krosi_Vue.Server.Controler
         }
 
 
-        [Route("/[controller]/Add")]
+        [Route("Add")]
         [HttpPost]
         public async Task<IActionResult> AddShoppingСarts([FromForm] string VariantId)
         {
@@ -60,7 +61,7 @@ namespace artur_gde_krosi_Vue.Server.Controler
             }
         }
 
-        [Route("/[controller]/AddList")]
+        [Route("AddList")]
         [HttpPost]
         public async Task<IActionResult> AddListShoppingСarts([FromForm] List<string> VariantId)
         {
@@ -88,7 +89,7 @@ namespace artur_gde_krosi_Vue.Server.Controler
             }
         }
 
-        [Route("/[controller]/Delete")]
+        [Route("Delete")]
         [HttpPost]
         public async Task<IActionResult> DeleteShoppingСarts([FromForm] string ShoppingСartId)
         {

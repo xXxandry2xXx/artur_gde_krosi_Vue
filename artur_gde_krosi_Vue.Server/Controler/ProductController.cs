@@ -7,21 +7,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace artur_gde_krosi_Vue.Server.Controler
 {
-    [Authorize(Roles = "Manager")]
+    //[Authorize(Roles = "User")]
+    [Route("api/[controller]/")]
     [ApiController]
-    public class ProductControler : ControllerBase
+    public class ProductController : ControllerBase
     {
-        private readonly ILogger<ProductControler> _logger;
+        private readonly ILogger<ProductController> _logger;
         ApplicationIdentityContext db;
 
-        public ProductControler(ILogger<ProductControler> logger, ApplicationIdentityContext context)
+        public ProductController(ILogger<ProductController> logger, ApplicationIdentityContext context)
         {
             _logger = logger;
             db = context;
         }
 
         [HttpGet]
-        [Route("/Produt")]
+        [Route("GetProduct")]
         public async Task<IActionResult> GetProdut(string ProductId)
         {
             var product = db.Products.Where(X => X.ProductId == ProductId)
@@ -32,9 +33,9 @@ namespace artur_gde_krosi_Vue.Server.Controler
 
             return Ok(product);
         }
-        [Route("/ProdutList")]
+        [Route("GetProductList")]
         [HttpPost]
-        public async Task<IActionResult> GetProduts([FromForm] int priseDown = 0, [FromForm] int priseUp = 0, [FromForm] List<string> brendsIds = null, [FromForm] List<string> modelKrosovocksIds = null,
+        public async Task<IActionResult> GetProdutsList([FromForm] int priseDown = 0, [FromForm] int priseUp = 0, [FromForm] List<string> brendsIds = null, [FromForm] List<string> modelKrosovocksIds = null,
             [FromForm] List<double> shoeSizesChecked = null, [FromForm] bool availability = false,
             [FromForm] string PlaceholderContent = null, [FromForm] SortState sortOrder = SortState.NameAsc, [FromForm] int pageProducts = 1)
         {

@@ -4,30 +4,31 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace artur_gde_krosi_Vue.Server.Controler.identity
 {
+    [Route("api/identity/[controller]/")]
     [ApiController]
-    public class AuthorizeControler : ControllerBase
+    public class AuthorizeController : ControllerBase
     {
         private readonly IAccountService _accountService;
         private readonly IAccountValidationService _accountValidationChangeService;
 
-        public AuthorizeControler(IAccountService accountService, IAccountValidationService accountValidationChangeService)
+        public AuthorizeController(IAccountService accountService, IAccountValidationService accountValidationChangeService)
         {
             _accountService = accountService;
             _accountValidationChangeService = accountValidationChangeService;
         }
 
-        [HttpGet("/addRole")]
+        [HttpGet("AddRole")]
         public async Task<IActionResult> addRole(string username,string role)
         {
             return Ok(await _accountService.AddRoleAsync(username, role));
         }
-        [HttpGet("/deleteRole")]
+        [HttpGet("DeleteRole")]
         public async Task<IActionResult> deleteRole(string username, string role)
         {
             return Ok(await _accountService.DeleteRoleAsync(username, role));
         }
 
-        [HttpPost("/register")]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register([FromForm] RegisterModel model)
         {
             var result = await _accountService.RegisterAsync(model.Username, model.Email, model.Password);
@@ -41,7 +42,7 @@ namespace artur_gde_krosi_Vue.Server.Controler.identity
             }
         }
 
-        [HttpPost("/login")]
+        [HttpPost("Login")]
         public async Task<IActionResult> login(string usernameOrEmail, string password)   
         {
             var result = await _accountService.LoginAsync(usernameOrEmail, password);

@@ -8,17 +8,19 @@ using Yandex.Cloud.Reference;
 
 namespace artur_gde_krosi_Vue.Server.Controler.identity
 {
-    public class PreliminaryCheckControler : ControllerBase
+    [Route("api/identity/[controller]/")]
+    [ApiController]
+    public class PreliminaryCheckController : ControllerBase
     {
         private readonly IAccountService _accountService;
         private readonly IAccountValidationService _accountValidationChangeService;
 
-        public PreliminaryCheckControler(IAccountService accountService, IAccountValidationService accountValidationChangeService)
+        public PreliminaryCheckController(IAccountService accountService, IAccountValidationService accountValidationChangeService)
         {
             _accountService = accountService;
             _accountValidationChangeService = accountValidationChangeService;
         }
-        [HttpGet("/PreliminaryCheckEmeil")]
+        [HttpGet("PreliminaryCheckEmeil")]
         public async Task<IActionResult> PreliminaryCheckEmeil(string email)
         {
             (bool Succeeded, string error) rez = await _accountValidationChangeService.PreliminaryCheckEmeil(email);
@@ -26,7 +28,7 @@ namespace artur_gde_krosi_Vue.Server.Controler.identity
             else return BadRequest(rez.error);
 
         }
-        [HttpGet("/PreliminaryCheckUsernamr")]
+        [HttpGet("PreliminaryCheckUsernamr")]
         public async Task<IActionResult> PreliminaryCheckUsernamr(string username)
         {
             (bool Succeeded, string error) rez = await _accountValidationChangeService.PreliminaryCheckUsername(username);
@@ -37,7 +39,7 @@ namespace artur_gde_krosi_Vue.Server.Controler.identity
             else return Ok();
 
         }
-        [HttpGet("/PreliminaryCheckPassword")]
+        [HttpGet("PreliminaryCheckPassword")]
         public async Task<IActionResult> PreliminaryCheckPassword(string password)
         {
             return Ok(await _accountValidationChangeService.PreliminaryCheckPassword(password));
