@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace artur_gde_krosi_Vue.Server.Controler
+namespace artur_gde_krosi_Vue.Server.Controller
 {
     //[Authorize(Roles = "User")]
     [Route("api/[controller]/")]

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Common;
 
-namespace artur_gde_krosi_Vue.Server.Controler.identity
+namespace artur_gde_krosi_Vue.Server.Controller.identity
 {
     [Route("api/identity/[controller]/")]
     [ApiController]

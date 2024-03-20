@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace artur_gde_krosi_Vue.Server.Controler.CharacteristicProductFlouder
+namespace artur_gde_krosi_Vue.Server.Controller.CharacteristicProductFolder
 {
     //[Authorize(Roles = "Manager")]
-    [Route("api/CharacteristicProductFlouder/[controller]/")]
+    [Route("api/CharacteristicProductFolder/[controller]")]
     [ApiController]
     public class CharacteristicProductsController : ControllerBase
     {
@@ -19,8 +19,7 @@ namespace artur_gde_krosi_Vue.Server.Controler.CharacteristicProductFlouder
             _logger = logger;
             db = context; 
         }
-        [HttpGet]
-        [Route("AddCharacteristicProducts")]
+        [HttpPost]
         public async Task<IActionResult> AddCharacteristicProducts( string ProductId, string name)
         {
             try
@@ -39,8 +38,7 @@ namespace artur_gde_krosi_Vue.Server.Controler.CharacteristicProductFlouder
                 return BadRequest();
             }
         }
-        [HttpGet]
-        [Route("EditCharacteristicProducts")]
+        [HttpPut]
         public async Task<IActionResult> EditCharacteristicProducts(string CharacteristicProductId, string name)
         {
             try
@@ -58,8 +56,7 @@ namespace artur_gde_krosi_Vue.Server.Controler.CharacteristicProductFlouder
             }
         }
 
-        [HttpGet]
-        [Route("DeleteCharacteristicProducts")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteCharacteristicProducts(string CharacteristicProductId)
         {
             try

@@ -8,10 +8,10 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace artur_gde_krosi_Vue.Server.Controler
+namespace artur_gde_krosi_Vue.Server.Controller
 {
     [Authorize(Roles = "User")]
-    [Route("api/[controller]/")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ShoppingСartController : ControllerBase
     {
@@ -26,19 +26,21 @@ namespace artur_gde_krosi_Vue.Server.Controler
             _userManager = userManager;
         }
 
-        [Route("Get")]
         [HttpGet]
         public async Task<IActionResult> GetShoppingСarts()
         {
             string username = HttpContext.User.Identity.Name;
             var user = await _userManager.FindByNameAsync(username);
-            List<ShoppingСart> shoppingСarts = db.ShoppingСarts.ToList();
-
+            var shoppingСarts = db.ShoppingСarts.Include(x => x.Variant).Select(x => new
+            {
+                ShoppingСartId = x.ShoppingСartId,
+                quantity = x.quantity,
+                availability = x.Variant.quantityInStock > x.quantity
+            });
             return Ok(shoppingСarts);
         }
 
 
-        [Route("Add")]
         [HttpPost]
         public async Task<IActionResult> AddShoppingСarts([FromForm] string VariantId)
         {
@@ -61,7 +63,7 @@ namespace artur_gde_krosi_Vue.Server.Controler
             }
         }
 
-        [Route("AddList")]
+        [Route("api/[controller]/AddList")]
         [HttpPost]
         public async Task<IActionResult> AddListShoppingСarts([FromForm] List<string> VariantId)
         {
@@ -89,12 +91,34 @@ namespace artur_gde_krosi_Vue.Server.Controler
             }
         }
 
-        [Route("Delete")]
-        [HttpPost]
+        [HttpPut]
+        public async Task<IActionResult> EditShoppingСarts([FromForm] string ShoppingСartId, [FromForm] int quantity)
+        {
+            try
+            {
+                if (quantity > 0)
+                {
+                    ShoppingСart? shoppingCart = db.ShoppingСarts.Where(x => x.ShoppingСartId == ShoppingСartId).FirstOrDefault();
+                    if (shoppingCart == null)
+                    {
+                        shoppingCart.quantity = quantity;
+                        db.SaveChanges();
+
+                        return Ok((quantity,true));
+                    }
+                    else return BadRequest("Позиция не найдена.");
+                }
+                return BadRequest("Количество продукции должно быть положительным и не равным нул.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+
+        }
+        [HttpDelete]
         public async Task<IActionResult> DeleteShoppingСarts([FromForm] string ShoppingСartId)
         {
-            string username = HttpContext.User.Identity.Name;
-            var user = await _userManager.FindByNameAsync(username);
             var rez = await db.ShoppingСarts.Where(x => x.ShoppingСartId == ShoppingСartId).ExecuteDeleteAsync();
             db.SaveChanges();
 

@@ -2,7 +2,7 @@
 using artur_gde_krosi_Vue.Server.Services.Account;
 using Microsoft.AspNetCore.Mvc;
 
-namespace artur_gde_krosi_Vue.Server.Controler.identity
+namespace artur_gde_krosi_Vue.Server.Controller.identity
 {
     [Route("api/identity/[controller]/")]
     [ApiController]
@@ -17,12 +17,12 @@ namespace artur_gde_krosi_Vue.Server.Controler.identity
             _accountValidationChangeService = accountValidationChangeService;
         }
 
-        [HttpGet("AddRole")]
+        [HttpPost("Role")]
         public async Task<IActionResult> addRole(string username,string role)
         {
             return Ok(await _accountService.AddRoleAsync(username, role));
         }
-        [HttpGet("DeleteRole")]
+        [HttpDelete("Role")]
         public async Task<IActionResult> deleteRole(string username, string role)
         {
             return Ok(await _accountService.DeleteRoleAsync(username, role));
