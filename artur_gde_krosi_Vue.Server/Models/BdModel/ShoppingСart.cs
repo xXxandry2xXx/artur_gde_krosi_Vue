@@ -9,6 +9,7 @@ namespace artur_gde_krosi_Vue.Server.Models.BdModel
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string ShoppingСartId { get; set; }
+        public int quantity { get; set; }
 
         public string UserId { get; set; }
         public IdentityUser IdentityUser { get; set; }

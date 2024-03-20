@@ -84,8 +84,6 @@ services.AddSingleton<ProductAndGroupJob>();
 services.AddSingleton(new JobSchedule(
     jobType: typeof(ProductAndGroupJob),
     cronExpression: "0 20 0 ? * *"));
-//" + ((int)DateTime.Now.Minute + 1) + " *
-//   20 0
 
 services.AddSingleton<UpdateStockJob>();
 services.AddSingleton(new JobSchedule(

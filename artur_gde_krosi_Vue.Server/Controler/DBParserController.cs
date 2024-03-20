@@ -19,39 +19,17 @@ namespace artur_gde_krosi_Vue.Server.Controler
     {
         private readonly ILogger<FilterController> _logger;
         ApplicationIdentityContext db;
-        private readonly IScheduler _scheduler;
 
-        public DBParserController(ILogger<FilterController> logger, ApplicationIdentityContext context, IScheduler scheduler)
+        public DBParserController(ILogger<FilterController> logger, ApplicationIdentityContext context)
         {
             _logger = logger;
             db = context;
-            _scheduler = scheduler;
         }
 
         [Route("Parse")]
         [HttpGet]
         public async Task<IActionResult> Parser()
         {
-            try
-            {
-                // Находим нужное задание по его ключу
-                var jobKey = new JobKey("artur_gde_krosi_Vue.Server.Schedulers.ProductAndGroupJob", "DEFAULT");
-                var jobDetail = await _scheduler.GetJobDetail(jobKey);
-
-                if (jobDetail == null)
-                {
-                    return NotFound("Задание не найдено");
-                }
-
-                // Запускаем задание
-                await _scheduler.TriggerJob(jobKey);
-
-                return Ok("Задание успешно запущено");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Произошла ошибка: {ex.Message}");
-            }
 
             ProductApi productApi = new ProductApi();
             getApiRequest<ProductApi.Root> requestProduct = new getApiRequest<ProductApi.Root>();
@@ -220,8 +198,10 @@ namespace artur_gde_krosi_Vue.Server.Controler
             }
             catch (Exception ex)
             {
+                return BadRequest();
                 Console.WriteLine(ex.ToString());
             }
+            return Ok();
         }
     }
 }

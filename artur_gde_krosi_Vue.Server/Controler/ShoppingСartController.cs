@@ -32,8 +32,12 @@ namespace artur_gde_krosi_Vue.Server.Controler
         {
             string username = HttpContext.User.Identity.Name;
             var user = await _userManager.FindByNameAsync(username);
-            List<ShoppingСart> shoppingСarts = db.ShoppingСarts.ToList();
-
+            var shoppingСarts = db.ShoppingСarts.Include(x => x.Variant).Select(x => new
+            {
+                ShoppingСartId = x.ShoppingСartId,
+                quantity = x.quantity,
+                availability = x.Variant.quantityInStock > x.quantity
+            });
             return Ok(shoppingСarts);
         }
 
@@ -89,12 +93,36 @@ namespace artur_gde_krosi_Vue.Server.Controler
             }
         }
 
+        [Route("Edit")]
+        [HttpPost]
+        public async Task<IActionResult> EditShoppingСarts([FromForm] string ShoppingСartId, [FromForm] int quantity)
+        {
+            try
+            {
+                if (quantity > 0)
+                {
+                    ShoppingСart? shoppingCart = db.ShoppingСarts.Where(x => x.ShoppingСartId == ShoppingСartId).FirstOrDefault();
+                    if (shoppingCart == null)
+                    {
+                        shoppingCart.quantity = quantity;
+                        db.SaveChanges();
+
+                        return Ok((quantity,true));
+                    }
+                    else return BadRequest("Позиция не найдена.");
+                }
+                return BadRequest("Количество продукции должно быть положительным и не равным нул.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+
+        }
         [Route("Delete")]
         [HttpPost]
         public async Task<IActionResult> DeleteShoppingСarts([FromForm] string ShoppingСartId)
         {
-            string username = HttpContext.User.Identity.Name;
-            var user = await _userManager.FindByNameAsync(username);
             var rez = await db.ShoppingСarts.Where(x => x.ShoppingСartId == ShoppingСartId).ExecuteDeleteAsync();
             db.SaveChanges();
 
