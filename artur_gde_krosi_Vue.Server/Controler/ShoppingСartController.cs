@@ -63,7 +63,7 @@ namespace artur_gde_krosi_Vue.Server.Controller
             }
         }
 
-        [Route("api/[controller]/AddList")]
+        [Route("/api/[controller]/AddList")]
         [HttpPost]
         public async Task<IActionResult> AddListShoppingСarts([FromForm] List<string> VariantId)
         {

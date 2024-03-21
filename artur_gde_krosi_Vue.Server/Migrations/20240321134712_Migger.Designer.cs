@@ -12,7 +12,7 @@ using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
 namespace artur_gde_krosi_Vue.Server.Migrations
 {
     [DbContext(typeof(ApplicationIdentityContext))]
-    [Migration("20240312155430_Migger")]
+    [Migration("20240321134712_Migger")]
     partial class Migger
     {
         /// <inheritdoc />
@@ -402,6 +402,9 @@ namespace artur_gde_krosi_Vue.Server.Migrations
                     b.Property<string>("VariantId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("quantity")
+                        .HasColumnType("int");
 
                     b.HasKey("ShoppingСartId");
 

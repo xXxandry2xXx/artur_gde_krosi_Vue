@@ -400,6 +400,9 @@ namespace artur_gde_krosi_Vue.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("quantity")
+                        .HasColumnType("int");
+
                     b.HasKey("ShoppingСartId");
 
                     b.HasIndex("UserId");

@@ -314,6 +314,7 @@ namespace artur_gde_krosi_Vue.Server.Migrations
                 columns: table => new
                 {
                     ShoppingСartId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    quantity = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     VariantId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
