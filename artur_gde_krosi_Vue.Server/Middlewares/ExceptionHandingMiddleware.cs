@@ -1,0 +1,79 @@
+﻿using artur_gde_krosi_Vue.Server.Dto;
+using Microsoft.AspNetCore.Http;
+using System.Net;
+using System.Text.Json;
+
+
+namespace artur_gde_krosi_Vue.Server.Middlewares
+{
+    public class ExceptionHandingMiddleware
+    {
+        private readonly RequestDelegate _requestDelegate;
+        private readonly ILogger<ExceptionHandingMiddleware> _logger;
+
+        public ExceptionHandingMiddleware(RequestDelegate requestDelegate, ILogger<ExceptionHandingMiddleware> logger)
+        {
+            _requestDelegate = requestDelegate;
+            _logger = logger;
+        }
+        public async Task InvokeAsync(HttpContext httpContext)
+        {
+            try
+            {
+                await _requestDelegate(httpContext);
+            }
+            catch(ArgumentException ex)
+            {
+                await HandleExceptionClientAsync(httpContext,
+                    HttpStatusCode.BadRequest,
+                    ex.Message);
+            }
+            catch (Exception ex) 
+            {
+                await HandleExceptionAsync(httpContext,
+                    ex.Message,
+                    HttpStatusCode.BadRequest,
+                    "It's impossible, but... Roberto NOT FOUND!!!");
+            }
+        }
+
+        private async Task HandleExceptionAsync(HttpContext httpContent
+            ,string exMsg
+            ,HttpStatusCode statusCode
+            ,string message)
+        {
+            _logger.LogError(exMsg);
+
+            HttpResponse response = httpContent.Response;
+
+            response.ContentType = "application/json";
+            response.StatusCode = (int)statusCode;
+
+            ErrorDto errorDto = new()
+            {
+                Message = message,
+                StatusCode = (int)statusCode
+            };
+
+            await response.WriteAsJsonAsync(errorDto);
+        }
+        private async Task HandleExceptionClientAsync(HttpContext httpContent
+            ,HttpStatusCode statusCode
+            ,string message)
+        {
+
+            HttpResponse response = httpContent.Response;
+
+            response.ContentType = "application/json";
+            response.StatusCode = (int)statusCode;
+
+            ErrorDto errorDto = new()
+            {
+                Message = message,
+                StatusCode = (int)statusCode
+            };
+
+            await response.WriteAsJsonAsync(errorDto);
+        }
+    }
+}

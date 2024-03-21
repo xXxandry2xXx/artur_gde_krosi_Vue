@@ -1,9 +1,12 @@
 ﻿using artur_gde_krosi_Vue.Server.Models.BdModel;
+using artur_gde_krosi_Vue.Server.Models.UserModel;
+using FluentResults;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using Newtonsoft.Json;
 using NuGet.Versioning;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
@@ -17,12 +20,12 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
 {
     public class AccountService : IAccountService
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConfiguration _configuration;
         private readonly IAccountValidationService _accountValidationChangeService;
 
-        public AccountService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration configuration, IAccountValidationService accountValidationChangeService)
+        public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration, IAccountValidationService accountValidationChangeService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -30,28 +33,31 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
             _accountValidationChangeService = accountValidationChangeService;
         }
 
-        public async Task<bool> RegisterAsync(string username, string email, string password)
+        public async Task RegisterAsync(RegisterModel registerModel, UserInfoModel userInfoModel)
         {
-            (bool Succeeded, string) checkUsername = await _accountValidationChangeService.PreliminaryCheckUsername(username);
-            if (!checkUsername.Succeeded) return false;
-            (bool Succeeded, string) checkEmail = await _accountValidationChangeService.PreliminaryCheckEmeil(email);
-            if (!checkEmail.Succeeded) return false;
-            var user = new IdentityUser
+            await _accountValidationChangeService.PreliminaryCheckUsername(registerModel.Username);
+            await _accountValidationChangeService.PreliminaryCheckEmeil(registerModel.Email);
+            ApplicationUser user = new ApplicationUser
             {
-                UserName = username,
-                Email = email
+                UserName = registerModel.Username,
+                Email = registerModel.Email,
+                name = userInfoModel.name,
+                surname = userInfoModel.surname,
+                patronymic = userInfoModel.patronymic,
+                sendingMail = userInfoModel.sendingMail
             };
 
-            IdentityResult result = await _userManager.CreateAsync(user, password);
+            IdentityResult result = await _userManager.CreateAsync(user, registerModel.Password);
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, "User");
-                return true;
+                IdentityResult rez = await _userManager.AddToRoleAsync(user, "User");
+                if (!rez.Succeeded) throw new ArgumentException(JsonConvert.SerializeObject(rez));
+                return;
             }
-            return result.Succeeded;
+            throw new ArgumentException(JsonConvert.SerializeObject(result));
         }
-        
-        public async Task<(IdentityUser user, SignInResult result, IList<string> role)> LoginAsync(string usernameOrEmail, string password)
+
+        public async Task<(ApplicationUser user, SignInResult result, IList<string> role)> LoginAsync(string usernameOrEmail, string password)
         {
             var user = await _userManager.FindByNameAsync(usernameOrEmail) ?? await _userManager.FindByEmailAsync(usernameOrEmail);
             if (user != null)
@@ -62,26 +68,28 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
             }
             return (null, SignInResult.Failed, null);
         }
-        public async Task<IdentityResult> AddRoleAsync(string username,  string role)
+        public async Task<IdentityResult> AddRoleAsync(string username, string role)
         {
             var user = await _userManager.FindByNameAsync(username);
-            if (user != null){
+            if (user != null)
+            {
                 IdentityResult rez = await _userManager.AddToRoleAsync(user, role);
                 return rez;
             }
-            return IdentityResult.Failed(new IdentityError { Description = "Пользователь не найден." });
+            throw  new ArgumentException(JsonConvert.SerializeObject(new IdentityError { Description = "Пользователь не найден." }));
         }
-        public async Task<IdentityResult> DeleteRoleAsync(string username,  string role)
+        public async Task<IdentityResult> DeleteRoleAsync(string username, string role)
         {
             var user = await _userManager.FindByNameAsync(username);
-            if (user != null){
+            if (user != null)
+            {
                 IdentityResult rez = await _userManager.AddToRoleAsync(user, role);
                 return rez;
             }
-            return IdentityResult.Failed(new IdentityError { Description = "Пользователь не найден." });
+            throw new ArgumentException(JsonConvert.SerializeObject(new IdentityError { Description = "Пользователь не найден." }));
         }
 
-        public async Task<string> GenerateTokenAsync(IdentityUser user)
+        public async Task<string> GenerateTokenAsync(ApplicationUser user)
         {
             IList<string> roles = await _userManager.GetRolesAsync(user);
 

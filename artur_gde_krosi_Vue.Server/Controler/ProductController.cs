@@ -33,11 +33,26 @@ namespace artur_gde_krosi_Vue.Server.Controller
 
             return Ok(product);
         }
+        [HttpGet]
+        [Route("GetProdutSearch")]
+        public async Task<IActionResult> GetProdutSearch(string strSearch)
+        {
+            var product = db.Products.Where(X => X.name.Contains(strSearch)).Select(x => new { name = x.name }).Take(10);
+            return Ok(product);
+        }
+        [HttpGet]
+        [Route("GetAllProdutSearch")]
+        public async Task<IActionResult> GetAllProdutSearch()
+        {
+            var product = db.Products.Select(x => new { name = x.name });
+
+            return Ok(product);
+        }
         [Route("GetProductList")]
-        [HttpPost]
-        public async Task<IActionResult> GetProdutsList([FromForm] int priseDown = 0, [FromForm] int priseUp = 0, [FromForm] List<string> brendsIds = null, [FromForm] List<string> modelKrosovocksIds = null,
-            [FromForm] List<double> shoeSizesChecked = null, [FromForm] bool availability = false,
-            [FromForm] string PlaceholderContent = null, [FromForm] SortState sortOrder = SortState.NameAsc, [FromForm] int pageProducts = 1)
+        [HttpGet]
+        public async Task<IActionResult> GetProdutsList([FromHeader] int priseDown = 0, [FromHeader] int priseUp = 0, [FromHeader] List<string> brendsIds = null, [FromHeader] List<string> modelKrosovocksIds = null,
+            [FromHeader] List<double> shoeSizesChecked = null, [FromHeader] bool availability = false,
+            [FromHeader] string PlaceholderContent = null, [FromHeader] SortState sortOrder = SortState.NameAsc, [FromHeader] int pageProducts = 1)
         {
 
             if (PlaceholderContent != null) { PlaceholderContent = PlaceholderContent.Trim().ToLower(); }
@@ -47,13 +62,13 @@ namespace artur_gde_krosi_Vue.Server.Controller
             var products = db.Products.Include(x => x.ModelKrosovock.Brend)
                 .Include(x => x.Variants)
                 .Include(x => x.Images.Where(x => x.Index == 0))
-                //сортировка по Брендам
+                //сортировка по Брендам 
                 .Where(x => (brendsIds == null || brendsIds.Count == 0)
                     || brendsIds.Any(y => x.ModelKrosovock.Brend.BrendId == y))
-                //сортировка по Моделям
+                //сортировка по Моделям 
                 .Where(x => (modelKrosovocksIds == null || modelKrosovocksIds.Count == 0)
                     || modelKrosovocksIds.Any(y => x.ModelKrosovock.ModelKrosovockId == y))
-                //сортировка по диапазону цен
+                //сортировка по диапазону цен 
                 .Where(x => (priseUp == 0 || priseDown == 0) || (priseDown > priseUp)
                     || (priseDown * 100 <= x.Variants[0].prise && priseUp * 100 >= x.Variants[0].prise))
                 //сортировка по Поиску 

@@ -3,6 +3,7 @@ using artur_gde_krosi_Vue.Server.Models.BdModel;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Org.BouncyCastle.Pkix;
 using System.Text.RegularExpressions;
 
@@ -10,29 +11,30 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
 {
     public class AccountValidationService : IAccountValidationService
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly PasswordValidator<IdentityUser> _passwordValidator;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly PasswordValidator<ApplicationUser> _passwordValidator;
 
-        public AccountValidationService(UserManager<IdentityUser> userManager)
+        public AccountValidationService(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
-            _passwordValidator = new PasswordValidator<IdentityUser>();
+            _passwordValidator = new PasswordValidator<ApplicationUser>();
         }
 
-        public async Task<IdentityResult> PreliminaryCheckPassword(string password)
+        public async Task PreliminaryCheckPassword(string password)
         {
             var user = new ApplicationUser();
             IdentityResult result = await _passwordValidator.ValidateAsync(_userManager, user, password);
 
-            return result;
+            if (result.Succeeded) return;
+            else throw new InvalidOperationException(JsonConvert.SerializeObject(result));
         }
-        public async Task<(bool, string)> PreliminaryCheckEmeil(string email)
+        public async Task PreliminaryCheckEmeil(string email)
         {
             var trimmedEmail = email.Trim();
 
             if (trimmedEmail.EndsWith("."))
             {
-                return (false, "неправильный вид почты");
+                throw new ArgumentException("неправильный вид почты");
             }
             try
             {
@@ -40,41 +42,27 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
                 if (addr.Address == trimmedEmail)
                 {
                     var user = await _userManager.FindByEmailAsync(email);
-                    if (user == null)
-                    {
-                        return (true, "");
-                    }
-                    else return (false, "Данная почта уже зарегистрирована");
+                    if (user == null)return;
+                    else throw new ArgumentException("Данная почта уже зарегистрирована");
                 }
-                return (addr.Address == trimmedEmail, "неправильный вид почты");
-
+                throw new ArgumentException("неправильный вид почты");
             }
-            catch
+            catch (ArgumentException ex)
             {
-                return (false, "");
+                throw;
+            }
+            catch(Exception ex)
+            {
+                throw new ArgumentException("неправильный вид почты");
             }
         }
-        public async Task<(bool, string)> PreliminaryCheckUsername(string username)
+        public async Task PreliminaryCheckUsername(string username)
         {
             string pattern = @"^[a-zA-Z0-9]+$";
-            if (username.Length <= 5)
-            {
-                return (false, "длина имени должна быть больше 5");
-            }
-            if (username.Length > 15)
-            {
-                return (false, "длина имени должна быть меньше 16");
-            }
-            if (!Regex.IsMatch(username, pattern))
-            {
-                return (false, "В имени должны быть только латинские буквы или арабские цифры");
-            }
-            var user = await _userManager.FindByNameAsync(username);
-            if (user != null)
-            {
-                return (false, "Пользователь с данным ником уже существует");
-            }
-            return (true, "");
+            if (username.Length <= 5) throw new ArgumentException("длина имени должна быть больше 5");
+            if (username.Length > 15) throw new ArgumentException("длина имени должна быть меньше 16");
+            if (!Regex.IsMatch(username, pattern)) throw new ArgumentException("В имени должны быть только латинские буквы или арабские цифры");
+            if (await _userManager.FindByNameAsync(username) != null) throw new ArgumentException("В имени должны быть только латинские буквы или арабские цифры");
         }
     }
 }

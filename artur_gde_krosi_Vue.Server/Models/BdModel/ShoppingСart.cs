@@ -12,7 +12,7 @@ namespace artur_gde_krosi_Vue.Server.Models.BdModel
         public int quantity { get; set; }
 
         public string UserId { get; set; }
-        public IdentityUser IdentityUser { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
 
         public string VariantId { get; set; }
         public Variant Variant { get; set; }

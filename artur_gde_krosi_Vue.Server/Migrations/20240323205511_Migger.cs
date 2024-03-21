@@ -32,7 +32,11 @@ namespace artur_gde_krosi_Vue.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    patronymic = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    sendingMail = table.Column<bool>(type: "bit", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -314,6 +318,7 @@ namespace artur_gde_krosi_Vue.Server.Migrations
                 columns: table => new
                 {
                     ShoppingСartId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    quantity = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     VariantId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },

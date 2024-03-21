@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 
 namespace artur_gde_krosi_Vue.Server.Controller
 {
-    [Authorize(Roles = "User")]
+    //[Authorize(Roles = "User")]
     [Route("api/[controller]")]
     [ApiController]
     public class ShoppingСartController : ControllerBase
@@ -27,9 +27,9 @@ namespace artur_gde_krosi_Vue.Server.Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetShoppingСarts()
+        public async Task<IActionResult> GetShoppingСarts(string name)
         {
-            string username = HttpContext.User.Identity.Name;
+            string username = name;/*HttpContext.User.Identity.Name;*/
             var user = await _userManager.FindByNameAsync(username);
             var shoppingСarts = db.ShoppingСarts.Include(x => x.Variant).Select(x => new
             {
@@ -42,15 +42,15 @@ namespace artur_gde_krosi_Vue.Server.Controller
 
 
         [HttpPost]
-        public async Task<IActionResult> AddShoppingСarts([FromForm] string VariantId)
+        public async Task<IActionResult> AddShoppingСarts(string name,[FromForm] string VariantId)
         {
             try
             {
-                string username = HttpContext.User.Identity.Name;
+                string username = name;/*HttpContext.User.Identity.Name;*/
                 var user = await _userManager.FindByNameAsync(username);
-                if (db.ShoppingСarts.Where(x => x.UserId == user.Id && x.VariantId == VariantId) != null)
+                if (db.ShoppingСarts.Where(x => x.UserId == user.Id && x.VariantId == VariantId) == null)
                 {
-                    db.ShoppingСarts.Add(new ShoppingСart { UserId = user.Id, VariantId = VariantId });
+                    db.ShoppingСarts.Add(new ShoppingСart { UserId = user.Id, VariantId = VariantId , quantity = 0});
                     db.SaveChanges();
                     return Ok();
                 }
@@ -63,13 +63,13 @@ namespace artur_gde_krosi_Vue.Server.Controller
             }
         }
 
-        [Route("api/[controller]/AddList")]
+        [Route("/api/[controller]/AddList")]
         [HttpPost]
-        public async Task<IActionResult> AddListShoppingСarts([FromForm] List<string> VariantId)
+        public async Task<IActionResult> AddListShoppingСarts(string name, [FromForm] List<string> VariantId)
         {
             try
             {
-                string username = HttpContext.User.Identity.Name;
+                string username = name;/* HttpContext.User.Identity.Name;*/
                 var user = await _userManager.FindByNameAsync(username);
                 bool error = false;
                 foreach (var item in VariantId)
@@ -99,7 +99,7 @@ namespace artur_gde_krosi_Vue.Server.Controller
                 if (quantity > 0)
                 {
                     ShoppingСart? shoppingCart = db.ShoppingСarts.Where(x => x.ShoppingСartId == ShoppingСartId).FirstOrDefault();
-                    if (shoppingCart == null)
+                    if (shoppingCart != null)
                     {
                         shoppingCart.quantity = quantity;
                         db.SaveChanges();

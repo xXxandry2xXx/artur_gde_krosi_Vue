@@ -35,7 +35,7 @@ namespace artur_gde_krosi_Vue.Server.Schedulers
         {
             StockApi stockApi = new StockApi();
             getApiRequest<StockApi.Root> requestVariant = new getApiRequest<StockApi.Root>();
-            stockApi.root = await requestVariant.GetApiReqesi(stockApi.root, "https://api.moysklad.ru/api/remap/1.2/report/stock/all");
+            stockApi.root = await requestVariant.GetApiReqesi(stockApi.root, "https://api.moysklad.ru/api/remap/1.2/report/stock/all",false);
 
             using (var scope = _provider.CreateScope())
             {

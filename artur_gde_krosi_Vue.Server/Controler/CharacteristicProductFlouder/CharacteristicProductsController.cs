@@ -52,7 +52,7 @@ namespace artur_gde_krosi_Vue.Server.Controller.CharacteristicProductFolder
             catch (Exception Ex)
             {
                 Console.WriteLine(Ex.ToString());
-                return BadRequest();
+                throw new Exception("asd");
             }
         }
 

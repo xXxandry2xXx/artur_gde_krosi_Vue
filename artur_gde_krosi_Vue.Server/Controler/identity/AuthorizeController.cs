@@ -1,6 +1,9 @@
-﻿using artur_gde_krosi_Vue.Server.Models;
+﻿using artur_gde_krosi_Vue.Server.Models.UserModel;
 using artur_gde_krosi_Vue.Server.Services.Account;
+using FluentResults;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Org.BouncyCastle.Ocsp;
 
 namespace artur_gde_krosi_Vue.Server.Controller.identity
 {
@@ -18,43 +21,37 @@ namespace artur_gde_krosi_Vue.Server.Controller.identity
         }
 
         [HttpPost("Role")]
-        public async Task<IActionResult> addRole(string username,string role)
+        public async Task<IActionResult> addRole(string username, string role)
         {
-            return Ok(await _accountService.AddRoleAsync(username, role));
+            var rez = await _accountService.AddRoleAsync(username, role);
+            if (rez.Succeeded) return Ok();
+            else throw new ArgumentException(JsonConvert.SerializeObject(rez));
         }
         [HttpDelete("Role")]
         public async Task<IActionResult> deleteRole(string username, string role)
         {
-            return Ok(await _accountService.DeleteRoleAsync(username, role));
+            var rez = await _accountService.DeleteRoleAsync(username, role);
+            if (rez.Succeeded) return Ok();
+            else throw new ArgumentException(JsonConvert.SerializeObject(rez));
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromForm] RegisterModel model)
+        public async Task<IActionResult> Register([FromForm] RegisterModel registerModel, [FromForm] UserInfoModel userInfoModel)
         {
-            var result = await _accountService.RegisterAsync(model.Username, model.Email, model.Password);
-            if (result)
-            {
-                return Ok("User registered successfully");
-            }
-            else
-            {
-                return BadRequest();
-            }
+            await _accountService.RegisterAsync(registerModel, userInfoModel);
+            return Ok();
         }
 
-        [HttpPost("Login")]
-        public async Task<IActionResult> login(string usernameOrEmail, string password)   
+        [HttpGet("Login")]
+        public async Task<IActionResult> login(string usernameOrEmail, string password)
         {
             var result = await _accountService.LoginAsync(usernameOrEmail, password);
             if (result.result.Succeeded)
             {
-                var Token = _accountService.GenerateTokenAsync(result.user); 
+                var Token = _accountService.GenerateTokenAsync(result.user);
                 return Ok(new { Token, result.user });
             }
-            else
-            {
-                return Ok(result.result);
-            }
+            else throw new ArgumentException(JsonConvert.SerializeObject(result));
         }
 
     }

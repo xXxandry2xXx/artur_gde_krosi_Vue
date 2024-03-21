@@ -5,9 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace artur_gde_krosi_Vue.Server.Models.ProjecktSetings
 {
-    public class ApplicationIdentityContext : IdentityDbContext<IdentityUser>
+    public class ApplicationIdentityContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Product> Products { get; set; } = null!;
+        public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<Image> Images { get; set; } = null!;
         public DbSet<Brend> Brends { get; set; } = null!;
         public DbSet<ModelKrosovock> ModelKrosovocks { get; set; } = null!;
@@ -18,14 +19,11 @@ namespace artur_gde_krosi_Vue.Server.Models.ProjecktSetings
         public DbSet<CharacteristicProductValue> CharacteristicProductValues { get; set; } = null!;
         public ApplicationIdentityContext(DbContextOptions options) : base(options)
         {
-            Database.EnsureCreated();
-
+            //Database.EnsureCreated();
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<IdentityUser>().Property(x => x.UserName).HasMaxLength(15);
 
             // Создаем и добавляем роли при миграции
             modelBuilder.Entity<IdentityRole>().HasData(
@@ -35,7 +33,7 @@ namespace artur_gde_krosi_Vue.Server.Models.ProjecktSetings
 
 
             modelBuilder.Entity<ShoppingСart>()
-                .HasOne(f => f.IdentityUser)
+                .HasOne(f => f.ApplicationUser)
                 .WithMany()
                 .HasForeignKey("UserId");
             modelBuilder.Entity<ShoppingСart>()

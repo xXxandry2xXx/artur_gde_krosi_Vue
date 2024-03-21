@@ -23,26 +23,21 @@ namespace artur_gde_krosi_Vue.Server.Controller.identity
         [HttpGet("PreliminaryCheckEmeil")]
         public async Task<IActionResult> PreliminaryCheckEmeil(string email)
         {
-            (bool Succeeded, string error) rez = await _accountValidationChangeService.PreliminaryCheckEmeil(email);
-            if (rez.Succeeded) return Ok();
-            else return BadRequest(rez.error);
-
+            await _accountValidationChangeService.PreliminaryCheckEmeil(email);
+            return Ok();
         }
         [HttpGet("PreliminaryCheckUsernamr")]
         public async Task<IActionResult> PreliminaryCheckUsernamr(string username)
         {
-            (bool Succeeded, string error) rez = await _accountValidationChangeService.PreliminaryCheckUsername(username);
-            if (!rez.Succeeded)
-            {
-                return BadRequest(rez.error);
-            }
-            else return Ok();
+            await _accountValidationChangeService.PreliminaryCheckUsername(username);
+            return Ok();
 
         }
         [HttpGet("PreliminaryCheckPassword")]
         public async Task<IActionResult> PreliminaryCheckPassword(string password)
         {
-            return Ok(await _accountValidationChangeService.PreliminaryCheckPassword(password));
+            await _accountValidationChangeService.PreliminaryCheckPassword(password);
+            return Ok();
         }
 
     }

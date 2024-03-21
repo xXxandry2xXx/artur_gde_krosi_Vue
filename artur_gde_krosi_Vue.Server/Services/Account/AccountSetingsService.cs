@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using artur_gde_krosi_Vue.Server.Models.BdModel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using NuGet.Common;
 
@@ -6,13 +7,19 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
 {
     public class AccountSetingsService : IAccountSetingsService
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailService _emailService;
 
-        public AccountSetingsService(UserManager<IdentityUser> userManager, IEmailService emailService  )
+        public AccountSetingsService(UserManager<ApplicationUser> userManager, IEmailService emailService  )
         {
             _userManager = userManager;
             _emailService = emailService;
+        }
+        public async Task<(string name, string surname, string patronymic, bool sendingMail, string Email)> GetInfoUser(string Username)
+        {
+            var user = await _userManager.FindByNameAsync(Username);
+            var rez = (user.name, user.surname, user.patronymic, user.sendingMail , user.Email);
+            return rez;
         }
         public async Task<bool> RegEmailTokenOnEmailAsync(string email)
         {

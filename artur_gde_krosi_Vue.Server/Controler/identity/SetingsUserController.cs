@@ -16,22 +16,27 @@ namespace artur_gde_krosi_Vue.Server.Controller.identity
             _accountService = accountService;
             _accountSetingsService = accountSetingsService;
         }
+        //[HttpGet("getInfoUser")]
+        //public async Task<IActionResult> getInfoUser(string email)
+        //{
+        //    return Ok(await _accountSetingsService.(email));
+        //}
         [HttpGet("GenerateTokenOnChangeEmeil")]
         public async Task<IActionResult> generateTokenOnChangeEmeil(string email)
         {
             return Ok(await _accountSetingsService.RegEmailTokenOnEmailAsync(email));
         }
-        [HttpGet("RegEmeil")]
+        [HttpPut("RegEmeil")]
         public async Task<IActionResult> regEmeil(string email, string token)
         {
-            return Ok(await _accountSetingsService.RegEmailCheckingEmailTokenAsync(email, token));
+            return Ok(await _accountSetingsService.RegEmailCheckingEmailTokenAsync(email, token)); 
         }
         [HttpGet("GenerateTokenOnPasswordReset")]
         public async Task<IActionResult> generateTokenOnPasswordReset(string email)
         {
             return Ok(await _accountSetingsService.PasswordResetTokenOnEmailAsync(email));
         }
-        [HttpGet("PasswordReset")]
+        [HttpPut("PasswordReset")]
         public async Task<IActionResult> passwordReset(string email,string token,string newPassword)
         {
             return Ok(await _accountSetingsService.PasswordResetCheckingEmailTokenAsync(email, token, newPassword));

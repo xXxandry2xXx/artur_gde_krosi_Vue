@@ -5,20 +5,14 @@ namespace artur_gde_krosi_Vue.Server.Models.moyskladApi
 {
     public class getApiRequest<T> where T : InterfaceApi.Root
     {
-        public async Task<T> GetApiReqesi(T apiClass, string herf)
+        public async Task<T> GetApiReqesi(T apiClass, string herf, bool dopInf = true)
         {
             using (HttpClient client = new HttpClient())
             {
                 HttpRequestMessage requestGroup;
-                if (herf != "https://api.moysklad.ru/api/remap/1.2/report/stock/all")
-                {
-                    requestGroup = new HttpRequestMessage(HttpMethod.Get, herf +
-                    "&offset=0&limit=100");
-                }
-                else
-                {
-                    requestGroup = new HttpRequestMessage(HttpMethod.Get, herf);
-                }
+                string dopHerf = "&offset=0&limit=100";
+                if (!dopInf) dopHerf = "";
+                requestGroup = new HttpRequestMessage(HttpMethod.Get, herf + dopHerf);
 
                 requestGroup.Headers.Add("Accept-Encoding", "gzip");
                 //request.Headers.Add("Authorization", "Bearer c168b9e54a4a67e4ee6ceb5e14e3d98947f09653");

@@ -1,17 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Net.Mail;
 using System.Net;
+using artur_gde_krosi_Vue.Server.Models.BdModel;
 
 namespace artur_gde_krosi_Vue.Server.Services
 {
     public class EmailService : IEmailService
     {
-        private readonly UserManager<IdentityUser> _userManager;
         private readonly IConfiguration _configuration;
 
-        public EmailService(UserManager<IdentityUser> userManager, IConfiguration configuration)
+        public EmailService(IConfiguration configuration)
         {
-            _userManager = userManager;
             _configuration = configuration;
         }
 

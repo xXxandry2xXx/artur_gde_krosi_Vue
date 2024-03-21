@@ -28,7 +28,7 @@ namespace artur_gde_krosi_Vue.Server.Controller
 
         [HttpGet]
         [Route("ModelKrosovocks")]
-        public async Task<IActionResult> GetModelKrosovocks([FromForm] List<string> brendsIds = null)
+        public async Task<IActionResult> GetModelKrosovocks([FromHeader] List<string> brendsIds = null)
         {
             var modelKrosovocks = db.Brends.Where(x => (brendsIds == null || brendsIds.Count == 0) || brendsIds.Any(y => y == x.BrendId))
                 .Include(x => x.ModelKrosovocks)

@@ -14,6 +14,7 @@ using System.Text;
 using artur_gde_krosi_Vue.Server.Services.Account;
 using artur_gde_krosi_Vue.Server.Models.BdModel;
 using System.Reflection.Emit;
+using artur_gde_krosi_Vue.Server.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,14 +37,14 @@ string connection = builder.Configuration.GetConnectionString("DefaultConnection
 builder.Services.AddDbContext<ApplicationIdentityContext>(options => options.UseSqlServer(connection));
 
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.SignIn.RequireConfirmedAccount = true;
     options.User.RequireUniqueEmail = true;
     options.User.RequireUniqueEmail = true;
 })
-    .AddDefaultTokenProviders()
- .AddEntityFrameworkStores<ApplicationIdentityContext>();
+.AddDefaultTokenProviders()
+.AddEntityFrameworkStores<ApplicationIdentityContext>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -99,6 +100,7 @@ app.UseStaticFiles();
 app.MapControllers();
 app.UseCors("AllowSpecificOrigin");
 app.UseAuthorization();
+app.UseMiddleware<ExceptionHandingMiddleware>();
 
 
 // Configure the HTTP request pipeline.

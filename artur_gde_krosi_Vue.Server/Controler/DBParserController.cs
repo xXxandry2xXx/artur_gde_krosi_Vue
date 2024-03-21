@@ -30,8 +30,7 @@ namespace artur_gde_krosi_Vue.Server.Controller
             this.factory = factory;
         }
 
-        [Route("DBParserQuantityInStock")]
-        [HttpGet]
+        [HttpPut("DBParserQuantityInStock")]
         public async Task<IActionResult> ParserQuantityInStock()
         {
             IScheduler scheduler = await factory.GetScheduler();
@@ -40,8 +39,7 @@ namespace artur_gde_krosi_Vue.Server.Controller
 
             return Ok("OK");
         }
-        [Route("DBParser")]
-        [HttpGet]
+        [HttpPut("DBParser")]
         public async Task<IActionResult> Parser()
         {
             IScheduler scheduler = await factory.GetScheduler();

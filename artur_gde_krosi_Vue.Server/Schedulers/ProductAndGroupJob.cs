@@ -49,6 +49,9 @@ namespace artur_gde_krosi_Vue.Server.Schedulers
             getApiRequest<VariantApi.Root> requestVariant = new getApiRequest<VariantApi.Root>();
             variantApi.root = await requestVariant.GetApiReqesi(variantApi.root, "https://api.moysklad.ru/api/remap/1.2/entity/variant?expand=rows.images,product");
 
+            StockApi stockApi = new StockApi();
+            getApiRequest<StockApi.Root> requestVariantStok = new getApiRequest<StockApi.Root>();
+            stockApi.root = await requestVariantStok.GetApiReqesi(stockApi.root, "https://api.moysklad.ru/api/remap/1.2/report/stock/all",false);
 
             using (var scope = _provider.CreateScope())
             {
@@ -194,7 +197,25 @@ namespace artur_gde_krosi_Vue.Server.Schedulers
                             externalCode = item.externalCode,
                             ProductId = item.product.id,
                             quantityInStock = 0
-                        });
+                        } );
+                    }
+                }
+                foreach (var item in stockApi.root.rows)
+                {
+                    if (variants.Any(x => x.externalCode == item.externalCode))
+                    {
+                        if (item.stock.Contains("."))
+                        {
+                            item.stock = item.stock.Split('.')[0];
+                        }
+                        try
+                        {
+                            variants.Find(x => x.externalCode == item.externalCode).quantityInStock = Convert.ToInt32(item.stock);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex + "");
+                        }
                     }
                 }
                 try
