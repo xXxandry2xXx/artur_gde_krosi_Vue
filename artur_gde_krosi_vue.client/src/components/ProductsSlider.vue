@@ -1,0 +1,117 @@
+﻿<template>
+    <div class="products-slider">
+        <h1>{{ sliderTitle }}</h1>
+        <div class="products-slider-list-viewport">
+            <div class="products-slider-list" ref="productsSlider" @mouseenter="removeScrollInterval" @mouseleave="setScrollInterval">
+                <div class="product" style="display: none" ref="sliderCard"></div>
+                <Product v-for="(product, index) in slidedProducts" :product="product" />
+            </div>
+        </div>
+        <div class="products-slider-scroll-buttons" v-if="sliderArray.length > viewportProductAmount">
+            <button class="products-slider-scroll-button" @click="scrollProducts('left')" @mouseenter="removeScrollInterval" @mouseleave="setScrollInterval">
+                <font-awesome-icon :icon="['fas', 'chevron-left']" />
+            </button>
+            <button class="products-slider-scroll-button" @click="scrollProducts('right')" @mouseenter="removeScrollInterval" @mouseleave="setScrollInterval">
+                <font-awesome-icon :icon="['fas', 'chevron-right']" />
+            </button>
+        </div>
+    </div>
+</template>
+
+<script lang="ts">
+    import { defineComponent } from 'vue';
+    import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
+    import Product from '@/components/ProductsPage/Product.vue';
+
+    export default defineComponent({
+
+        components: { Product },
+
+        props: {
+            sliderArray: {
+                type: Array,
+                required: true
+            },
+            sliderTitle: {
+                type: String,
+                required: true
+            }
+        },
+
+        data() {
+            return {
+                slidedProducts: [],
+                viewportProductAmount: 3,
+                currentOffset: 0,
+                productWidth: 0,
+                productsListGap: 0,
+                scrollIntervalId: null
+            }
+        },
+
+        methods: {
+            scrollProducts(this: any, direction: string) {
+                if (direction === 'right') {
+                    this.currentOffset >= -this.countTotalSrollWidth && (this.currentOffset - this.countScrollOffset) >= -this.countTotalSrollWidth
+                        ? this.currentOffset -= this.countScrollOffset
+                        : this.currentOffset = 0;
+
+                } else if (direction === 'left') {
+                    this.currentOffset <= 0 && (this.currentOffset + this.countScrollOffset) <= 0
+                        ? this.currentOffset += this.countScrollOffset
+                        : this.currentOffset = -this.countTotalSrollWidth;
+                }
+
+                if (this.$refs.productsSlider) {
+                    if (this.sliderArray.length > this.viewportProductAmount) this.$refs.productsSlider.style.transform = 'translateX(' + this.currentOffset + 'px)';
+                } 
+            },
+
+            setScrollInterval(this: any) {
+                this.scrollIntervalId = setInterval(() => this.scrollProducts('right'), 5000);
+            },
+
+            removeScrollInterval(this: any) {
+                clearInterval(this.scrollIntervalId);
+            },
+        },
+
+        computed: {
+            getProductWidth(this: any) {
+                if (this.productWidth === 0) {
+                    this.productWidth = parseInt(window.getComputedStyle(this.$refs.sliderCard).getPropertyValue('width'));
+                }
+                return this.productWidth;
+            },
+
+            getProductsListGap(this: any) {
+                if (this.productsListGap === 0) {
+                    this.productsListGap = parseInt(window.getComputedStyle(this.$refs.productsSlider).getPropertyValue('gap'));
+                }
+                return this.productsListGap;
+            },
+
+            countScrollOffset(this: any) {
+                return (this.getProductWidth * this.viewportProductAmount) + (this.getProductsListGap * this.viewportProductAmount);
+            },
+
+            countTotalSrollWidth(this: any) {
+                if (this.slidedProducts === undefined) return 0;
+
+                let totalWidth = (this.getProductWidth * this.slidedProducts.length) + (this.getProductsListGap * this.viewportProductAmount);
+                if (this.slidedProducts.length % this.viewportProductAmount < 2) totalWidth -= this.getProductWidth;
+                return totalWidth;
+            }
+        },
+
+        mounted() {
+            this.slidedProducts = this.sliderArray;
+            this.setScrollInterval();
+
+            this.$router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+                clearInterval(this.scrollIntervalId);
+                next();
+            })
+        }
+    })
+</script>

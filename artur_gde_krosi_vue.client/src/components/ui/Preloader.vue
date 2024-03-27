@@ -26,7 +26,7 @@ import { defineComponent } from "vue";
         height: 100%;
         position: absolute;
         background: rgb(255,255,255, 0.8);
-        z-index: 5;
+        z-index: 100;
     }
 
     .preloader {

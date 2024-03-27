@@ -1,5 +1,5 @@
 ﻿<template>
-    <div class="product-page">
+    <div class="product-page" :key="productId">
         <div class="top-bar">
             <span class="bread-crumb" @click="$router.go(-1)">Назад</span>
             <div class="bread-crumbs">
@@ -15,21 +15,12 @@
 
         <div class="product-page-main-content">
             <div class="product-main">
-                <div class="product-page-images">
-                    <img class="product-current-image" :src="currentImageSrc" />
-                    <div class="product-all-images">
-                        <img v-for="(image, index) in productImages"
-                             class="product-image"
-                             :class="{'product-current-image-icon': currentImgIndex === index}"
-                             :src="image.imageSrc"
-                             alt="product-image"
-                             @click="openImage(index)" />
-                    </div>
-                </div>
+                <ProductsImageSlider v-if="productImages.length > 0" :images="productImages"/>
                 <div class="product-page-info">
                     <div class="product-page-info-details">
                         <h1 class="product-name">{{ productData.name }}</h1>
                         <p class="product-page-detail">Бренд: <span class="product-page-detail-value">{{ productData.modelKrosovock && productData.modelKrosovock.brend && productData.modelKrosovock.brend.name }}</span></p>
+                        <p class="product-page-detail">Модель: <span class="product-page-detail-value">{{ productData.modelKrosovock && productData.modelKrosovock.name }}</span></p>
                         <p class="product-page-detail">Наличие: <span class="product-page-detail-value is-in-stock">{{ productData.variants && isInStock }}</span></p>
                         <div class="product-page-sizes">
                             <p class="product-page-detail">Размеры: </p>
@@ -75,31 +66,33 @@
                 </ul>
             </div>
         </div>
-        <PopularProducts/>
+        <ProductsSlider v-if="relatedProducts.length > 0" :sliderArray="relatedProducts" :sliderTitle="'ЕЩЕ ИЗ  ЭТОЙ КАТЕГОРИИ'" :key="productId"/>
     </div>
 </template>
 
 <script lang="ts">
     import { defineComponent } from 'vue';
     import { mapMutations, mapActions } from 'vuex';
-    import PopularProducts from '@/components/MainPage/PopularProducts.vue';
+    import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
+    import ProductsSlider from '@/components/ProductsSlider.vue';
+    import ProductsImageSlider from '@/components/ProductPage/ProductImageSlider.vue';
     import axios from 'axios';
 
     export default defineComponent({
-        components: { PopularProducts },
+        components: { ProductsSlider, ProductsImageSlider },
 
         data() {
             return {
                 productId: this.$route.params.productId,
                 productData: {},
-                currentImgIndex: 0,
-                productImages: []
+                productImages: [],
+                sameCategoryProducts: [],
             }
         },
 
         methods: {
             ...mapMutations(['setPreloaderVisibility']),
-            ...mapActions(['fetchSizes']),
+            ...mapActions(['fetchSizes', 'getFilteredData']),
 
             async fetchProduct(this: any) {
                 try {
@@ -112,10 +105,24 @@
                 }
             },
 
-            openImage(this: any, index: number) {
-                this.currentImgIndex = index;
-                this.currentImage = this.productImages[this.currentImgIndex];
-            }
+            async getRelatedProducts(this: any) {
+                const form = new FormData();
+                form.append('modelKrosovocksIds', this.productData.modelKrosovock.modelKrosovockId);
+                await this.getFilteredData(form).then((response: any) => {
+                    this.sameCategoryProducts = response.products;
+                });
+            },
+
+            async productPageInit(this: any) {
+                this.setPreloaderVisibility(true);
+                await this.fetchSizes();
+                await this.fetchProduct().then(this.setPreloaderVisibility(false));
+
+                this.$router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+                    if (to.meta.isProductPage) this.productId = to.params.productId;
+                    next();
+                })
+            },
         },
 
         computed: {
@@ -142,18 +149,21 @@
                 }
             },
 
-            currentImageSrc(this: any) {
-                if (this.productImages[this.currentImgIndex]) return this.productImages[this.currentImgIndex].imageSrc;
+            relatedProducts(this: any) {
+                return this.sameCategoryProducts.filter((product: any) => product.productId !== this.productId)
             }
         },
 
-        async beforeMount() {
-            this.setPreloaderVisibility(true);
-            await this.fetchSizes();
-            await this.fetchProduct().then(this.setPreloaderVisibility(false));
+        watch: {
+            async productId(this: any) {
+                await this.productPageInit();
+                await this.getRelatedProducts()
+            }
+        },
+
+        async mounted() {
+            await this.productPageInit();
+            await this.getRelatedProducts()
         },
     })
 </script>
-
-<style scoped>
-</style>

@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\assets\fonts\" />
+    <Folder Include="src\components\ProductPage\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="C:\Users\hardc\Downloads\PriceRanger.vue">
