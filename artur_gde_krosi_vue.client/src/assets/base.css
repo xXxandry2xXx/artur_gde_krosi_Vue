@@ -474,7 +474,7 @@ header {
 .product-current-image {
     width: 100%;
     height: 100%;
-    /*transition: 0.1s;*/
+    transition: transform 0.1s;
 }
 
 .product-current-image-icon {
