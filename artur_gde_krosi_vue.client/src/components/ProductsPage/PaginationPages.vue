@@ -2,8 +2,8 @@
     <nav class="pagination-pages">
         <router-link :to="{ name: 'productsPage', params: { page: 1 } }"
                      class="pagination-page pagination-arrow"
-                     @click="$store.dispatch('changePage', 1)"
-                     v-show="$store.getters.getCurrentPage !== 1">
+                     @click="changePage(1)"
+                     v-show="getCurrentPage() !== 1">
 
             <i class="fa-solid fa-angles-left"></i>
         </router-link>
@@ -11,14 +11,14 @@
         <router-link :to="{ name: 'productsPage', params: { page: pervPage } }"
                      @click="toPervPage"
                      class="pagination-page pagination-arrow"
-                     :class="{'pagination-arrow-unavailable': $store.getters.getCurrentPage == 1}">
+                     :class="{'pagination-arrow-unavailable': getCurrentPage() == 1}">
             <i class="fas fa-angle-left"></i>
         </router-link>
 
         <router-link :to="{ name: 'productsPage', params: { page: page } }" class="pagination-page"
                      v-for="page in visiblePages"
-                     @click="$store.dispatch('changePage', page)"
-                     :class="{'pagination-page-current': page === $store.getters.getCurrentPage}">
+                     @click="changePage(page)"
+                     :class="{'pagination-page-current': page === getCurrentPage()}">
             {{ page }}
 
         </router-link>
@@ -26,14 +26,14 @@
         <router-link :to="{ name: 'productsPage', params: { page: nextPage } }"
                      @click="toNextPage"
                      class="pagination-page pagination-arrow"
-                     :class="{'pagination-arrow-unavailable': $store.getters.getCurrentPage == $store.getters.getTotalPages}">
+                     :class="{'pagination-arrow-unavailable': getCurrentPage() == getTotalPages()}">
             <i class="fas fa-angle-right"></i>
         </router-link>
 
-        <router-link :to="{ name: 'productsPage', params: { page: $store.getters.getTotalPages } }"
+        <router-link :to="{ name: 'productsPage', params: { page: getTotalPages() } }"
                      class="pagination-page pagination-arrow"
-                     @click="$store.dispatch('changePage', $store.getters.getTotalPages)"
-                     v-show="$store.getters.getCurrentPage !== $store.getters.getTotalPages">
+                     @click="changePage(getTotalPages())"
+                     v-show="getCurrentPage() !== getTotalPages()">
             <i class="fa-solid fa-angles-right"></i>
         </router-link>
     </nav>
@@ -62,7 +62,7 @@
                 if (Number(router.currentRoute.value.params.page) < totalPages) {
                     this.changePage(this.nextPage);
                 }
-            }
+            },
         },
 
         computed: {

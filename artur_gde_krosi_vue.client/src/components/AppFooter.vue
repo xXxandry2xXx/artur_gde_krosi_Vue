@@ -12,7 +12,7 @@
             <section class="footer-section">
                 <h2>Контакты</h2>
                 <ul>
-                    <li>+7 (999) 999 99-99</li>
+                    <li>+7 (912) 599-77-79</li>
                 </ul>
             </section>
             <section class="footer-section">
