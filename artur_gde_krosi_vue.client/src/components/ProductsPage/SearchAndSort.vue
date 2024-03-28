@@ -72,7 +72,7 @@
 
         computed: {
             isChecked(this: any): boolean {
-                return this.selectedFiltersState.inStock;
+                return this.selectedFiltersState().inStock;
             }
         },
 

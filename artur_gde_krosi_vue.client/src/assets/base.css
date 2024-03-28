@@ -54,12 +54,47 @@ header {
     display: flex;
     justify-content: end;
     background: #000;
-    height: 50px;
+    height: 35px;
+}
+
+.app-phone-and-adress {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.app-adress span {
+    margin: 0 5px;
+}
+
+.app-phone-and-adress span {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 300;
 }
 
 .autorization-buttons {
     display: flex;
-    height: 100%;
+    align-items: baseline;
+}
+
+.autorization-button {
+    color: var(--border-font-color);
+    background: none;
+    border: none;
+    font-size: 21px;
+}
+
+    .autorization-button:hover {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+.autorization-buttons span {
+    font-size: 20px;
+    margin: 0 10px;
 }
 
 .login-button {
@@ -73,18 +108,18 @@ header {
 
 .appheader-navbar {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-    height: 150px
+    height: 90px;
+    padding: 0 30px;
 }
 
 .logo {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
     user-select: none;
-    width: 280px;
+    max-width: 280px;
 }
 
     .logo:hover {
@@ -95,27 +130,74 @@ header {
     font-family: "Oswald", sans-serif;
     font-weight: 800;
     margin-left: 7px;
-    font-size: 41px;
-    line-height: 40px;
+    font-size: 25px;
+    line-height: 25px;
     letter-spacing: -2px;
 }
 
 .logo-bottom {
     font-family: "Oswald", sans-serif;
     font-weight: 800;
-    font-size: 45px;
-    line-height: 45px;
+    font-size: 31px;
+    line-height: 31px;
 }
 
 .nav-button {
-    width: 210px;
     font-family: "Oswald", sans-serif;
     background: none;
     border: none;
-    font-size: 30px;
+    font-size: 23px;
     font-weight: 500;
     color: #000;
     transition: 0.2s;
+    margin: 0 10px;
+}
+
+.app-subheader {
+    position: sticky;
+    top: 0;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    font-size: 30px;
+    justify-content: space-between;
+    padding: 15px 30px;
+    background: #fff;
+    box-shadow: rgba(0, 0, 0, 0.2) 3px 3px 5px 0px;
+}
+
+.app-subheader-buttons {
+    display: flex;
+}
+
+.app-subheader-button {
+    font-size: 30px;
+    margin: 0 10px;
+    background: none;
+    border: none;
+}
+
+.cart-button {
+    position: relative;
+}
+
+.cart-capacity {
+    position: absolute;
+    font-size: 18px;
+    background: var(--featured-color);
+    padding: 0 5px;
+    border-radius: 50%;
+    top: -10px;
+    right: 0;
+}
+
+.app-subheader-links {
+    display: flex;
+    align-items: center;
+}
+
+.app-subheader-link {
+    font-size: 21px;
     margin: 0 10px;
 }
 
@@ -243,7 +325,7 @@ header {
     }
 
 .main-page-brands h1,
-.main-page-popular-products h1 {
+.products-slider h1 {
     text-align: center;
 }
 
@@ -260,7 +342,7 @@ header {
         text-decoration: underline;
     }
 
-.main-page-popular-products {
+.products-slider {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -268,14 +350,14 @@ header {
     padding: 5% 2%;
 }
 
-.main-page-popular-products-wrapper {
+.products-slider-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
 }
 
-.main-page-popular-products-list-viewport {
+.products-slider-list-viewport {
     position: relative;
     width: 75%;
     padding: 10px;
@@ -284,7 +366,7 @@ header {
     overflow: hidden;
 }
 
-.main-page-popular-products-list {
+.products-slider-list {
     position: absolute;
     display: flex;
     gap: 40px;
@@ -293,18 +375,18 @@ header {
     transition: 0.5s;
 }
 
-    .main-page-popular-products-list .product {
+    .products-slider-list .product {
         width: 300px;
         height: 470px;
     }
 
-        .main-page-popular-products-list .product h1,
-        .main-page-popular-products-list .product p,
-        .main-page-popular-products-list .product span {
+        .products-slider-list .product h1,
+        .products-slider-list .product p,
+        .products-slider-list .product span {
             font-family: "Inter", sans-serif;
         }
 
-.main-page-popular-products-scroll-buttons {
+.products-slider-scroll-buttons {
     position: absolute;
     top: 50%;
     width: 90%;
@@ -312,7 +394,7 @@ header {
     justify-content: space-between;
 }
 
-.main-page-scroll-button {
+.products-slider-scroll-button {
     border: 2px solid transparent;
     background: #fff;
     font-size: 40px;
@@ -323,7 +405,7 @@ header {
     transition: 0.2s;
 }
 
-    .main-page-scroll-button:hover {
+    .products-slider-scroll-button:hover {
         cursor: pointer;
         border: 2px solid var(--border-font-color);
     }
@@ -364,6 +446,7 @@ header {
 }
 
 .product-all-images {
+    width: 20%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -381,9 +464,17 @@ header {
         box-shadow: 0px 0px 1px 1px rgb(0, 0, 0, 20%);
     }
 
-.product-current-image {
+.product-current-image-wrapper {
     width: 80%;
     object-fit: contain;
+    overflow: hidden;
+    position: relative;
+}
+
+.product-current-image {
+    width: 100%;
+    height: 100%;
+    /*transition: 0.1s;*/
 }
 
 .product-current-image-icon {
@@ -400,7 +491,7 @@ header {
     font-size: 20px;
     font-weight: 500;
     color: var(--additional-font-color);
-    margin: 30px 0;
+    margin: 20px 0;
 }
 
 .product-page-detail-value {
@@ -783,7 +874,7 @@ header {
     .price-input input {
         display: flex;
         text-align: center;
-        font-size: 20px;
+        font-size: 19px;
         width: 50%;
         border: none;
     }
@@ -1075,7 +1166,13 @@ footer {
             transform: scale(1.1);
         }
 
-/*Общие технические стили*/
+/* Общие технические стили */
 .disabled {
     display: none;
+}
+
+/* Адаптив */
+
+@media (max-width: 2560px) {
+
 }

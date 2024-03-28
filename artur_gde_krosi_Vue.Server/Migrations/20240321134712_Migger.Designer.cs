@@ -12,7 +12,11 @@ using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
 namespace artur_gde_krosi_Vue.Server.Migrations
 {
     [DbContext(typeof(ApplicationIdentityContext))]
+<<<<<<<< HEAD:artur_gde_krosi_Vue.Server/Migrations/20240323205511_Migger.Designer.cs
     [Migration("20240323205511_Migger")]
+========
+    [Migration("20240321134712_Migger")]
+>>>>>>>> 235d1df92efabaac5d1a709a783085585cc15566:artur_gde_krosi_Vue.Server/Migrations/20240321134712_Migger.Designer.cs
     partial class Migger
     {
         /// <inheritdoc />
