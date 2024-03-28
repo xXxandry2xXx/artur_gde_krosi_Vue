@@ -1,6 +1,8 @@
 ﻿using artur_gde_krosi_Vue.Server.Models.BdModel;
 using artur_gde_krosi_Vue.Server.Models.UserModel;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
+using System;
 
 namespace artur_gde_krosi_Vue.Server.Services.Account
 {
@@ -14,7 +16,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
             _userManager = userManager;
             _emailService = emailService;
         }
-        public async Task<bool> RegisterAsync(UserInfoModel userInfoModel, string userName)
+        public async Task EditUserAsync(UserInfoModel userInfoModel, string userName)
         {
             try
             {
@@ -23,7 +25,9 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
                 user.surname = userInfoModel.surname;
                 user.patronymic = userInfoModel.patronymic;
                 user.sendingMail = userInfoModel.sendingMail;
-                return true;
+                var rez = await _userManager.UpdateAsync(user);
+                if (rez.Succeeded) return;
+                else  throw new ArgumentException(JsonConvert.SerializeObject(rez));
             }
             catch (Exception ex)
             {    

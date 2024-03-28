@@ -26,7 +26,7 @@ namespace artur_gde_krosi_Vue.Server.Controller.identity
             await _accountValidationChangeService.PreliminaryCheckEmeil(email);
             return Ok();
         }
-        [HttpGet("PreliminaryCheckUsernamr")]
+        [HttpGet("PreliminaryCheckUsername")]
         public async Task<IActionResult> PreliminaryCheckUsernamr(string username)
         {
             await _accountValidationChangeService.PreliminaryCheckUsername(username);

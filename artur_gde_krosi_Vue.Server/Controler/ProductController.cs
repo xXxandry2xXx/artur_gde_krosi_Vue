@@ -34,17 +34,17 @@ namespace artur_gde_krosi_Vue.Server.Controller
             return Ok(product);
         }
         [HttpGet]
-        [Route("GetProdutSearch")]
+        [Route("GetProductSearch")]
         public async Task<IActionResult> GetProdutSearch(string strSearch)
         {
             var product = db.Products.Where(X => X.name.Contains(strSearch)).Select(x => new { name = x.name }).Take(10);
             return Ok(product);
         }
         [HttpGet]
-        [Route("GetAllProdutSearch")]
+        [Route("GetAllProductSearch")]
         public async Task<IActionResult> GetAllProdutSearch()
         {
-            var product = db.Products.Select(x => new { name = x.name });
+            var product = db.Products.Include(x=>x.Images).Select(x => new { name = x.name , herfImage = x.Images , id = x.ProductId}).ToList();
 
             return Ok(product);
         }
