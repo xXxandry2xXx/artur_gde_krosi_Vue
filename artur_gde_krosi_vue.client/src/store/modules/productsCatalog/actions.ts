@@ -47,7 +47,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
 
     async getFilteredData(state, filledFormData) {
         try {
-            const response = await axios.post('http://localhost:5263/ProdutList', filledFormData, { headers: { 'Content-Type': 'multipart/form-data', 'accept': '*/*' }});
+            const response = await axios.post('http://localhost:5263/api/Product/GetProductList', filledFormData, { headers: { 'Content-Type': 'multipart/form-data', 'accept': '*/*' }});
             return response.data;
         } catch (error) {
             console.log(error);
@@ -71,7 +71,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
         if (selectedFilters.brandIDs) {
             selectedFilters.brandIDs.forEach((brand: string) => form.append('brendsIds', brand.toString()));
             try {
-                const response = await axios.post('http://localhost:5263/ModelKrosovocks', form, { headers: { 'Content-Type': 'multipart/form-data', 'accept': '*/*' }});
+                const response = await axios.post('http://localhost:5263/api/Filter/ModelKrosovocks', form, { headers: { 'Content-Type': 'multipart/form-data', 'accept': '*/*' }});
 
                 let fetchedModels = response.data.reduce((accumulator: ModelInterface[], currentValue: { name: string, modelKrosovocks: ModelInterface[] }) => {
                     return accumulator.concat(currentValue.modelKrosovocks);
@@ -88,7 +88,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
 
     async fetchBrands() {
         try {
-            const response = await axios.get('http://localhost:5263/Brends');
+            const response = await axios.get('http://localhost:5263/api/Filter/Brends');
             this.commit('setBrands', response.data);
         } catch (error) {
             console.log(error);
@@ -97,7 +97,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
 
     async fetchSizes() {
         try {
-            const response = await axios.get('http://localhost:5263/ShoeSizes');
+            const response = await axios.get('http://localhost:5263/api/Filter/ShoeSizes');
             this.commit('setSizes', response.data);
         } catch (error) {
             console.log(error);
