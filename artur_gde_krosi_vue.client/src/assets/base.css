@@ -201,10 +201,27 @@ header {
     margin: 0 10px;
 }
 
-    .nav-button:hover {
-        cursor: pointer;
-        text-decoration: underline;
-    }
+.app-search-panel {
+    box-sizing: border-box;
+    width: 500px;
+    position: absolute;
+    background: #fff;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.2) 3px 3px 5px 0px;
+    top: 66px;
+    right: 75px;
+}
+
+.search-button {
+    padding: 5px;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.nav-button:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
 
 .top-bar {
     display: flex;
@@ -327,6 +344,7 @@ header {
 .main-page-brands h1,
 .products-slider h1 {
     text-align: center;
+    font-family: "Oswald", sans-serif;
 }
 
 .main-page-show-all-button {
@@ -799,10 +817,8 @@ header {
     }
 
 .search-input-wrapper {
-    width: 50%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
     background: #fff;
 }
 
@@ -817,12 +833,6 @@ header {
     .clear-search-value:hover {
         cursor: pointer;
     }
-
-.search-button {
-    font-size: 20px;
-    padding: 7px 10px;
-    height: 100%;
-}
 
 .search-input {
     width: 100%;
@@ -1093,18 +1103,23 @@ header {
     color: #d1a705;
 }
 
-
-
-footer {
-    box-sizing: border-box;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: #000;
-    color: #fff;
-    width: 100%;
-    margin-top: 50px;
+.not-found-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 55px;
 }
+
+    footer {
+        box-sizing: border-box;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #000;
+        color: #fff;
+        width: 100%;
+        margin-top: 50px;
+    }
 
 .footer-content {
     display: flex;

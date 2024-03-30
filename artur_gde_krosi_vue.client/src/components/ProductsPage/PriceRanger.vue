@@ -15,8 +15,8 @@
             <div class="progress" :style="{ left: progressLeft, right: progressRight }"></div>
         </div>
         <div class="price-ranger-range-inputs">
-            <input type="range" class="range-price-min" @input="handleMinPrice" :value="minRangerValue" :min="minPrice" :max="maxPrice" />
-            <input type="range" class="range-price-max" @input="handleMaxPrice" :value="maxRangerValue" :min="minPrice" :max="maxPrice" />
+            <input type="range" class="range-price-min" @input="handleMinPrice" :value="minRangerValue" :min="minPrice" :max="maxPrice" ref="minPriceSlider"/>
+            <input type="range" class="range-price-max" @input="handleMaxPrice" :value="maxRangerValue" :min="minPrice" :max="maxPrice" ref="maxPriceSlider"/>
         </div>
     </div>
 </template>
@@ -138,12 +138,9 @@
                 this.progressRight = 100 - (this.maxRangerValue / this.maxPrice) * 100 + '%';
 
                 setTimeout(() => {
-                    const rangeMinInput = document.querySelector('.range-price-min') as HTMLInputElement;
-                    const rangeMaxInput = document.querySelector('.range-price-max') as HTMLInputElement;
-
-                    if (rangeMinInput && rangeMaxInput) {
-                        rangeMinInput.value = this.minRangerValue;
-                        rangeMaxInput.value = this.maxRangerValue;
+                    if (this.$refs.minPriceSlider && this.$refs.maxPriceSlider) {
+                        this.$refs.minPriceSlider.value = this.minRangerValue;
+                        this.$refs.maxPriceSlider.value = this.maxRangerValue;
                     }
                 }, 100);
             }

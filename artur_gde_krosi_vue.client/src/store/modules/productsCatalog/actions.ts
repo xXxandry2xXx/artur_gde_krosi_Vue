@@ -37,7 +37,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
         this.commit('setPreloaderVisibility', true);
         this.commit('setSelectedFilters', this.getters.currentSelectedFilters);
 
-        this.dispatch('getFilteredData', this.getters.currentFiltersFormData).then(response => {
+        this.dispatch('getFilteredData', this.getters.currentSelectedFilters).then(response => {
             this.commit('setFilteredProducts', response);
             this.commit('setPreloaderVisibility', false);
             this.commit('countPages');
@@ -45,9 +45,50 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
         this.dispatch('fetchModels');
     },
 
-    async getFilteredData(state, filledFormData) {
+    async getFilteredData({ state }: { state: ProductsCatalogState }, selectedFilters: any) {
         try {
-            const response = await axios.post('http://localhost:5263/api/Product/GetProductList', filledFormData, { headers: { 'Content-Type': 'multipart/form-data', 'accept': '*/*' }});
+            const headers: Record<string, string> = {
+                'accept': '*/*',
+            };
+
+            if (selectedFilters.hasOwnProperty('priceMin')) {
+                headers['priseDown'] = selectedFilters.priceMin.toString();
+            }
+
+            if (selectedFilters.hasOwnProperty('priceMax')) {
+                headers['priseUp'] = selectedFilters.priceMax.toString();
+            }
+
+            if (selectedFilters.brandIDs) {
+                headers['brendsIds'] = selectedFilters.brandIDs.join();
+            }
+
+            if (selectedFilters.modelIDs) {
+                headers['modelKrosovocksIds'] = selectedFilters.modelIDs.join();
+            }
+
+            if (selectedFilters.checkedSizes) {
+                headers['shoeSizesChecked'] = selectedFilters.checkedSizes.join();
+            }
+
+            if (selectedFilters.hasOwnProperty('inStock')) {
+                headers['availability'] = selectedFilters.inStock.toString();
+            }
+
+            if (selectedFilters.searchValue) {
+                headers['PlaceholderContent'] = selectedFilters.searchValue.toString();
+            }
+
+            if (selectedFilters.hasOwnProperty('sortOrder')) {
+                headers['sortOrder'] = selectedFilters.sortOrder.toString();
+            }
+
+            headers['pageProducts'] = state.currentPage.toString();
+
+            const response = await axios.get('http://localhost:5263/api/Product/GetProductList', {
+                headers: headers
+            });
+
             return response.data;
         } catch (error) {
             console.log(error);
@@ -57,7 +98,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
 
     async fetchProducts() {
         try {
-            const response = await axios.get('http://localhost:5263/ProdutList/');
+            const response = await axios.get('http://localhost:5263/api/Product/GetProductList');
             this.commit('setProducts', response.data);
         } catch (error) {
             console.log(error);
@@ -71,7 +112,12 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
         if (selectedFilters.brandIDs) {
             selectedFilters.brandIDs.forEach((brand: string) => form.append('brendsIds', brand.toString()));
             try {
-                const response = await axios.post('http://localhost:5263/api/Filter/ModelKrosovocks', form, { headers: { 'Content-Type': 'multipart/form-data', 'accept': '*/*' }});
+                const response = await axios.get('http://localhost:5263/api/Filter/ModelKrosovocks', {
+                    headers: {
+                        'accept': '*/*',
+                        'brendsIds': selectedFilters.brandIDs.join()
+                    }
+                });
 
                 let fetchedModels = response.data.reduce((accumulator: ModelInterface[], currentValue: { name: string, modelKrosovocks: ModelInterface[] }) => {
                     return accumulator.concat(currentValue.modelKrosovocks);
