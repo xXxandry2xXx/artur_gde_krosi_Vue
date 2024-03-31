@@ -15,11 +15,11 @@ namespace artur_gde_krosi_Vue.Server.Controller
     [ApiController]
     public class ShoppingСartController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<ShoppingСartController> _logger;
         private readonly ApplicationIdentityContext db;
 
-        public ShoppingСartController(ILogger<ShoppingСartController> logger, ApplicationIdentityContext context, UserManager<IdentityUser> userManager)
+        public ShoppingСartController(ILogger<ShoppingСartController> logger, ApplicationIdentityContext context, UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
             db = context;
@@ -42,79 +42,57 @@ namespace artur_gde_krosi_Vue.Server.Controller
 
 
         [HttpPost]
-        public async Task<IActionResult> AddShoppingСarts(string name,[FromForm] string VariantId)
+        public async Task<IActionResult> AddShoppingСarts(string name, [FromForm] string VariantId)
         {
-            try
+            string username = name;/*HttpContext.User.Identity.Name;*/
+            var user = await _userManager.FindByNameAsync(username);
+            if (!db.ShoppingСarts.Any(x => x.UserId == user.Id && x.VariantId == VariantId))
             {
-                string username = name;/*HttpContext.User.Identity.Name;*/
-                var user = await _userManager.FindByNameAsync(username);
-                if (db.ShoppingСarts.Where(x => x.UserId == user.Id && x.VariantId == VariantId) == null)
-                {
-                    db.ShoppingСarts.Add(new ShoppingСart { UserId = user.Id, VariantId = VariantId , quantity = 0});
-                    db.SaveChanges();
-                    return Ok();
-                }
-                else return BadRequest("У пользователя в корзине уже имеется данный товар");
+                db.ShoppingСarts.Add(new ShoppingСart { UserId = user.Id, VariantId = VariantId, quantity = 0 });
+                db.SaveChanges();
+                return Ok();
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return BadRequest("Ошибка сервера");
-            }
+            else throw new ArgumentException("У пользователя в корзине уже имеется данный товар");
         }
 
         [Route("/api/[controller]/AddList")]
         [HttpPost]
         public async Task<IActionResult> AddListShoppingСarts(string name, [FromForm] List<string> VariantId)
         {
-            try
+
+            string username = name;/* HttpContext.User.Identity.Name;*/
+            var user = await _userManager.FindByNameAsync(username);
+            bool error = false;
+            foreach (var item in VariantId)
             {
-                string username = name;/* HttpContext.User.Identity.Name;*/
-                var user = await _userManager.FindByNameAsync(username);
-                bool error = false;
-                foreach (var item in VariantId)
+                if (!db.ShoppingСarts.Any(x => x.UserId == user.Id && x.VariantId == item))
                 {
-                    if (db.ShoppingСarts.Where(x => x.UserId == user.Id && x.VariantId == item) != null)
-                    {
-                        db.ShoppingСarts.Add(new ShoppingСart { UserId = user.Id, VariantId = item });
-                    }
-                    else error = true;
+                    db.ShoppingСarts.Add(new ShoppingСart { UserId = user.Id, VariantId = item });
                 }
-                db.SaveChanges();
-                if (!error) return Ok();
-                else return BadRequest("Один или несколько товаров уже лежали в корзине");
+                else error = true;
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return BadRequest("Ошибка сервера");
-            }
+            db.SaveChanges();
+            if (!error) return Ok();
+            else throw new ArgumentException("Один или несколько товаров уже лежали в корзине");
         }
 
         [HttpPut]
         public async Task<IActionResult> EditShoppingСarts([FromForm] string ShoppingСartId, [FromForm] int quantity)
         {
-            try
+
+            if (quantity > 0)
             {
-                if (quantity > 0)
+                ShoppingСart? shoppingCart = db.ShoppingСarts.Where(x => x.ShoppingСartId == ShoppingСartId).FirstOrDefault();
+                if (shoppingCart != null)
                 {
-                    ShoppingСart? shoppingCart = db.ShoppingСarts.Where(x => x.ShoppingСartId == ShoppingСartId).FirstOrDefault();
-                    if (shoppingCart != null)
-                    {
-                        shoppingCart.quantity = quantity;
-                        db.SaveChanges();
+                    shoppingCart.quantity = quantity; 
+                    db.SaveChanges();
 
-                        return Ok((quantity,true));
-                    }
-                    else return BadRequest("Позиция не найдена.");
+                    return Ok((quantity, true));
                 }
-                return BadRequest("Количество продукции должно быть положительным и не равным нул.");
+                else throw new ArgumentException("Позиция не найдена.");
             }
-            catch (Exception ex)
-            {
-                return BadRequest();
-            }
-
+            throw new ArgumentException("Количество продукции должно быть положительным и не равным нул.");
         }
         [HttpDelete]
         public async Task<IActionResult> DeleteShoppingСarts([FromForm] string ShoppingСartId)

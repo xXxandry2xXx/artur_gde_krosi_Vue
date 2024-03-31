@@ -17,10 +17,10 @@ namespace artur_gde_krosi_Vue.Server.Controller.CharacteristicProductFolder
         public CharacteristicProductsController(ILogger<CharacteristicProductsController> logger, ApplicationIdentityContext context)
         {
             _logger = logger;
-            db = context; 
+            db = context;
         }
         [HttpPost]
-        public async Task<IActionResult> AddCharacteristicProducts( string ProductId, string name)
+        public async Task<IActionResult> AddCharacteristicProducts(string ProductId, string name)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace artur_gde_krosi_Vue.Server.Controller.CharacteristicProductFolder
                 {
                     name = name,
                     ProductId = ProductId
-                }); 
+                });
                 await db.SaveChangesAsync();
                 return Ok();
             }
@@ -43,16 +43,18 @@ namespace artur_gde_krosi_Vue.Server.Controller.CharacteristicProductFolder
         {
             try
             {
-                CharacteristicProduct? characteristic =  db.CharacteristicProducts.Where(x => x.CharacteristicProductId == CharacteristicProductId)
-                    .FirstOrDefault();
-                characteristic.name = name;
+                CharacteristicProduct characteristic = db.CharacteristicProducts.Where(x => x.CharacteristicProductId == CharacteristicProductId).FirstOrDefault();
+                if (characteristic != null)
+                {
+                    characteristic.name = name;
+                }
                 await db.SaveChangesAsync();
                 return Ok();
             }
             catch (Exception Ex)
             {
                 Console.WriteLine(Ex.ToString());
-                throw new Exception("asd");
+                throw Ex;
             }
         }
 

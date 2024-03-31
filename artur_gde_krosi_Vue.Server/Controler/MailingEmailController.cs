@@ -14,9 +14,9 @@ namespace artur_gde_krosi_Vue.Server.Controler
     [ApiController]
     public class MailingEmailController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailService _emailService;
-        public MailingEmailController(IEmailService emailService, UserManager<IdentityUser> userManager)
+        public MailingEmailController(IEmailService emailService, UserManager<ApplicationUser> userManager)
         {
             _emailService = emailService;
             _userManager = userManager;
@@ -27,10 +27,17 @@ namespace artur_gde_krosi_Vue.Server.Controler
         {
             try
             {
-                var users = _userManager.Users.Where(x=>x.EmailConfirmed == true);
+                var users = _userManager.Users.Where(x => x.EmailConfirmed == true);
                 foreach (var user in users)
                 {
-                    var rez = await _emailService.SendEmailAsync(email: user.Email, subject, body);
+                    try
+                    {
+                        await _emailService.SendEmailAsync(email: user.Email, subject, body);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
                 }
                 return Ok();
             }

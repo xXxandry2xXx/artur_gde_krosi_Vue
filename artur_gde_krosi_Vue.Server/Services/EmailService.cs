@@ -14,7 +14,7 @@ namespace artur_gde_krosi_Vue.Server.Services
             _configuration = configuration;
         }
 
-        public async Task<bool> SendEmailAsync(string email, string subject , string body)
+        public async Task SendEmailAsync(string email, string subject , string body)
         {
             try
             {
@@ -40,18 +40,17 @@ namespace artur_gde_krosi_Vue.Server.Services
                     try
                     {
                         smtpClient.Send(mailMessage);
-                        return true;
+                        return ;
                     }
                     catch (Exception ex)
                     {
-                        return false;
+                        throw ;
                     }
                 }
             }
-            catch (Exception ex)
+            catch 
             {
-                Console.WriteLine(ex.ToString());
-                return false;
+                throw ;
             }
         }
     }

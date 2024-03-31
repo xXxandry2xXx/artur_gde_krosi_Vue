@@ -33,7 +33,7 @@ namespace artur_gde_krosi_Vue.Server.Middlewares
                 await HandleExceptionAsync(httpContext,
                     ex.Message,
                     HttpStatusCode.BadRequest,
-                    "It's impossible, but... Roberto NOT FOUND!!!");
+                    "Внутренняя ошибка сервера");
             }
         }
 

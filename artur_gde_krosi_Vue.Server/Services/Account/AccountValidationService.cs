@@ -26,7 +26,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
             IdentityResult result = await _passwordValidator.ValidateAsync(_userManager, user, password);
 
             if (result.Succeeded) return;
-            else throw new InvalidOperationException(JsonConvert.SerializeObject(result));
+            else throw new ArgumentException(JsonConvert.SerializeObject(result));
         }
         public async Task PreliminaryCheckEmeil(string email)
         {
