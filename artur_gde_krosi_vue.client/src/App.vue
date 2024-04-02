@@ -2,7 +2,7 @@
     <Preloader v-show="$store.state.showPreloader" />
 
     <transition name="fade">
-        <LoginPopup v-show="$store.state.showLogInPopup" />
+        <AuthorizationPopup v-show="$store.state.showLogInPopup" />
     </transition>
 
     <AppHeader />
@@ -20,9 +20,9 @@
     import { defineComponent } from 'vue';
     import AppHeader from '@/components/AppHeader/AppHeader.vue';
     import AppFooter from '@/components/AppFooter.vue';
-    import LoginPopup from '@/components/LoginPopup.vue';
+    import AuthorizationPopup from '@/components/AuthorizationPopup/AuthorizationPopup.vue';
 
     export default defineComponent({
-        components: { AppHeader, AppFooter, LoginPopup },
+        components: { AppHeader, AppFooter, AuthorizationPopup },
     })
 </script>

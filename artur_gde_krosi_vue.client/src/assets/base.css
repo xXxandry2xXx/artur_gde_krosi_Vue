@@ -97,20 +97,20 @@ header {
     margin: 0 10px;
 }
 
-.log-in-popup {
+.authorization-popup {
     box-sizing: border-box;
     position: absolute;
     z-index: 100;
 }
 
-.log-in-popup-background {
+.authorization-popup-background {
     width: 100%;
     height: 100%;
     position: fixed;
     background: rgb(0, 0, 0, 0.5);
 }
 
-.log-in-popup-content {
+.authorization-popup-content {
     width: 500px;
     position: fixed;
     padding: 30px;
@@ -120,52 +120,60 @@ header {
     transform: translate(-50%, -50%);
 }
 
-    .log-in-popup-content h3 {
-        font-size: 25px;
-        margin-bottom: 10px;
-        text-align: center;
-    }
+.authorization-popup-content h3 {
+    font-size: 25px;
+    margin-bottom: 10px;
+    text-align: center;
+}
 
-.log-in-section {
+.authorization-popup-section {
     display: flex;
     flex-direction: column;
 }
 
-.login-popup-field {
+.authorization-popup-field {
     border: 1px solid var(--additional-font-color-lighter);
-    font-size: 20px;
-    padding: 5px 10px;
-    margin: 5px 0;
+    font-size: 18px;
+    padding: 10px;
+    margin: 5px 0px;
 }
 
-.log-in-button {
-    padding: 5px 10px;
+.authorization-popup-button {
+    width: fit-content;
+    align-self: center;
+    padding: 5px 25px;
     font-size: 21px;
-    font-weight: 800;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
-.login-button {
-    background: none;
-    color: #fff;
-    border: none;
-    font-size: 20px;
-    font-weight: 600;
-    margin: 0 15px;
-}
-
-.another-way-to-log-in {
+.another-way-to-authorize {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-    .another-way-to-log-in span {
-        margin: 20px 0;
-    }
+.authorization-separator {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
 
-.another-way-to-log-in-button {
+.authorization-separator-line {
+    width: 40%;
+    border-bottom: 1px solid var(--additional-font-color);
+}
+
+.authorization-separator-text {
+    color: var(--additional-font-color);
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.another-way-to-authorize-button {
     border: none;
     background: none;
     font-size: 20px;
@@ -173,7 +181,7 @@ header {
     transition: 0.2s;
 }
 
-    .another-way-to-log-in-button:hover {
+    .another-way-to-authorize-button:hover {
         cursor: pointer;
         text-decoration: underline
     }
