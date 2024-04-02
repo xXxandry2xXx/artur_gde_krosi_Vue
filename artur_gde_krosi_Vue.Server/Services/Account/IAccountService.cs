@@ -12,6 +12,6 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
         Task<(ApplicationUser user, SignInResult result, IList<string> role)> LoginAsync(string username, string password);
         Task<IdentityResult> AddRoleAsync(string username, string role);
         Task<IdentityResult> DeleteRoleAsync(string username, string role);
-        Task<string> GenerateTokenAsync(ApplicationUser user);
+        Task<string> GenerateTokenAsync(ApplicationUser user, bool rememberUser);
     }
 }

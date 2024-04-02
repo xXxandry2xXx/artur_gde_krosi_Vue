@@ -3,7 +3,7 @@ using static artur_gde_krosi_Vue.Server.Models.ProductApi;
 
 namespace artur_gde_krosi_Vue.Server.Models.moyskladApi
 {
-    public abstract class InterfaceApi
+    public interface InterfaceApi
     {
         public Root root { get; set; }
 

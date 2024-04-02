@@ -1,5 +1,7 @@
-﻿using artur_gde_krosi_Vue.Server.Services.Account;
+﻿using artur_gde_krosi_Vue.Server.Models.UserModel;
+using artur_gde_krosi_Vue.Server.Services.Account;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using NuGet.Common;
 
 namespace artur_gde_krosi_Vue.Server.Controller.identity
@@ -9,9 +11,9 @@ namespace artur_gde_krosi_Vue.Server.Controller.identity
     public class SetingsUserController : ControllerBase
     {
         private readonly IAccountService _accountService;
-        private readonly IAccountSetingsService _accountSetingsService;
+        private readonly IAccountSettingsService _accountSetingsService;
 
-        public SetingsUserController(IAccountService accountService, IAccountSetingsService accountSetingsService)
+        public SetingsUserController(IAccountService accountService, IAccountSettingsService accountSetingsService)
         {
             _accountService = accountService;
             _accountSetingsService = accountSetingsService;
@@ -42,7 +44,27 @@ namespace artur_gde_krosi_Vue.Server.Controller.identity
         [HttpPut("PasswordReset")]
         public async Task<IActionResult> passwordReset(string email, string token, string newPassword)
         {
-            return Ok(await _accountSetingsService.PasswordResetCheckingEmailTokenAsync(email, token, newPassword));
+            var rez = await _accountSetingsService.PasswordResetCheckingEmailTokenAsync(email, token, newPassword);
+            if (rez.Succeeded) return Ok();
+            else throw new ArgumentException(JsonConvert.SerializeObject(rez));
+        }
+        [HttpGet("GenerateTokenOnEmailChange")]
+        public async Task<IActionResult> generateTokenOnEmailChange(string userName, string newEmail)
+        {
+            await _accountSetingsService.ChangeEmailTokenOnEmailAsync(userName, newEmail);
+            return Ok();
+        }
+        [HttpPut("EmailChange")]
+        public async Task<IActionResult> emailChange(string userName, string newEmail, string tokinToEmail)
+        {
+            await _accountSetingsService.ChangeEmailAsync(userName, newEmail, tokinToEmail);
+            return Ok();
+        }
+        [HttpPut("UserSettings")]
+        public async Task<IActionResult> userSettings([FromForm] UserInfoModel userInfoModel, string userName)
+        {
+            await _accountSetingsService.EditSettingsUserAsync(userInfoModel, userName);
+            return Ok();
         }
     }
 }

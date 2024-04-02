@@ -25,27 +25,19 @@ namespace artur_gde_krosi_Vue.Server.Controler
         [HttpGet]
         public async Task<IActionResult> Get(string subject, string body)
         {
-            try
+            var users = _userManager.Users.Where(x => x.EmailConfirmed == true);
+            foreach (var user in users)
             {
-                var users = _userManager.Users.Where(x => x.EmailConfirmed == true);
-                foreach (var user in users)
+                try
                 {
-                    try
-                    {
-                        await _emailService.SendEmailAsync(email: user.Email, subject, body);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex);
-                    }
+                    await _emailService.SendEmailAsync(email: user.Email, subject, body);
                 }
-                return Ok();
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return BadRequest();
-            }
+            return Ok();
         }
     }
 }

@@ -89,7 +89,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
             throw new ArgumentException(JsonConvert.SerializeObject(new IdentityError { Description = "Пользователь не найден." }));
         }
 
-        public async Task<string> GenerateTokenAsync(ApplicationUser user)
+        public async Task<string> GenerateTokenAsync(ApplicationUser user, bool rememberUser)
         {
             IList<string> roles = await _userManager.GetRolesAsync(user);
 
@@ -106,7 +106,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
             SigningCredentials sigincredetiols = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var jwtSecurityToken = new JwtSecurityToken(claims: claims,
-                expires: DateTime.Now.AddMinutes(30),
+                expires: rememberUser ? DateTime.Now.AddDays(1) : DateTime.Now.AddDays(15),
                 issuer: _configuration.GetSection("JWT:Issuer").Value,
                 audience: _configuration.GetSection("JWT:Audience").Value,
                 signingCredentials: sigincredetiols);

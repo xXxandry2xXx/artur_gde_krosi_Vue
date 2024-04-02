@@ -48,7 +48,7 @@ namespace artur_gde_krosi_Vue.Server.Controller
             var user = await _userManager.FindByNameAsync(username);
             if (!db.ShoppingСarts.Any(x => x.UserId == user.Id && x.VariantId == VariantId))
             {
-                db.ShoppingСarts.Add(new ShoppingСart { UserId = user.Id, VariantId = VariantId, quantity = 0 });
+                db.ShoppingСarts.Add(new ShoppingСart { UserId = user.Id, VariantId = VariantId, quantity = 1 });
                 db.SaveChanges();
                 return Ok();
             }
@@ -67,7 +67,7 @@ namespace artur_gde_krosi_Vue.Server.Controller
             {
                 if (!db.ShoppingСarts.Any(x => x.UserId == user.Id && x.VariantId == item))
                 {
-                    db.ShoppingСarts.Add(new ShoppingСart { UserId = user.Id, VariantId = item });
+                    db.ShoppingСarts.Add(new ShoppingСart { UserId = user.Id, VariantId = item, quantity = 1 });
                 }
                 else error = true;
             }
@@ -79,7 +79,6 @@ namespace artur_gde_krosi_Vue.Server.Controller
         [HttpPut]
         public async Task<IActionResult> EditShoppingСarts([FromForm] string ShoppingСartId, [FromForm] int quantity)
         {
-
             if (quantity > 0)
             {
                 ShoppingСart? shoppingCart = db.ShoppingСarts.Where(x => x.ShoppingСartId == ShoppingСartId).FirstOrDefault();

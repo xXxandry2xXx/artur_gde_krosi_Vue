@@ -63,7 +63,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<IAccountValidationService, AccountValidationService>();
-builder.Services.AddTransient<IAccountSetingsService, AccountSetingsService>();
+builder.Services.AddTransient<IAccountSettingsService, AccountSettingsService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 
 IServiceCollection services = builder.Services;

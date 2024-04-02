@@ -29,8 +29,9 @@ namespace artur_gde_krosi_Vue.Server.Controller
                 .Include(x => x.ModelKrosovock.Brend)
                 .Include(x => x.Images)
                 .Include(x => x.Variants)
-                .Include(x => x.CharacteristicProducts).ThenInclude(x => x.CharacteristicProductValues);
-
+                .Include(x => x.CharacteristicProducts).ThenInclude(x => x.CharacteristicProductValues).FirstOrDefault();
+            product.views += 1;
+            db.SaveChanges();
             return Ok(product);
         }
         [HttpGet]
@@ -45,7 +46,6 @@ namespace artur_gde_krosi_Vue.Server.Controller
         public async Task<IActionResult> GetAllProdutSearch()
         {
             var product = db.Products.Include(x=>x.Images).Select(x => new { name = x.name , herfImage = x.Images , id = x.ProductId}).ToList();
-
             return Ok(product);
         }
         [Route("GetProductList")]
@@ -54,7 +54,6 @@ namespace artur_gde_krosi_Vue.Server.Controller
             [FromHeader] List<double> shoeSizesChecked = null, [FromHeader] bool availability = false,
             [FromHeader] string PlaceholderContent = null, [FromHeader] SortState sortOrder = SortState.NameAsc, [FromHeader] int pageProducts = 1)
         {
-
             if (PlaceholderContent != null) { PlaceholderContent = PlaceholderContent.Trim().ToLower(); }
             string[] PlaceholderArry = null;
             if (PlaceholderContent != null && PlaceholderContent != "") { PlaceholderArry = PlaceholderContent.Split(' '); }

@@ -43,12 +43,12 @@ namespace artur_gde_krosi_Vue.Server.Controller.identity
         }
 
         [HttpGet("Login")]
-        public async Task<IActionResult> login(string usernameOrEmail, string password)
+        public async Task<IActionResult> login(string usernameOrEmail, string password, bool rememberUser)
         {
             var result = await _accountService.LoginAsync(usernameOrEmail, password);
             if (result.result.Succeeded)
             {
-                var Token = _accountService.GenerateTokenAsync(result.user);
+                var Token = _accountService.GenerateTokenAsync(result.user,rememberUser);
                 return Ok(new { Token, result.user });
             }
             else throw new ArgumentException(JsonConvert.SerializeObject(result));

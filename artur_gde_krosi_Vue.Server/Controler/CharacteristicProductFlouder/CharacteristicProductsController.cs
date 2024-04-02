@@ -35,7 +35,7 @@ namespace artur_gde_krosi_Vue.Server.Controller.CharacteristicProductFolder
             catch (Exception Ex)
             {
                 Console.WriteLine(Ex.ToString());
-                return BadRequest();
+                throw;
             }
         }
         [HttpPut]
@@ -44,17 +44,15 @@ namespace artur_gde_krosi_Vue.Server.Controller.CharacteristicProductFolder
             try
             {
                 CharacteristicProduct characteristic = db.CharacteristicProducts.Where(x => x.CharacteristicProductId == CharacteristicProductId).FirstOrDefault();
-                if (characteristic != null)
-                {
-                    characteristic.name = name;
-                }
+                if (characteristic != null) throw new ArgumentException("характеристика не найдена");
+                characteristic.name = name;
                 await db.SaveChangesAsync();
                 return Ok();
             }
             catch (Exception Ex)
             {
                 Console.WriteLine(Ex.ToString());
-                throw Ex;
+                throw;
             }
         }
 
@@ -70,7 +68,7 @@ namespace artur_gde_krosi_Vue.Server.Controller.CharacteristicProductFolder
             catch (Exception Ex)
             {
                 Console.WriteLine(Ex.ToString());
-                return BadRequest();
+                throw;
             }
         }
 

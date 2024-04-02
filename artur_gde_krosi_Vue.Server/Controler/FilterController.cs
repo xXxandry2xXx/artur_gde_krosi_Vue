@@ -35,7 +35,8 @@ namespace artur_gde_krosi_Vue.Server.Controller
                 .Select(x => new
                 {
                     Name = x.name,
-                    ModelKrosovocks = x.ModelKrosovocks.Select(y => new {
+                    ModelKrosovocks = x.ModelKrosovocks.Select(y => new
+                    {
                         name = y.name,
                         modelKrosovockId = y.ModelKrosovockId
                     })

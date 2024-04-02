@@ -36,8 +36,7 @@ namespace artur_gde_krosi_Vue.Server.Controller
             IScheduler scheduler = await factory.GetScheduler();
 
             await scheduler.TriggerJob(new JobKey("artur_gde_krosi_Vue.Server.Schedulers.UpdateStockJob"));
-
-            return Ok("OK");
+            return Ok();
         }
         [HttpPut("DBParser")]
         public async Task<IActionResult> Parser()
@@ -46,7 +45,7 @@ namespace artur_gde_krosi_Vue.Server.Controller
 
             await scheduler.TriggerJob(new JobKey("artur_gde_krosi_Vue.Server.Schedulers.ProductAndGroupJob"));
 
-            return Ok("OK");
+            return Ok();
         }
     }
 }
