@@ -41,7 +41,6 @@ namespace artur_gde_krosi_Vue.Server.Controller
                         modelKrosovockId = y.ModelKrosovockId
                     })
                 }).ToList();
-
             return Ok(modelKrosovocks);
         }
         [HttpGet]

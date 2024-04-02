@@ -22,30 +22,4 @@
             </div>
         </nav>
     </header>
-    <div class="app-subheader">
-        <nav class="autorization-buttons">
-            <button class="autorization-button">Вход</button>
-            <span>или</span>
-            <button class="autorization-button">Регистрация</button>
-        </nav>
-        <div class="app-subheader-buttons">
-            <button class="app-subheader-button"><font-awesome-icon :icon="['fas', 'magnifying-glass']" /></button>
-            <div class="cart-button">
-                <span class="cart-capacity">{{ cartCapacity }}</span>
-                <button class="app-subheader-button"><font-awesome-icon :icon="['fas', 'cart-shopping']" /></button>
-            </div>
-        </div>
-    </div>
 </template>
-
-<script lang="ts">
-    import { defineComponent } from 'vue'
-
-    export default defineComponent({
-        data() {
-            return {
-                cartCapacity: 0,
-            }
-        }
-    })
-</script>

@@ -93,43 +93,50 @@ namespace artur_gde_krosi_Vue.Server.Controller
                     Images = x.Images.Where(y => y.Index == 0).Take(1).Select(x => new
                     {
                         ImgSrc = x.ImageSrc
-                    })
-                })
-                .ToList();
+                    }),
+                    views = x.views
+                });
             switch (sortOrder)
             {
                 case SortState.NameAsc:
-                    products = products.OrderBy(x => x.name).ToList();
+                    products = products.OrderBy(x => x.name);
                     break;
                 case SortState.NameDesc:
-                    products = products.OrderByDescending(x => x.name).ToList();
+                    products = products.OrderByDescending(x => x.name);
                     break;
                 case SortState.PriseAsc:
-                    products = products.OrderBy(x => x.Variants[0].prise).ToList();
+                    products = products.OrderBy(x => x.Variants[0].prise);
                     break;
                 case SortState.PriseDesc:
-                    products = products.OrderByDescending(x => x.Variants[0].prise).ToList();
+                    products = products.OrderByDescending(x => x.Variants[0].prise);
+                    break;  
+                case SortState.PopularityAsc:
+                    products = products.OrderByDescending(x => x.views);
+                    break; 
+                case SortState.PopularityDesc:
+                    products = products.OrderByDescending(x => x.views);
                     break; 
                 default:
                     break;
             }
-            if (products.Count == 0)
+            var productsList = products.ToList();
+            if (productsList.Count == 0)
             {
                 var resultNon = new
                 {
-                    Products = products,
+                    Products = productsList,
                     priseMin = 0,
                     priseMax = 0,
                     productcount = 0
                 };
                 return Ok(resultNon);
             }
-            int priseMin = (int)products.Min(x => x.Variants[0].prise) / 100;
-            int priseMax = (int)products.Max(x => x.Variants[0].prise) / 100;
-            int ProductCount = products.Count();
+            int priseMin = (int)productsList.Min(x => x.Variants[0].prise) / 100;
+            int priseMax = (int)productsList.Max(x => x.Variants[0].prise) / 100;
+            int ProductCount = productsList.Count();
             var result = new
             {
-                Products = products.Skip(20 * (pageProducts - 1)).Take(20),
+                Products = productsList.Skip(20 * (pageProducts - 1)).Take(20),
                 priseMin = priseMin,
                 priseMax = priseMax,
                 productcount = ProductCount

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
 
@@ -11,9 +12,11 @@ using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
 namespace artur_gde_krosi_Vue.Server.Migrations
 {
     [DbContext(typeof(ApplicationIdentityContext))]
-    partial class ApplicationIdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20240403082832_Migger_2")]
+    partial class Migger_2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

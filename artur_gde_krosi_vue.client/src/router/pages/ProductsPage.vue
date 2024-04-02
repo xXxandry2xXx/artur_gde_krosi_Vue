@@ -1,12 +1,12 @@
 ﻿<template>
-    <div class="top-bar">
+    <nav class="top-bar">
         <span class="bread-crumb" @click="$router.push('/')">На главную</span>
         <div class="bread-crumbs">
             <span class="bread-crumb" @click="$router.push('/')">Главная</span>
             /
             <span class="bread-crumb bread-crumb-current">Все кроссовки</span>
         </div>
-    </div>
+    </nav>
 
     <div class="products-main">
         <FiltersPanel />
@@ -59,7 +59,6 @@
                         if (currentPage < 1 || currentPage > totalPages || Number(to.params.page) < 1 || Number(to.params.page) > totalPages) this.$router.push('/notfound');
                     }
                 }
-
                 next();
             });
         }

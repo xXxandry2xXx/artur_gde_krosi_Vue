@@ -65,11 +65,6 @@ public class ProductAndGroupJob : IJob
 
             loggerFactory.AddProvider(new LoggerProvider());
 
-            dbContext.Brends.RemoveRange(dbContext.Brends.ToList());
-            dbContext.ModelKrosovocks.RemoveRange(dbContext.ModelKrosovocks.ToList());
-            dbContext.Products.RemoveRange(dbContext.Products.ToList());
-            dbContext.Variants.RemoveRange(dbContext.Variants.ToList());
-
             Console.WriteLine("после");
 
             List<Brend> brends = new();
@@ -110,7 +105,8 @@ public class ProductAndGroupJob : IJob
                         ProductId = item.id,
                         name = item.name,
                         ModelKrosovockId = item.productFolder.id,
-                        description = item.description
+                        description = item.description,
+                        views = 0
                     });
                     int index = 0;
                     foreach (var itemImg in item.images.rows)
