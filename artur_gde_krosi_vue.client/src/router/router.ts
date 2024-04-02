@@ -10,12 +10,13 @@ export default createRouter({
         { path: '/', component: MainPage },
         { path: '/products', component: ProductsPage, meta: { requiresFiltersLoading: true } },
         { name: 'productsPage', path: '/products/:page', component: ProductsPage, meta: { requiresFiltersLoading: true } },
-        { name: 'product', path: '/products/productId=:productId', component: ProductPage, meta: { isProductPage: true } },
+        { name: 'productPage', path: '/products/productId=:productId', component: ProductPage },
         { name: 'notFound', path: '/notfound', component: NotFound },
+        { path: '/:catchAll(.*)', component: NotFound },
     ],
     history: createWebHashHistory(),
 
-    scrollBehavior(to, from, savedPosition) {
+    scrollBehavior(to) {
         if (to.hash) {
             return {
                 el: to.hash,

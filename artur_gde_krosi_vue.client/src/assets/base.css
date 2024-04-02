@@ -97,22 +97,102 @@ header {
     margin: 0 10px;
 }
 
-.login-button {
-    background: none;
-    color: #fff;
-    border: none;
-    font-size: 20px;
-    font-weight: 600;
-    margin: 0 15px;
+.authorization-popup {
+    box-sizing: border-box;
+    position: absolute;
+    z-index: 100;
 }
 
-.appheader-navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 90px;
-    padding: 0 30px;
+.authorization-popup-background {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background: rgb(0, 0, 0, 0.5);
 }
+
+.authorization-popup-content {
+    width: 500px;
+    position: fixed;
+    padding: 30px;
+    background: #fff;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.authorization-popup-content h3 {
+    font-size: 25px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.authorization-popup-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.authorization-popup-field {
+    border: 1px solid var(--additional-font-color-lighter);
+    font-size: 18px;
+    padding: 10px;
+    margin: 5px 0px;
+}
+
+.authorization-popup-button {
+    width: fit-content;
+    align-self: center;
+    padding: 5px 25px;
+    font-size: 21px;
+    margin-top: 10px;
+}
+
+.another-way-to-authorize {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.authorization-separator {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.authorization-separator-line {
+    width: 40%;
+    border-bottom: 1px solid var(--additional-font-color);
+}
+
+.authorization-separator-text {
+    color: var(--additional-font-color);
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.another-way-to-authorize-button {
+    border: none;
+    background: none;
+    font-size: 20px;
+    color: var(--border-font-color);
+    transition: 0.2s;
+}
+
+    .another-way-to-authorize-button:hover {
+        cursor: pointer;
+        text-decoration: underline
+    }
+
+    .appheader-navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 90px;
+        padding: 0 30px;
+    }
 
 .logo {
     display: flex;
@@ -170,6 +250,11 @@ header {
     display: flex;
 }
 
+.app-subheader-buttons button:hover {
+    cursor: pointer;
+    transform: scale(1.01);
+}
+
 .app-subheader-button {
     font-size: 30px;
     margin: 0 10px;
@@ -177,9 +262,11 @@ header {
     border: none;
 }
 
-.cart-button {
-    position: relative;
-}
+    .cart-button {
+        position: relative;
+        background: none;
+        border: none;
+    }
 
 .cart-capacity {
     position: absolute;
@@ -201,10 +288,56 @@ header {
     margin: 0 10px;
 }
 
-    .nav-button:hover {
+.app-search-panel {
+    box-sizing: border-box;
+    width: 500px;
+    position: absolute;
+    background: #fff;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.2) 2px 0px 5px 0px;
+    top: 66px;
+    right: 75px;
+}
+
+.search-hints {
+    padding: 0 10px;
+    margin-top: 10px;
+    max-height: 450px;
+    overflow: hidden scroll;
+}
+
+.search-hint {
+    display: flex;
+    margin-top: 5px;
+    transition: 0.2s;
+    padding: 5px;
+}
+
+    .search-hint:hover {
         cursor: pointer;
-        text-decoration: underline;
+        box-shadow: 0px 0px 10px 1px rgb(0, 0, 0, 20%);
     }
+
+    .search-hint img {
+        width: 100px;
+        height: 100px;
+        margin-right: 20px;
+    }
+
+    .search-hint p {
+        font-size: 18px;
+    }
+
+.search-button {
+    padding: 5px;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.nav-button:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
 
 .top-bar {
     display: flex;
@@ -327,6 +460,7 @@ header {
 .main-page-brands h1,
 .products-slider h1 {
     text-align: center;
+    font-family: "Oswald", sans-serif;
 }
 
 .main-page-show-all-button {
@@ -799,10 +933,8 @@ header {
     }
 
 .search-input-wrapper {
-    width: 50%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
     background: #fff;
 }
 
@@ -817,12 +949,6 @@ header {
     .clear-search-value:hover {
         cursor: pointer;
     }
-
-.search-button {
-    font-size: 20px;
-    padding: 7px 10px;
-    height: 100%;
-}
 
 .search-input {
     width: 100%;
@@ -1093,6 +1219,22 @@ header {
     color: #d1a705;
 }
 
+.not-found-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 55px;
+    color: var(--additional-font-color);
+}
+
+    .not-found-page h1 {
+        font-size: 150px;
+    }
+
+    .not-found-page p {
+        font-size: 25px;
+    }
 
 
 footer {
@@ -1174,5 +1316,4 @@ footer {
 /* Адаптив */
 
 @media (max-width: 2560px) {
-
 }
