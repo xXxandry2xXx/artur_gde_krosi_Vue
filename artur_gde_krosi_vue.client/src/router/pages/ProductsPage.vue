@@ -59,7 +59,6 @@
                         if (currentPage < 1 || currentPage > totalPages || Number(to.params.page) < 1 || Number(to.params.page) > totalPages) this.$router.push('/notfound');
                     }
                 }
-
                 next();
             });
         }

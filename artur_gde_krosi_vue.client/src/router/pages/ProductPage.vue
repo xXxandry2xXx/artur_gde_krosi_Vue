@@ -1,5 +1,5 @@
 ﻿<template>
-    <div class="product-page" :key="productId">
+    <div class="product-page" :key="changedProductId">
         <nav class="top-bar">
             <span class="bread-crumb" @click="$router.go(-1)">Назад</span>
             <div class="bread-crumbs">
@@ -34,7 +34,7 @@
 
         data() {
             return {
-                productId: this.$route.params.productId,
+                productId: this.changedProductId,
                 productData: {},
                 productImages: [],
                 sameCategoryProducts: [],
@@ -78,19 +78,23 @@
         computed: {
             relatedProducts(this: any) {
                 return this.sameCategoryProducts.filter((product: any) => product.productId !== this.productId)
+            },
+
+            changedProductId(this: any) {
+                return this.productId = this.$route.params.productId;
             }
         },
 
         watch: {
             async productId(this: any) {
                 await this.productPageInit();
-                await this.getRelatedProducts()
+                this.getRelatedProducts();
             }
         },
 
         async mounted() {
             await this.productPageInit();
-            await this.getRelatedProducts()
+            this.getRelatedProducts()
         },
     })
 </script>

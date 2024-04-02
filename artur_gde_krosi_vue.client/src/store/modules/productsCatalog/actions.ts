@@ -106,11 +106,8 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
     },
 
     async fetchModels() {
-        const form = new FormData();
         let selectedFilters = this.getters.selectedFiltersState;
-
         if (selectedFilters.brandIDs) {
-            selectedFilters.brandIDs.forEach((brand: string) => form.append('brendsIds', brand.toString()));
             try {
                 const response = await axios.get('http://localhost:5263/api/Filter/ModelKrosovocks', {
                     headers: {

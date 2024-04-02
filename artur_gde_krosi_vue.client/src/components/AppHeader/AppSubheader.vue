@@ -1,27 +1,28 @@
 ﻿<template>
     <nav class="app-subheader">
         <div class="autorization-buttons">
-            <button class="autorization-button">Вход</button>
+            <button class="autorization-button" @click="openLoginPopup('log-in')">Вход</button>
             <span>или</span>
-            <button class="autorization-button">Регистрация</button>
+            <button class="autorization-button" @click="openLoginPopup('registration')">Регистрация</button>
         </div>
 
         <transition name="fade">
-            <AppSearchPanel :isVisible="isSearchPanelVisible" />
+            <AppSearchPanel @mouseenter="showSearchPanel" @mouseleave="hideSearchPanel"/>
         </transition>
 
         <div class="app-subheader-buttons">
-            <button class="app-subheader-button" @click="toggleSearchPanel"><font-awesome-icon :icon="['fas', 'magnifying-glass']" /></button>
-            <div class="cart-button">
+            <button class="app-subheader-button" @mouseenter="showSearchPanel"><font-awesome-icon :icon="['fas', 'magnifying-glass']" /></button>
+            <button class="cart-button">
                 <span class="cart-capacity">{{ currentCartCapacity }}</span>
-                <button class="app-subheader-button"><font-awesome-icon :icon="['fas', 'cart-shopping']" /></button>
-            </div>
+                <span class="app-subheader-button"><font-awesome-icon :icon="['fas', 'cart-shopping']" /></span>
+            </button>
         </div>
     </nav>
 </template>
 
 <script lang="ts">
     import { defineComponent } from 'vue';
+    import { mapMutations } from 'vuex';
     import AppSearchPanel from '@/components/AppHeader/AppSearchPanel.vue';
 
     export default defineComponent({
@@ -35,8 +36,14 @@
         },
 
         methods: {
-            toggleSearchPanel(this: any) {
-                this.isSearchPanelVisible = !this.isSearchPanelVisible
+            ...mapMutations(['setSearchPanelVisibility', 'openLoginPopup']),
+
+            showSearchPanel(this: any) {
+                this.setSearchPanelVisibility(true);
+            },
+
+            hideSearchPanel(this: any) {
+                setTimeout(() => this.setSearchPanelVisibility(false), 500)
             }
         }
     })

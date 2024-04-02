@@ -1,5 +1,8 @@
 ﻿<template>
-    <div class="not-found-page"><h1>По Вашему запросу ничего не найдено</h1></div>
+    <div class="not-found-page">
+        <h1>404</h1>
+        <p>Извините, такой страницы не существует</p>
+    </div>
     <ProductsSlider v-if="suggestedProducts.length > 0" :sliderArray="suggestedProducts" :sliderTitle="'Возможно, Вас заинтересует'" />
 </template>
 
@@ -15,7 +18,6 @@
         data() {
             return {
                 suggestedProducts: [],
-
             }
         },
 
@@ -24,15 +26,13 @@
             ...mapGetters(['getProductsData']),
 
             async fetchSuggestedProducts(this: any) {
-                await this.fetchProducts().then(() => {
-                    this.suggestedProducts = this.getProductsData().products;
-                })
+                await this.fetchProducts();
+                this.suggestedProducts = this.getProductsData().products;
             }
         },
 
-        async mounted() {
-            await this.fetchSuggestedProducts();
-            console.log(this.suggestedProducts)
+        mounted() {
+            this.fetchSuggestedProducts();
         }
     })
 </script>

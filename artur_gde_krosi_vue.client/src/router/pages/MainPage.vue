@@ -30,7 +30,9 @@
 
         async beforeMount() {
             this.setPreloaderVisibility(true);
-            await this.fetchProducts().then(this.setPreloaderVisibility(false));
+            await this.fetchProducts();
+            this.setPreloaderVisibility(false);
+
             this.popularProducts = this.getProductsData().products;
         }
     })

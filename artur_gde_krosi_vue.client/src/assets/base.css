@@ -97,6 +97,54 @@ header {
     margin: 0 10px;
 }
 
+.log-in-popup {
+    box-sizing: border-box;
+    position: absolute;
+    z-index: 100;
+}
+
+.log-in-popup-background {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background: rgb(0, 0, 0, 0.5);
+}
+
+.log-in-popup-content {
+    width: 500px;
+    position: fixed;
+    padding: 30px;
+    background: #fff;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+    .log-in-popup-content h3 {
+        font-size: 25px;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+.log-in-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-popup-field {
+    border: 1px solid var(--additional-font-color-lighter);
+    font-size: 20px;
+    padding: 5px 10px;
+    margin: 5px 0;
+}
+
+.log-in-button {
+    padding: 5px 10px;
+    font-size: 21px;
+    font-weight: 800;
+    margin-top: 20px;
+}
+
 .login-button {
     background: none;
     color: #fff;
@@ -106,13 +154,37 @@ header {
     margin: 0 15px;
 }
 
-.appheader-navbar {
+.another-way-to-log-in {
+    width: 100%;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    height: 90px;
-    padding: 0 30px;
 }
+
+    .another-way-to-log-in span {
+        margin: 20px 0;
+    }
+
+.another-way-to-log-in-button {
+    border: none;
+    background: none;
+    font-size: 20px;
+    color: var(--border-font-color);
+    transition: 0.2s;
+}
+
+    .another-way-to-log-in-button:hover {
+        cursor: pointer;
+        text-decoration: underline
+    }
+
+    .appheader-navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 90px;
+        padding: 0 30px;
+    }
 
 .logo {
     display: flex;
@@ -170,6 +242,11 @@ header {
     display: flex;
 }
 
+.app-subheader-buttons button:hover {
+    cursor: pointer;
+    transform: scale(1.01);
+}
+
 .app-subheader-button {
     font-size: 30px;
     margin: 0 10px;
@@ -177,9 +254,11 @@ header {
     border: none;
 }
 
-.cart-button {
-    position: relative;
-}
+    .cart-button {
+        position: relative;
+        background: none;
+        border: none;
+    }
 
 .cart-capacity {
     position: absolute;
@@ -207,10 +286,39 @@ header {
     position: absolute;
     background: #fff;
     padding: 10px;
-    box-shadow: rgba(0, 0, 0, 0.2) 3px 3px 5px 0px;
+    box-shadow: rgba(0, 0, 0, 0.2) 2px 0px 5px 0px;
     top: 66px;
     right: 75px;
 }
+
+.search-hints {
+    padding: 0 10px;
+    margin-top: 10px;
+    max-height: 450px;
+    overflow: hidden scroll;
+}
+
+.search-hint {
+    display: flex;
+    margin-top: 5px;
+    transition: 0.2s;
+    padding: 5px;
+}
+
+    .search-hint:hover {
+        cursor: pointer;
+        box-shadow: 0px 0px 10px 1px rgb(0, 0, 0, 20%);
+    }
+
+    .search-hint img {
+        width: 100px;
+        height: 100px;
+        margin-right: 20px;
+    }
+
+    .search-hint p {
+        font-size: 18px;
+    }
 
 .search-button {
     padding: 5px;
@@ -1107,19 +1215,30 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     margin-top: 55px;
+    color: var(--additional-font-color);
 }
 
-    footer {
-        box-sizing: border-box;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: #000;
-        color: #fff;
-        width: 100%;
-        margin-top: 50px;
+    .not-found-page h1 {
+        font-size: 150px;
     }
+
+    .not-found-page p {
+        font-size: 25px;
+    }
+
+
+footer {
+    box-sizing: border-box;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #000;
+    color: #fff;
+    width: 100%;
+    margin-top: 50px;
+}
 
 .footer-content {
     display: flex;
@@ -1189,5 +1308,4 @@ header {
 /* Адаптив */
 
 @media (max-width: 2560px) {
-
 }
