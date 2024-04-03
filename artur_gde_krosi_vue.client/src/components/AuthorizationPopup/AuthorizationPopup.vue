@@ -2,49 +2,46 @@
     <div class="authorization-popup">
         <div class="authorization-popup-background" @click="setLogInPopupVisibility(false)"></div>
         <div class="authorization-popup-content">
-            <AuthorizationSection :currentMode="logIn.mode" :currentModeText="logIn.name" :anotherWayButtonText="registration.name" :anotherWayMode="registration.mode" :fields="logIn.fields" />
-            <AuthorizationSection :currentMode="registration.mode" :currentModeText="registration.name" :anotherWayButtonText="logIn.name" :anotherWayMode="logIn.mode" :fields="registration.fields" />
+
+            <div>
+                <div class="authorization-section" v-show="$store.state.loginPopupMode === 'log-in'">
+                    <div class="authorization-section-fields">
+                        <AuthorizationField :fieldPlaceholder="'Логин'" :fieldIcon="['fas', 'user']" />
+                        <AuthorizationField :fieldPlaceholder="'Пароль'" :fieldIcon="['fas', 'key']" />
+                    </div>
+                    <BorderedButton class="authorization-popup-button">Вход</BorderedButton>
+                </div>
+
+                <div class="authorization-section" v-show="$store.state.loginPopupMode === 'registration'">
+                    <div class="authorization-section-fields">
+                        <AuthorizationField :fieldPlaceholder="'E-mail'" :fieldIcon="['fas', 'at']" />
+                        <AuthorizationField :fieldPlaceholder="'Логин'" :fieldIcon="['fas', 'user']" />
+                        <div class="authorization-personal-data">
+                            <AuthorizationField :fieldPlaceholder="'Имя'" :fieldIcon="['fas', 'user']" />
+                            <AuthorizationField :fieldPlaceholder="'Фамилия'" :fieldIcon="['fas', 'user']" />
+                        </div>
+                        <AuthorizationField :fieldPlaceholder="'Отчество'" :fieldIcon="['fas', 'user']" />
+                        <AuthorizationField :fieldPlaceholder="'Пароль'" :fieldIcon="['fas', 'key']" />
+                        <AuthorizationField :fieldPlaceholder="'Подтверждение пароля'" :fieldIcon="['fas', 'key']" />
+                    </div>
+                    <BorderedButton class="authorization-popup-button">Регистрация</BorderedButton>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
     import { defineComponent } from 'vue';
-    import { mapMutations } from 'vuex';
-    import AuthorizationSection from '@/components/AuthorizationPopup/AuthorizationSection.vue';
+     import { mapMutations } from 'vuex'
+ import AuthorizationField from '@/components/AuthorizationPopup/AuthorizationField.vue'
 
-    export default defineComponent({
-        components: { AuthorizationSection },
-
-        data() {
-            return {
-                logIn: {
-                    name: 'Вход',
-                    mode: 'log-in',
-                    fields: [
-                        { name: 'Логин или E-mail', id: 'login-username-or-email' },
-                        { name: 'Пароль', id: 'login-password' }
-                    ]
-                },
-
-                registration: {
-                    name: 'Регистрация',
-                    mode: 'registration',
-                    fields: [
-                        { name: 'Логин', id: 'reg-username' },
-                        { name: 'E-mail', id: 'reg-email' },
-                        { name: 'Пароль', id: 'reg-password' },
-                        { name: 'Подтверждение пароля', id: 'reg-password-confirmation' },
-                        { name: 'Имя', id: 'reg-name' },
-                        { name: 'Фамилия', id: 'reg-surname' },
-                        { name: 'Отчество', id: 'reg-patronymic' },
-                    ]
-                }
-            }
-        },
+        export default defineComponent({
+        components: { AuthorizationField },
 
         methods: {
-            ...mapMutations(['setLogInPopupVisibility'])
+            ...mapMutations(['setLogInPopupVisibility', 'openLoginPopup'])
         }
     })
+
 </script> 

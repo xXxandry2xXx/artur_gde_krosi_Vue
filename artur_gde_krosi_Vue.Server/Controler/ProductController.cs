@@ -13,7 +13,7 @@ namespace artur_gde_krosi_Vue.Server.Controller
     public class ProductController : ControllerBase
     {
         private readonly ILogger<ProductController> _logger;
-        ApplicationIdentityContext db;
+        private readonly ApplicationIdentityContext db;
 
         public ProductController(ILogger<ProductController> logger, ApplicationIdentityContext context)
         {

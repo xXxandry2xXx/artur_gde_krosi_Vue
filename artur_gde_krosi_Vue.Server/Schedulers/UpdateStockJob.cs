@@ -2,6 +2,7 @@
 using artur_gde_krosi_Vue.Server.Models.BdModel;
 using artur_gde_krosi_Vue.Server.Models.moyskladApi;
 using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
+using artur_gde_krosi_Vue.Server.Services.Parser;
 using Quartz;
 
 namespace artur_gde_krosi_Vue.Server.Schedulers
@@ -10,9 +11,9 @@ namespace artur_gde_krosi_Vue.Server.Schedulers
     {
         private readonly IServiceProvider _provider;
 
-        public UpdateStockJob(IServiceProvider provider)
+        public UpdateStockJob(IServiceProvider providere)
         {
-            _provider = provider;
+            _provider = providere;
         }
 
         public Task Execute(IJobExecutionContext context)
@@ -40,44 +41,14 @@ namespace artur_gde_krosi_Vue.Server.Schedulers
             using (var scope = _provider.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationIdentityContext>();
-
                 var serviceProviderWithLogger = new ServiceCollection()
                     .AddLogging(builder => builder.AddConsole())
                     .BuildServiceProvider();
-
                 var loggerFactory = serviceProviderWithLogger.GetRequiredService<ILoggerFactory>();
-
                 loggerFactory.AddProvider(new LoggerProvider());
 
-                List<Variant> variants = dbContext.Variants.ToList();
-                foreach (var item in stockApi.root.rows)
-                {
-                    if (variants.Any(x=> x.externalCode == item.externalCode))
-                    {
-                        if (item.stock.Contains("."))
-                        {
-                            item.stock = item.stock.Split('.')[0];
-                        }
-                        try
-                        {
-                            dbContext.Variants.FirstOrDefault(x => x.externalCode == item.externalCode).quantityInStock = Convert.ToInt32(item.stock);
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex+"");
-                        }
-                    } 
-                }
-                Console.WriteLine("после");
-
-                try
-                {
-                    dbContext.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
+                IProductParserService _productParserService = scope.ServiceProvider.GetRequiredService<IProductParserService>();
+                await _productParserService.QuantityInStockPars(stockApi);
             }
         }
     }

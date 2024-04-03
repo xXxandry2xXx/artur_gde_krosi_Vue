@@ -15,6 +15,7 @@ using artur_gde_krosi_Vue.Server.Services.Account;
 using artur_gde_krosi_Vue.Server.Models.BdModel;
 using System.Reflection.Emit;
 using artur_gde_krosi_Vue.Server.Middlewares;
+using artur_gde_krosi_Vue.Server.Services.Parser;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,9 +62,14 @@ builder.Services.AddAuthentication(options =>
     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JWT:key").Value))
 });
 
-builder.Services.AddTransient<IAccountService, AccountService>();
-builder.Services.AddTransient<IAccountValidationService, AccountValidationService>();
-builder.Services.AddTransient<IAccountSettingsService, AccountSettingsService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IAccountValidationService, AccountValidationService>();
+builder.Services.AddScoped<IAccountSettingsService, AccountSettingsService>();
+
+builder.Services.AddScoped<IGroupParserService, GroupParserService>();
+builder.Services.AddScoped<IProductParserService, ProductParserService>();
+builder.Services.AddScoped<IPostImegesS3Service, PostImegesS3Service>();
+
 builder.Services.AddTransient<IEmailService, EmailService>();
 
 IServiceCollection services = builder.Services;
@@ -85,8 +91,6 @@ services.AddSingleton<ProductAndGroupJob>();
 services.AddSingleton(new JobSchedule(
     jobType: typeof(ProductAndGroupJob),
     cronExpression: "0  20 0  ? * *"));
-//" + ((int)DateTime.Now.Minute + 1) + " *
-//   20 0
 
 services.AddSingleton<UpdateStockJob>();
 services.AddSingleton(new JobSchedule(
