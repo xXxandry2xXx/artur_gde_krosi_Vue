@@ -2,7 +2,6 @@
     <div class="authorization-popup">
         <div class="authorization-popup-background" @click="setLogInPopupVisibility(false)"></div>
         <div class="authorization-popup-content">
-            </div>
 
             <div>
                 <div class="authorization-section" v-show="$store.state.loginPopupMode === 'log-in'">
@@ -44,7 +43,5 @@
             ...mapMutations(['setLogInPopupVisibility', 'openLoginPopup'])
         }
     })
-
-</script> 
 
 </script> 
