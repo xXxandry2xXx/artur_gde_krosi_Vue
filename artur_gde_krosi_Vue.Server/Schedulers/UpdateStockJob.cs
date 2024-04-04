@@ -34,12 +34,15 @@ namespace artur_gde_krosi_Vue.Server.Schedulers
         }
         public async Task Logs()
         {
-            StockApi stockApi = new StockApi();
-            getApiRequest<StockApi.Root> requestVariant = new getApiRequest<StockApi.Root>();
-            stockApi.root = await requestVariant.GetApiReqesi(stockApi.root, "https://api.moysklad.ru/api/remap/1.2/report/stock/all",false);
-
             using (var scope = _provider.CreateScope())
             {
+                var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+
+                StockApi stockApi = new StockApi();
+                getApiRequest<StockApi.Root> requestVariant = new getApiRequest<StockApi.Root>();
+                stockApi.root = await requestVariant.GetApiReqesi(stockApi.root, "https://api.moysklad.ru/api/remap/1.2/report/stock/all", configuration, false);
+
+
                 var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationIdentityContext>();
                 var serviceProviderWithLogger = new ServiceCollection()
                     .AddLogging(builder => builder.AddConsole())

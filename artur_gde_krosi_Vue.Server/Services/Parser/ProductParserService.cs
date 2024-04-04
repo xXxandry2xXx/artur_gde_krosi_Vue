@@ -105,7 +105,7 @@ public class ProductParserService : IProductParserService
                         shoeSize = Convert.ToDouble(item.characteristics[0].value),
                         prise = item.salePrices[0].value,
                         externalCode = item.externalCode,
-                        ProductId = item.product.id,
+                        ProductId = item.product.id, 
                         quantityInStock =  Convert.ToInt32(stock) 
                     });
                 }

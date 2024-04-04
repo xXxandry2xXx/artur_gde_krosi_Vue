@@ -3,16 +3,19 @@ using Amazon.S3;
 using artur_gde_krosi_Vue.Server.Models;
 using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
 using artur_gde_krosi_Vue.Server.Models.BdModel;
+using System.Configuration;
 
 namespace artur_gde_krosi_Vue.Server.Services.Parser
 {
     public class PostImegesS3Service : IPostImegesS3Service
     {
         private readonly ApplicationIdentityContext _db;
+        private readonly IConfiguration configuration;
 
-        public PostImegesS3Service(ApplicationIdentityContext db)
+        public PostImegesS3Service(ApplicationIdentityContext db, IConfiguration config)
         {
             _db = db;
+            configuration = config;
         }
         public async Task PostImageS3Reqesi(ProductApi.Row itemImg, int index,  string ProductId)
         {
@@ -21,7 +24,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip");
-                client.DefaultRequestHeaders.Add("Authorization", "Bearer ad4bc311f51bafdc7357e20ece905d282f6fe448");
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + configuration.GetSection("MySkladApi:key").Value);
                 HttpResponseMessage response = await client.GetAsync(itemImg.meta.downloadHref);
 
                 if (response.IsSuccessStatusCode)

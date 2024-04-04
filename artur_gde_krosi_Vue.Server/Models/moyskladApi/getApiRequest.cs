@@ -5,7 +5,7 @@ namespace artur_gde_krosi_Vue.Server.Models.moyskladApi
 {
     public class getApiRequest<T> where T : InterfaceApi.Root
     {
-        public async Task<T> GetApiReqesi(T apiClass, string herf, bool dopInf = true)
+        public async Task<T> GetApiReqesi(T apiClass, string herf, IConfiguration configuration, bool dopInf = true)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -15,8 +15,7 @@ namespace artur_gde_krosi_Vue.Server.Models.moyskladApi
                 requestGroup = new HttpRequestMessage(HttpMethod.Get, herf + dopHerf);
 
                 requestGroup.Headers.Add("Accept-Encoding", "gzip");
-                //request.Headers.Add("Authorization", "Bearer c168b9e54a4a67e4ee6ceb5e14e3d98947f09653");
-                requestGroup.Headers.Add("Authorization", "Bearer ad4bc311f51bafdc7357e20ece905d282f6fe448");
+                requestGroup.Headers.Add("Authorization", "Bearer "+ configuration.GetSection("MySkladApi:key").Value);
                 var responseGroup = await client.SendAsync(requestGroup);
                 responseGroup.EnsureSuccessStatusCode();
 
@@ -36,7 +35,7 @@ namespace artur_gde_krosi_Vue.Server.Models.moyskladApi
                             var requestDopGroup = new HttpRequestMessage(HttpMethod.Get, herf +
                                 "&offset=" + offset.ToString() + "&limit=100");
                             requestDopGroup.Headers.Add("Accept-Encoding", "gzip");
-                            requestDopGroup.Headers.Add("Authorization", "Bearer ad4bc311f51bafdc7357e20ece905d282f6fe448");
+                            requestDopGroup.Headers.Add("Authorization", "Bearer " + configuration.GetSection("MySkladApi:key").Value);
                             var responseDopGroup = await client.SendAsync(requestDopGroup);
                             responseDopGroup.EnsureSuccessStatusCode();
 
