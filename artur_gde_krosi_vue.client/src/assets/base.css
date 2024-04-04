@@ -111,10 +111,12 @@ header {
 }
 
 .authorization-popup-content {
+    border-radius: 10px;
     box-sizing: border-box;
     width: 500px;
     position: fixed;
     padding: 40px;
+    padding-top: 25px;
     background: #fff;
     left: 50%;
     top: 50%;
@@ -122,14 +124,33 @@ header {
 }
 
     .authorization-popup-content h3 {
-        font-size: 25px;
-        margin-bottom: 10px;
+        font-size: 35px;
+        font-family: 'Oswald', sans-serif;
         text-align: center;
     }
 
-.switch-auth-mode-buttons {
+.authoriization-parameters {
     display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
+
+.authoriization-parameters {
+    font-size: 18px;
+}
+
+.authorization-forget-password-button {
+    color: var(--border-font-color);
+}
+
+    .authorization-forget-password-button:hover {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+    .switch-auth-mode-buttons {
+        display: flex;
+    }
 
 .switch-auth-mode-button {
     border: none;
@@ -144,13 +165,18 @@ header {
         text-decoration: underline
     }
 
+.authorization-popup-button {
+    width: 50%;
+}
+
 .authorization-section {
     display: flex;
     flex-direction: column;
 }
 
 .authorization-section-fields {
-    margin: 20px 0;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 .authorization-popup-field {
@@ -177,6 +203,10 @@ header {
         padding: 10px;
     }
 
+        .authorization-popup-field input:focus {
+            border-bottom: 1px solid var(--border-font-color);
+        }
+
 .authorization-personal-data {
     display: flex;
     justify-content: space-between;
@@ -192,6 +222,8 @@ header {
     }
 
 .authorization-popup-button {
+    width: fit-content;
+    align-self: center;
     padding: 5px 10px;
     font-size: 21px;
     font-weight: 800;

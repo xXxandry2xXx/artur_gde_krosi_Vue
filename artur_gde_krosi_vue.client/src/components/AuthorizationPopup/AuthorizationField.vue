@@ -1,7 +1,8 @@
 ﻿<template>
     <div class="authorization-popup-field">
         <span><font-awesome-icon :icon="fieldIcon" /></span>
-        <DefaultInput :placeholder="fieldPlaceholder" />
+        <DefaultInput v-if="isPassword" type="password" :placeholder="fieldPlaceholder" />
+        <DefaultInput v-else :placeholder="fieldPlaceholder" />
     </div>
 </template>
 
@@ -18,7 +19,11 @@
             fieldIcon: {
                 type: Array,
                 required: true
+            },
+
+            isPassword: {
+                type: Boolean
             }
-        }
+        },
     })
 </script>
