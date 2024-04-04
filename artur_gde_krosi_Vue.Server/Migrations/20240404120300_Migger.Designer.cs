@@ -12,8 +12,8 @@ using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
 namespace artur_gde_krosi_Vue.Server.Migrations
 {
     [DbContext(typeof(ApplicationIdentityContext))]
-    [Migration("20240403082832_Migger_2")]
-    partial class Migger_2
+    [Migration("20240404120300_Migger")]
+    partial class Migger
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -235,14 +235,12 @@ namespace artur_gde_krosi_Vue.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("patronymic")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("sendingMail")
                         .HasColumnType("bit");
 
                     b.Property<string>("surname")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

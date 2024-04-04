@@ -232,14 +232,12 @@ namespace artur_gde_krosi_Vue.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("patronymic")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("sendingMail")
                         .HasColumnType("bit");
 
                     b.Property<string>("surname")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
