@@ -12,14 +12,13 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser;
 
 public class ProductParserService : IProductParserService
 {
-    private readonly ApplicationIdentityContext _db;
     private readonly IPostImegesS3Service _postImegesS3Service;
-    public ProductParserService(ApplicationIdentityContext db, IPostImegesS3Service postImegesS3Service)
+    public ProductParserService( IPostImegesS3Service postImegesS3Service)
     {
-        _db = db;
         _postImegesS3Service = postImegesS3Service;
     }
-    public async Task<List<Product>> ProductPars(ProductApi productApi, List<ModelKrosovock> modelKrosovoks)
+
+    public async Task<List<Product>> ProductPars(ApplicationIdentityContext _db ,ProductApi productApi, List<ModelKrosovock> modelKrosovoks)
     {
         List<Product> products = _db.Products.ToList();
         List<Image> images = _db.Images.ToList();
@@ -59,7 +58,6 @@ public class ProductParserService : IProductParserService
                         });
                     }
                 }
-
                 int index = 0;
                 foreach (var itemImg in item.images.rows)
                 {
@@ -70,20 +68,20 @@ public class ProductParserService : IProductParserService
                     }
                 }
             }
-
         }
-        for (int i = 0; i < products.Count; i++)
+        for ( int i = 0; i < products.Count; i++)
         {
-            if (productApi.root.rows.Any(x => x.id == products[i].ProductId))
+            if (!productApi.root.rows.Any(x => x.id == products[i].ProductId))
             {
                 _db.Products.Where(x => x.ProductId == products[i].ProductId).ExecuteDelete();
                 products.RemoveAt(i);
             }
         }
+        Console.WriteLine("конец 2 - 1");
         return products;
     }
 
-    public async Task VariantPars(VariantApi variantApi, StockApi stockApi, List<Product> products)
+    public async Task VariantPars(ApplicationIdentityContext _db,  VariantApi variantApi, StockApi stockApi, List<Product> products)
     {
         List<Variant> variants = _db.Variants.ToList();
         foreach (var item in variantApi.root.rows)
@@ -94,14 +92,13 @@ public class ProductParserService : IProductParserService
                 {
                     item.characteristics[0].value = item.characteristics[0].value.Replace(".", ",");
                 }
-                string? stock = stockApi.root.rows.Find(x => x.externalCode == item.externalCode).stock;
+                string? stock = stockApi.root.rows.Any(x => x.externalCode == item.externalCode) ?  stockApi.root.rows.Find(x => x.externalCode == item.externalCode).stock : "0";
                 if (stock.Contains("."))
                 {
                     stock = stock.Split('.')[0];
                 }
                 if (!variants.Any(x => x.VariantId == item.id))
                 {
-
                     _db.Variants.Add(new Variant()
                     {
                         VariantId = item.id,
@@ -109,7 +106,7 @@ public class ProductParserService : IProductParserService
                         prise = item.salePrices[0].value,
                         externalCode = item.externalCode,
                         ProductId = item.product.id,
-                        quantityInStock = (stock != null) ? Convert.ToInt32(stock) : 0
+                        quantityInStock =  Convert.ToInt32(stock) 
                     });
                 }
                 else
@@ -129,7 +126,7 @@ public class ProductParserService : IProductParserService
                             prise = item.salePrices[0].value,
                             externalCode = item.externalCode,
                             ProductId = item.product.id,
-                            quantityInStock = (stock != null) ? Convert.ToInt32(stock) : 0
+                            quantityInStock = Convert.ToInt32(stock)
                         });
                     }
                 }
@@ -137,15 +134,15 @@ public class ProductParserService : IProductParserService
         }
         for (int i = 0; i < variants.Count; i++)
         {
-            if (variantApi.root.rows.Any(x => x.id == variants[i].VariantId))
+            if (!variantApi.root.rows.Any(x => x.id == variants[i].VariantId))
             {
                 _db.Variants.Where(x => x.VariantId == variants[i].VariantId).ExecuteDelete();
             }
         }
+        Console.WriteLine("конец 2 - 2");
     }
 
-
-    public async Task QuantityInStockPars(StockApi stockApi)
+    public async Task QuantityInStockPars(ApplicationIdentityContext _db, StockApi stockApi)
     {
         List<Variant> variants = _db.Variants.ToList();
         foreach (var item in stockApi.root.rows)

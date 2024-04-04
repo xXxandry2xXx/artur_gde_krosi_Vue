@@ -48,7 +48,7 @@
             async fetchProduct(this: any) {
                 try {
                     const response = await axios.get('http://localhost:5263/api/Product/GetProduct', { params: { 'ProductId': this.productId }, headers: { 'accept': '*/*' } });
-                    this.productData = response.data[0];
+                    this.productData = response.data;
                     this.productImages = this.productData.images.reverse()
                     this.currentImgIndex = this.productImages[0].index;
                 } catch (error) {

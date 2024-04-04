@@ -2,6 +2,7 @@
 import type { RootState } from '@/store/types'
 
 import productsCatalog from '@/store/modules/productsCatalog/index';
+import authorization from '@/store/modules/authorization/index';
 
 export default createStore<RootState>({
     state: {
@@ -31,6 +32,7 @@ export default createStore<RootState>({
     },
 
     modules: {
-        productsCatalog
+        productsCatalog,
+        authorization
     },
 })

@@ -63,17 +63,26 @@ public class ProductAndGroupJob : IJob
             .BuildServiceProvider();
             var loggerFactory = serviceProviderWithLogger.GetRequiredService<ILoggerFactory>();
             loggerFactory.AddProvider(new LoggerProvider());
-            Console.WriteLine("после");
 
-            IGroupParserService _groupParserService = scope.ServiceProvider.GetRequiredService<IGroupParserService>();
             try
             {
-                List<Brend> brends = await _groupParserService.BrendsPars(groupApi);
-                List<ModelKrosovock> modelKrosovocks = await _groupParserService.ModelKrosovoksPars(groupApi, brends);
+                var _db = scope.ServiceProvider.GetRequiredService<ApplicationIdentityContext>();
+                IGroupParserService _groupParserService = scope.ServiceProvider.GetRequiredService<IGroupParserService>();
+
+                Console.WriteLine("1 - 1");
+                List<Brend> brends = await _groupParserService.BrendsPars(_db, groupApi);
+                Console.WriteLine("1 - 2");
+                List<ModelKrosovock> modelKrosovocks = await _groupParserService.ModelKrosovoksPars(_db, groupApi, brends);
 
                 IProductParserService _productParserService = scope.ServiceProvider.GetRequiredService<IProductParserService>();
-                List<Product> products = await _productParserService.ProductPars(productApi, modelKrosovocks);
-                await _productParserService.VariantPars(variantApi, stockApi, products);
+                Console.WriteLine("2 - 1");
+                List<Product> products = await _productParserService.ProductPars(_db, productApi, modelKrosovocks);
+                Console.WriteLine("2 - 2");
+                await _productParserService.VariantPars(_db, variantApi, stockApi, products);
+
+                Console.WriteLine("конец заполнения контекста");
+                _db.SaveChanges();
+                Console.WriteLine("конец");
             }
             catch (Exception ex)
             {

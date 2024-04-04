@@ -48,7 +48,9 @@ namespace artur_gde_krosi_Vue.Server.Schedulers
                 loggerFactory.AddProvider(new LoggerProvider());
 
                 IProductParserService _productParserService = scope.ServiceProvider.GetRequiredService<IProductParserService>();
-                await _productParserService.QuantityInStockPars(stockApi);
+                var _db = scope.ServiceProvider.GetRequiredService<ApplicationIdentityContext>();
+                await _productParserService.QuantityInStockPars(_db, stockApi);
+                _db.SaveChanges();
             }
         }
     }
