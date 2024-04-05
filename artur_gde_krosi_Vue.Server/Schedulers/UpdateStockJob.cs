@@ -16,44 +16,23 @@ namespace artur_gde_krosi_Vue.Server.Schedulers
             _provider = providere;
         }
 
-        public Task Execute(IJobExecutionContext context)
+        public async Task Execute(IJobExecutionContext context)
         {
-
-            Console.WriteLine("цикл");
             try
             {
-                Logs();
+                OnStockParser();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex + "");
             }
-
-            return Task.CompletedTask;
-
         }
-        public async Task Logs()
+        public async Task OnStockParser()
         {
             using (var scope = _provider.CreateScope())
             {
-                var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-
-                StockApi stockApi = new StockApi();
-                getApiRequest<StockApi.Root> requestVariant = new getApiRequest<StockApi.Root>();
-                stockApi.root = await requestVariant.GetApiReqesi(stockApi.root, "https://api.moysklad.ru/api/remap/1.2/report/stock/all", configuration, false);
-
-
-                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationIdentityContext>();
-                var serviceProviderWithLogger = new ServiceCollection()
-                    .AddLogging(builder => builder.AddConsole())
-                    .BuildServiceProvider();
-                var loggerFactory = serviceProviderWithLogger.GetRequiredService<ILoggerFactory>();
-                loggerFactory.AddProvider(new LoggerProvider());
-
-                IProductParserService _productParserService = scope.ServiceProvider.GetRequiredService<IProductParserService>();
-                var _db = scope.ServiceProvider.GetRequiredService<ApplicationIdentityContext>();
-                await _productParserService.QuantityInStockPars(_db, stockApi);
-                _db.SaveChanges();
+                var parserService = scope.ServiceProvider.GetRequiredService<ParserService>();
+                await parserService.StockParserDb();
             }
         }
     }

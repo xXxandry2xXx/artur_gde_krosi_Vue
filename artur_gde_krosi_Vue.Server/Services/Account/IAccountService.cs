@@ -9,7 +9,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
     public interface IAccountService
     {
         Task RegisterAsync(RegisterModel registerModel, UserInfoModel userInfoModel);
-        Task<(ApplicationUser user, SignInResult result, IList<string> role)> LoginAsync(string username, string password);
+        Task<ApplicationUser> LoginAsync(string usernameOrEmail, string password);
         Task<IdentityResult> AddRoleAsync(string username, string role);
         Task<IdentityResult> DeleteRoleAsync(string username, string role);
         Task<string> GenerateTokenAsync(ApplicationUser user, bool rememberUser);

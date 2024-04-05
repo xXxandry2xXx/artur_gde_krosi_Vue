@@ -57,16 +57,17 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
             throw new ArgumentException(JsonConvert.SerializeObject(result));
         }
 
-        public async Task<(ApplicationUser user, SignInResult result, IList<string> role)> LoginAsync(string usernameOrEmail, string password)
+        public async Task<ApplicationUser> LoginAsync(string usernameOrEmail, string password)
         {
             var user = await _userManager.FindByNameAsync(usernameOrEmail) ?? await _userManager.FindByEmailAsync(usernameOrEmail);
             if (user != null)
             {
                 var result = await _signInManager.PasswordSignInAsync(user, password, false, lockoutOnFailure: false);
                 var role = await _userManager.GetRolesAsync(user);
-                return (user, result, role);
+                if (!result.Succeeded) throw new ArgumentException(JsonConvert.SerializeObject(result));
+                return user;
             }
-            return (null, SignInResult.Failed, null);
+            throw new ArgumentException("");
         }
         public async Task<IdentityResult> AddRoleAsync(string username, string role)
         {

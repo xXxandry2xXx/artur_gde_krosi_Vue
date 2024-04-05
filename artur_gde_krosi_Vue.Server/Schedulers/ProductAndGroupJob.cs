@@ -22,77 +22,23 @@ public class ProductAndGroupJob : IJob
 
     }
 
-    public Task Execute(IJobExecutionContext context)
+    public async Task Execute(IJobExecutionContext context)
     {
-
-        Console.WriteLine("цикл");
         try
         {
-            Logs();
+           await OnParser();
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex + "");
         }
-
-        return Task.CompletedTask;
-
     }
-    public async Task Logs()
+    public async Task OnParser()
     {
         using (var scope = _provider.CreateScope())
         {
-            var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-
-            ProductApi productApi = new ProductApi();
-            getApiRequest<ProductApi.Root> requestProduct = new getApiRequest<ProductApi.Root>();
-            productApi.root = await requestProduct.GetApiReqesi(productApi.root, "https://api.moysklad.ru/api/remap/1.2/entity/product?expand=images.miniature.href,productFolder", configuration);
-
-            GroupApi groupApi = new GroupApi();
-            getApiRequest<GroupApi.Root> requestGroup = new getApiRequest<GroupApi.Root>();
-            groupApi.root = await requestGroup.GetApiReqesi(groupApi.root, "https://api.moysklad.ru/api/remap/1.2/entity/productfolder?expand=productFolder", configuration);
-
-            VariantApi variantApi = new VariantApi();
-            getApiRequest<VariantApi.Root> requestVariant = new getApiRequest<VariantApi.Root>();
-            variantApi.root = await requestVariant.GetApiReqesi(variantApi.root, "https://api.moysklad.ru/api/remap/1.2/entity/variant?expand=rows.images,product", configuration);
-
-            StockApi stockApi = new StockApi();
-            getApiRequest<StockApi.Root> requestVariantStok = new getApiRequest<StockApi.Root>();
-            stockApi.root = await requestVariantStok.GetApiReqesi(stockApi.root, "https://api.moysklad.ru/api/remap/1.2/report/stock/all", configuration, false);
-
-
-            var serviceProviderWithLogger = new ServiceCollection()
-            .AddLogging(builder => builder.AddConsole())
-            .BuildServiceProvider();
-            var loggerFactory = serviceProviderWithLogger.GetRequiredService<ILoggerFactory>();
-            loggerFactory.AddProvider(new LoggerProvider());
-
-            try
-            {
-                var _db = scope.ServiceProvider.GetRequiredService<ApplicationIdentityContext>();
-                IGroupParserService _groupParserService = scope.ServiceProvider.GetRequiredService<IGroupParserService>();
-
-                Console.WriteLine("1 - 1");
-                List<Brend> brends = await _groupParserService.BrendsPars(_db, groupApi);
-                Console.WriteLine("1 - 2");
-                List<ModelKrosovock> modelKrosovocks = await _groupParserService.ModelKrosovoksPars(_db, groupApi, brends);
-
-                IProductParserService _productParserService = scope.ServiceProvider.GetRequiredService<IProductParserService>();
-                Console.WriteLine("2 - 1");
-                List<Product> products = await _productParserService.ProductPars(_db, productApi, modelKrosovocks);
-                Console.WriteLine("2 - 2");
-                await _productParserService.VariantPars(_db, variantApi, stockApi, products);
-
-                Console.WriteLine("конец заполнения контекста");
-                _db.SaveChanges();
-                Console.WriteLine("конец");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-
-
+            var parserService = scope.ServiceProvider.GetRequiredService<ParserService>();
+            await parserService.AllParserDb();
         }
     }
 }

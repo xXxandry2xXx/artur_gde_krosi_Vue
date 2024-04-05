@@ -1,9 +1,11 @@
 ﻿using artur_gde_krosi_Vue.Server.Models.BdModel;
 using artur_gde_krosi_Vue.Server.Models.UserModel;
+using artur_gde_krosi_Vue.Server.Services.EmailService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Newtonsoft.Json;
 using NuGet.Common;
+using Yandex.Cloud.Iam.V1;
 
 namespace artur_gde_krosi_Vue.Server.Services.Account
 {
@@ -11,11 +13,13 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailService _emailService;
+        private readonly EmailBodyService _emailBodyService;
 
-        public AccountSettingsService(UserManager<ApplicationUser> userManager, IEmailService emailService  )
+        public AccountSettingsService(UserManager<ApplicationUser> userManager, IEmailService emailService, EmailBodyService emailBodyService)
         {
             _userManager = userManager;
             _emailService = emailService;
+            _emailBodyService = emailBodyService;
         }
         public async Task<(string name, string surname, string patronymic, bool sendingMail, string Email)> GetInfoUser(string Username)
         {
@@ -32,7 +36,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 await _emailService.SendEmailAsync(email,
                     "твой токен",
-                    "\r\nHello [name/email address]\r\n\r\nAre you ready to gain access to all of the assets we prepared for clients of [company]?\r\n\r\nFirst, you must complete your registration by clicking on the button below:\r\n\r\n[button]\r\n\r\nThis link will verify your email address, and then you’ll officially be a part of the [customer portal] community.\r\n\r\nSee you there!\r\n\r\nBest regards, the [company] team" + token);
+                    _emailBodyService.EmailBody(user.UserName,user.Email,token));
                 return ;
             }
             catch (Exception ex)
@@ -69,7 +73,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
         public async Task<IdentityResult> PasswordResetCheckingEmailTokenAsync(string email, string tokinToEmail , string newPassword)
         {
             var user = await _userManager.FindByEmailAsync(email);
-            if (user == null) if (user == null) throw new ArgumentException("Пользователь не найден");
+            if (user == null) throw new ArgumentException("Пользователь не найден");
             var result = await _userManager.ResetPasswordAsync(user, tokinToEmail, newPassword);
 
             return result;

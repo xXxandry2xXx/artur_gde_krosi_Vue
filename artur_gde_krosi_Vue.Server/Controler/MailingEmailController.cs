@@ -1,5 +1,6 @@
 ﻿using artur_gde_krosi_Vue.Server.Models.BdModel;
-using artur_gde_krosi_Vue.Server.Services;
+using artur_gde_krosi_Vue.Server.Services.ControlerService;
+using artur_gde_krosi_Vue.Server.Services.EmailService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
@@ -16,27 +17,18 @@ namespace artur_gde_krosi_Vue.Server.Controler
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailService _emailService;
-        public MailingEmailController(IEmailService emailService, UserManager<ApplicationUser> userManager)
+        private readonly MailingMailSerivce _mailingMailSerivce;
+        public MailingEmailController(IEmailService emailService, UserManager<ApplicationUser> userManager, MailingMailSerivce mailingMailSerivce)
         {
             _emailService = emailService;
             _userManager = userManager;
+            _mailingMailSerivce = mailingMailSerivce;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get(string subject, string body)
         {
-            var users = _userManager.Users.Where(x => x.EmailConfirmed == true);
-            foreach (var user in users)
-            {
-                try
-                {
-                    await _emailService.SendEmailAsync(email: user.Email, subject, body);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
-            }
+            _mailingMailSerivce.Get(subject, body);
             return Ok();
         }
     }

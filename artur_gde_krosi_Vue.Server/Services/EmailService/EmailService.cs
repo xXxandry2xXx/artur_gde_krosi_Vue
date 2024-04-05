@@ -3,7 +3,7 @@ using System.Net.Mail;
 using System.Net;
 using artur_gde_krosi_Vue.Server.Models.BdModel;
 
-namespace artur_gde_krosi_Vue.Server.Services
+namespace artur_gde_krosi_Vue.Server.Services.EmailService
 {
     public class EmailService : IEmailService
     {
@@ -14,7 +14,7 @@ namespace artur_gde_krosi_Vue.Server.Services
             _configuration = configuration;
         }
 
-        public async Task SendEmailAsync(string email, string subject , string body)
+        public async Task SendEmailAsync(string email, string subject, string body)
         {
             try
             {
@@ -40,17 +40,17 @@ namespace artur_gde_krosi_Vue.Server.Services
                     try
                     {
                         smtpClient.Send(mailMessage);
-                        return ;
+                        return;
                     }
                     catch (Exception ex)
                     {
-                        throw ;
+                        throw;
                     }
                 }
             }
-            catch 
+            catch
             {
-                throw ;
+                throw;
             }
         }
     }

@@ -11,7 +11,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
 
         public async  Task<List<Brend>> BrendsPars(ApplicationIdentityContext _db, GroupApi groupApi)
         {
-            List<Brend> brends = _db.Brends.ToList();
+            List<Brend> brends = _db.Brends.AsNoTracking().ToList();
             foreach (var item in groupApi.root.rows)
             {
                 if (item.productFolder == null)
@@ -57,7 +57,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
 
         public async Task<List<ModelKrosovock>> ModelKrosovoksPars(ApplicationIdentityContext _db, GroupApi groupApi , List<Brend> brends)
         {
-            List<ModelKrosovock> modelKrosovoks = _db.ModelKrosovocks.ToList();
+            List<ModelKrosovock> modelKrosovoks = _db.ModelKrosovocks.AsNoTracking().ToList();
             foreach (var item in groupApi.root.rows)
             {
                 if (item.productFolder != null && brends.Any(x => x.BrendId == item.productFolder.id))
@@ -79,7 +79,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
                     {
                         ModelKrosovock modelKrosovock = modelKrosovoks.Find(x => x.ModelKrosovockId == item.id);
                         if (modelKrosovock.name != item.name
-                            && modelKrosovock.BrendID == item.productFolder.id)
+                            || modelKrosovock.BrendID != item.productFolder.id)
                         {
                             _db.ModelKrosovocks.Update(new ModelKrosovock()
                             {

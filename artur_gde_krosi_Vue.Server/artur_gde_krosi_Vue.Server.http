@@ -1,9 +1,9 @@
 @artur_gde_krosi_Vue.Server_HostAddress = http://localhost:5263
 
-GET {{artur_gde_krosi_Vue.Server_HostAddress}}/Produts/
+GET {{artur_gde_krosi_Vue.Server_HostAddress}}/Products/
 Accept: application/json
 ###
-POST {{artur_gde_krosi_Vue.Server_HostAddress}}/Produts/
+POST {{artur_gde_krosi_Vue.Server_HostAddress}}/Products/
 Accept: application /json
 ###
 GET {{artur_gde_krosi_Vue.Server_HostAddress}}/ImageProduct?id=015fedd4-48a3-11ee-0a80-09c60007e1f8

@@ -7,7 +7,6 @@ using Quartz;
 using System.Text.Json.Serialization;
 using Amazon.S3;
 using Microsoft.AspNetCore.Identity;
-using artur_gde_krosi_Vue.Server.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -16,6 +15,9 @@ using artur_gde_krosi_Vue.Server.Models.BdModel;
 using System.Reflection.Emit;
 using artur_gde_krosi_Vue.Server.Middlewares;
 using artur_gde_krosi_Vue.Server.Services.Parser;
+using artur_gde_krosi_Vue.Server.Services.EmailService;
+using artur_gde_krosi_Vue.Server.Services.ControlerService;
+using artur_gde_krosi_Vue.Server.Services.ControlerService.CharacteristicProductServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,12 +64,24 @@ builder.Services.AddAuthentication(options =>
     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JWT:key").Value))
 });
 
+builder.Services.AddMemoryCache();
+
+builder.Services.AddScoped<ProductService>();
+builder.Services.AddTransient<EmailBodyService>();
+builder.Services.AddTransient<ShoppingCartService>();
+builder.Services.AddTransient<MailingMailSerivce>();
+builder.Services.AddTransient<FilterService>();
+builder.Services.AddTransient<CharacteristicProductsService>();
+builder.Services.AddTransient<CharacteristicProductValueService>();
+
+builder.Services.AddTransient<ParserService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IAccountValidationService, AccountValidationService>();
 builder.Services.AddScoped<IAccountSettingsService, AccountSettingsService>();
 
 builder.Services.AddScoped<IGroupParserService, GroupParserService>();
-builder.Services.AddScoped<IProductParserService, ProductParserService>();
+builder.Services.AddScoped<IAllProductParserService, ProductParserService>();
+builder.Services.AddScoped<IStokProductParserService, ProductParserService>();
 builder.Services.AddScoped<IPostImegesS3Service, PostImegesS3Service>();
 
 builder.Services.AddTransient<IEmailService, EmailService>();

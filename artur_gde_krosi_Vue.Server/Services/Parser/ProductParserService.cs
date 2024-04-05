@@ -10,18 +10,18 @@ using System.Drawing.Drawing2D;
 
 namespace artur_gde_krosi_Vue.Server.Services.Parser;
 
-public class ProductParserService : IProductParserService
+public class ProductParserService : IAllProductParserService, IStokProductParserService
 {
     private readonly IPostImegesS3Service _postImegesS3Service;
-    public ProductParserService( IPostImegesS3Service postImegesS3Service)
+    public ProductParserService(IPostImegesS3Service postImegesS3Service)
     {
         _postImegesS3Service = postImegesS3Service;
     }
 
-    public async Task<List<Product>> ProductPars(ApplicationIdentityContext _db ,ProductApi productApi, List<ModelKrosovock> modelKrosovoks)
+    public async Task<List<Product>> ProductPars(ApplicationIdentityContext _db, ProductApi productApi, List<ModelKrosovock> modelKrosovoks)
     {
-        List<Product> products = _db.Products.ToList();
-        List<Image> images = _db.Images.ToList();
+        List<Product> products = _db.Products.AsNoTracking().ToList();
+        List<Image> images = _db.Images.AsNoTracking().ToList();
         getApiRequest<StockApi.Root> requestVariantStok = new getApiRequest<StockApi.Root>();
         foreach (var item in productApi.root.rows)
         {
@@ -42,11 +42,11 @@ public class ProductParserService : IProductParserService
                 else
                 {
                     Product product = products.Find(x => x.ProductId == item.id);
-                    if (product.ProductId == item.id &&
-                        product.name == item.name &&
-                        product.ModelKrosovockId == item.productFolder.id &&
-                        product.description == item.description &&
-                        product.views == 0)
+                    if (product.ProductId != item.id ||
+                        product.name != item.name ||
+                        product.ModelKrosovockId != item.productFolder.id ||
+                        product.description != item.description ||
+                        product.views != 0)
                     {
                         _db.Products.Update(new Product()
                         {
@@ -69,7 +69,7 @@ public class ProductParserService : IProductParserService
                 }
             }
         }
-        for ( int i = 0; i < products.Count; i++)
+        for (int i = 0; i < products.Count; i++)
         {
             if (!productApi.root.rows.Any(x => x.id == products[i].ProductId))
             {
@@ -81,9 +81,9 @@ public class ProductParserService : IProductParserService
         return products;
     }
 
-    public async Task VariantPars(ApplicationIdentityContext _db,  VariantApi variantApi, StockApi stockApi, List<Product> products)
+    public async Task VariantPars(ApplicationIdentityContext _db, VariantApi variantApi, StockApi stockApi, List<Product> products)
     {
-        List<Variant> variants = _db.Variants.ToList();
+        List<Variant> variants = _db.Variants.AsNoTracking().ToList();
         foreach (var item in variantApi.root.rows)
         {
             if (item.product != null && products.Find(x => x.ProductId == item.product.id) != null)
@@ -92,7 +92,7 @@ public class ProductParserService : IProductParserService
                 {
                     item.characteristics[0].value = item.characteristics[0].value.Replace(".", ",");
                 }
-                string? stock = stockApi.root.rows.Any(x => x.externalCode == item.externalCode) ?  stockApi.root.rows.Find(x => x.externalCode == item.externalCode).stock : "0";
+                string? stock = stockApi.root.rows.Any(x => x.externalCode == item.externalCode) ? stockApi.root.rows.Find(x => x.externalCode == item.externalCode).stock : "0";
                 if (stock.Contains("."))
                 {
                     stock = stock.Split('.')[0];
@@ -105,19 +105,19 @@ public class ProductParserService : IProductParserService
                         shoeSize = Convert.ToDouble(item.characteristics[0].value),
                         prise = item.salePrices[0].value,
                         externalCode = item.externalCode,
-                        ProductId = item.product.id, 
-                        quantityInStock =  Convert.ToInt32(stock) 
+                        ProductId = item.product.id,
+                        quantityInStock = Convert.ToInt32(stock)
                     });
                 }
                 else
                 {
                     Variant variant = variants.Find(x => x.VariantId == item.id);
-                    if (variant.VariantId == item.id &&
-                        variant.shoeSize == Convert.ToDouble(item.characteristics[0].value) &&
-                        variant.prise == item.salePrices[0].value &&
-                        variant.externalCode == item.externalCode &&
-                        variant.ProductId == item.product.id &&
-                        variant.quantityInStock == Convert.ToInt32(stock))
+                    if (variant.VariantId != item.id ||
+                        variant.shoeSize != Convert.ToDouble(item.characteristics[0].value) ||
+                        variant.prise != item.salePrices[0].value ||
+                        variant.externalCode != item.externalCode ||
+                        variant.ProductId != item.product.id ||
+                        variant.quantityInStock != Convert.ToInt32(stock))
                     {
                         _db.Variants.Update(new Variant()
                         {
@@ -144,23 +144,27 @@ public class ProductParserService : IProductParserService
 
     public async Task QuantityInStockPars(ApplicationIdentityContext _db, StockApi stockApi)
     {
-        List<Variant> variants = _db.Variants.ToList();
+        List<Variant> variants = _db.Variants.AsNoTracking().ToList();
         foreach (var item in stockApi.root.rows)
         {
-            if (variants.Any(x => x.externalCode == item.externalCode))
+            
+            if (variants.Any(x => x.externalCode == item.externalCode && x.quantityInStock == Convert.ToInt32(item.stock)))
             {
                 if (item.stock.Contains("."))
-                {
                     item.stock = item.stock.Split('.')[0];
-                }
-                try
+                var variant = variants.Find(x => x.externalCode == item.externalCode);
+                if (variant?.quantityInStock == Convert.ToInt32(item.stock))
                 {
-                    _db.Variants.FirstOrDefault(x => x.externalCode == item.externalCode).quantityInStock = Convert.ToInt32(item.stock);
+                    try
+                    {
+                        _db.Variants.FirstOrDefault(x => x.externalCode == item.externalCode).quantityInStock = Convert.ToInt32(item.stock);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex + "");
-                }
+
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using artur_gde_krosi_Vue.Server.Models.BdModel;
 using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
+using artur_gde_krosi_Vue.Server.Services.ControlerService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,88 +19,49 @@ namespace artur_gde_krosi_Vue.Server.Controller
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<ShoppingСartController> _logger;
         private readonly ApplicationIdentityContext db;
+        private readonly ShoppingCartService _shoppingCartService;
 
-        public ShoppingСartController(ILogger<ShoppingСartController> logger, ApplicationIdentityContext context, UserManager<ApplicationUser> userManager)
+        public ShoppingСartController(ILogger<ShoppingСartController> logger, ApplicationIdentityContext context, UserManager<ApplicationUser> userManager, ShoppingCartService shoppingCartService)
         {
             _logger = logger;
             db = context;
             _userManager = userManager;
+            _shoppingCartService = shoppingCartService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetShoppingСarts(string name)
         {
-            string username = name;/*HttpContext.User.Identity.Name;*/
-            var user = await _userManager.FindByNameAsync(username);
-            var shoppingСarts = db.ShoppingСarts.Include(x => x.Variant).Select(x => new
-            {
-                ShoppingСartId = x.ShoppingСartId,
-                quantity = x.quantity,
-                availability = x.Variant.quantityInStock > x.quantity
-            });
+            var shoppingСarts = _shoppingCartService.GetShoppingСarts(name);
             return Ok(shoppingСarts);
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> AddShoppingСarts(string name, [FromForm] string VariantId)
+        public async Task<IActionResult> AddShoppingСarts(string name, string VariantId)
         {
-            string username = name;/*HttpContext.User.Identity.Name;*/
-            var user = await _userManager.FindByNameAsync(username);
-            if (!db.ShoppingСarts.Any(x => x.UserId == user.Id && x.VariantId == VariantId))
-            {
-                db.ShoppingСarts.Add(new ShoppingСart { UserId = user.Id, VariantId = VariantId, quantity = 1 });
-                db.SaveChanges();
-                return Ok();
-            }
-            else throw new ArgumentException("У пользователя в корзине уже имеется данный товар");
+            await _shoppingCartService.AddShoppingСarts(name, VariantId);
+            return Ok();
         }
 
         [Route("/api/[controller]/AddList")]
         [HttpPost]
         public async Task<IActionResult> AddListShoppingСarts(string name, [FromForm] List<string> VariantId)
         {
-
-            string username = name;/* HttpContext.User.Identity.Name;*/
-            var user = await _userManager.FindByNameAsync(username);
-            bool error = false;
-            foreach (var item in VariantId)
-            {
-                if (!db.ShoppingСarts.Any(x => x.UserId == user.Id && x.VariantId == item))
-                {
-                    db.ShoppingСarts.Add(new ShoppingСart { UserId = user.Id, VariantId = item, quantity = 1 });
-                }
-                else error = true;
-            }
-            db.SaveChanges();
-            if (!error) return Ok();
-            else throw new ArgumentException("Один или несколько товаров уже лежали в корзине");
+            await _shoppingCartService.AddListShoppingСarts(name, VariantId);
+            return Ok();
         }
 
         [HttpPut]
         public async Task<IActionResult> EditShoppingСarts([FromForm] string ShoppingСartId, [FromForm] int quantity)
         {
-            if (quantity > 0)
-            {
-                ShoppingСart? shoppingCart = db.ShoppingСarts.Where(x => x.ShoppingСartId == ShoppingСartId).FirstOrDefault();
-                if (shoppingCart != null)
-                {
-                    shoppingCart.quantity = quantity; 
-                    db.SaveChanges();
-
-                    return Ok((quantity, true));
-                }
-                else throw new ArgumentException("Позиция не найдена.");
-            }
-            throw new ArgumentException("Количество продукции должно быть положительным и не равным нул.");
+            int rezQuantity = await _shoppingCartService.EditShoppingСarts(ShoppingСartId, quantity);
+            return Ok(rezQuantity);
         }
         [HttpDelete]
         public async Task<IActionResult> DeleteShoppingСarts([FromForm] string ShoppingСartId)
         {
-            var rez = await db.ShoppingСarts.Where(x => x.ShoppingСartId == ShoppingСartId).ExecuteDeleteAsync();
-            db.SaveChanges();
-
-            return Ok("ок");
+            await _shoppingCartService.DeleteShoppingСarts(ShoppingСartId);
+            return Ok();
         }
     }
 }

@@ -3,6 +3,8 @@ using Amazon.S3;
 using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using artur_gde_krosi_Vue.Server.Services.ControlerService;
+using artur_gde_krosi_Vue.Server.Models.ContelerViews.FilterViews;
 
 namespace artur_gde_krosi_Vue.Server.Controller
 {
@@ -10,45 +12,42 @@ namespace artur_gde_krosi_Vue.Server.Controller
     [ApiController]
     public class FilterController : ControllerBase
     {
-        private readonly ILogger<FilterController> _logger;
         ApplicationIdentityContext db;
+        private readonly FilterService _filterService;
 
-        public FilterController(ILogger<FilterController> logger, ApplicationIdentityContext context)
+        public FilterController(ApplicationIdentityContext context, FilterService filterService)
         {
-            _logger = logger;
             db = context;
+            _filterService = filterService;
         }
 
         [HttpGet]
         [Route("Brends")]
         public async Task<IActionResult> GetBrends()
         {
-            return Ok(db.Brends);
+            var brend = _filterService.GetBrends();
+            return Ok(brend);
         }
-
         [HttpGet]
         [Route("ModelKrosovocks")]
         public async Task<IActionResult> GetModelKrosovocks([FromHeader] List<string> brendsIds = null)
         {
-            var modelKrosovocks = db.Brends.Where(x => (brendsIds == null || brendsIds.Count == 0) || brendsIds.Any(y => y == x.BrendId))
-                .Include(x => x.ModelKrosovocks)
-                .Select(x => new
-                {
-                    Name = x.name,
-                    ModelKrosovocks = x.ModelKrosovocks.Select(y => new
-                    {
-                        name = y.name,
-                        modelKrosovockId = y.ModelKrosovockId
-                    })
-                }).ToList();
+            var modelKrosovocks = _filterService.GetModelKrosovocks(brendsIds);
             return Ok(modelKrosovocks);
         }
         [HttpGet]
         [Route("ShoeSizes")]
         public async Task<IActionResult> GetShoeSizes()
         {
-            List<double> shoeSizes = db.Variants.Select(x => x.shoeSize).Distinct().ToList();
+            List<double> shoeSizes = await _filterService.GetShoeSizes();
             return Ok(shoeSizes);
+        }
+        [HttpGet]
+        [Route("MinMaxPrise")]
+        public async Task<IActionResult> MinMaxPrise()
+        {
+            MinMaxPriseView minMaxPriseView = await _filterService.MinMaxPrise();
+            return Ok(minMaxPriseView);
         }
     }
 }

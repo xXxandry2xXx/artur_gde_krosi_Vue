@@ -62,7 +62,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
             if (username.Length <= 5) throw new ArgumentException("длина имени должна быть больше 5");
             if (username.Length > 15) throw new ArgumentException("длина имени должна быть меньше 16");
             if (!Regex.IsMatch(username, pattern)) throw new ArgumentException("В имени должны быть только латинские буквы или арабские цифры");
-            if (await _userManager.FindByNameAsync(username) != null) throw new ArgumentException("В имени должны быть только латинские буквы или арабские цифры");
+            if (await _userManager.FindByNameAsync(username) != null) throw new ArgumentException("Пользователь с таким именем уже существует");
         }
     }
 }

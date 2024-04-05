@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Quartz;
 using artur_gde_krosi_Vue.Server.Schedulers;
+using artur_gde_krosi_Vue.Server.Services.Parser;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,32 +20,32 @@ namespace artur_gde_krosi_Vue.Server.Controller
     public class DBParserController : ControllerBase
     {
         private readonly ILogger<DBParserController> _logger;
-        ApplicationIdentityContext db;
+        private readonly ApplicationIdentityContext db;
         private readonly ISchedulerFactory factory;
+        private readonly ParserService _parserService;
 
-
-        public DBParserController(ILogger<DBParserController> logger, ApplicationIdentityContext context, ISchedulerFactory factory)
+        public DBParserController(ILogger<DBParserController> logger, ApplicationIdentityContext context, ISchedulerFactory factory, ParserService parserService)
         {
             _logger = logger;
             db = context;
             this.factory = factory;
+            _parserService = parserService;
         }
 
         [HttpPut("DBParserQuantityInStock")]
         public async Task<IActionResult> ParserQuantityInStock()
         {
-            IScheduler scheduler = await factory.GetScheduler();
-
-            await scheduler.TriggerJob(new JobKey("artur_gde_krosi_Vue.Server.Schedulers.UpdateStockJob"));
+            if (!ParserService._semaphoreAllParser.Wait(0))
+                return BadRequest("Парсинг всего апи уже выполняется");
+            await _parserService.AllParserDb();
             return Ok();
         }
         [HttpPut("DBParser")]
         public async Task<IActionResult> Parser()
         {
-            IScheduler scheduler = await factory.GetScheduler();
-
-            await scheduler.TriggerJob(new JobKey("artur_gde_krosi_Vue.Server.Schedulers.ProductAndGroupJob"));
-
+            if (!ParserService._semaphoreStockParser.Wait(0))
+                return BadRequest("Парсинг остатков уже выполняется");
+            await _parserService.AllParserDb();
             return Ok();
         }
     }

@@ -8,7 +8,12 @@
     <SpaRoot>..\artur_gde_krosi_vue.client</SpaRoot>
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
     <SpaProxyServerUrl>https://localhost:5173</SpaProxyServerUrl>
+    <UserSecretsId>43b2dbf2-6f1d-4d06-91d4-f1cf31047054</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Services\ControlerService\ProductServce.cs~RF2dca3f8.TMP" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.Yandex.ObjectStorage" Version="0.2.2" />

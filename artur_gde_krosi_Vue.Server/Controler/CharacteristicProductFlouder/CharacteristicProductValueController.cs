@@ -1,5 +1,6 @@
 ﻿using artur_gde_krosi_Vue.Server.Models.BdModel;
 using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
+using artur_gde_krosi_Vue.Server.Services.ControlerService.CharacteristicProductServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,67 +11,32 @@ namespace artur_gde_krosi_Vue.Server.Controller.CharacteristicProductFolder
     [ApiController]
     public class CharacteristicProductValueController : ControllerBase
     {
-        private readonly ILogger<CharacteristicProductValueController> _logger;
-        ApplicationIdentityContext db;
+        private readonly ApplicationIdentityContext db;
+        private readonly CharacteristicProductValueService _characteristicProductValueService;
 
-        public CharacteristicProductValueController(ILogger<CharacteristicProductValueController> logger, ApplicationIdentityContext context)
+        public CharacteristicProductValueController(ApplicationIdentityContext context, CharacteristicProductValueService characteristicProductValueService)
         {
-            _logger = logger;
             db = context;
+            _characteristicProductValueService = characteristicProductValueService;
         }
 
         [HttpPost]
         public async Task<IActionResult> AddCharacteristicProductsValue(string value, string CharacteristicProductId)
         {
-            try
-            {
-                db.CharacteristicProductValues.Add(new CharacteristicProductValue
-                {
-                    Value = value,
-                    CharacteristicProductId = CharacteristicProductId
-                });
-                await db.SaveChangesAsync();
-                return Ok();
-            }
-            catch (Exception Ex)
-            {
-                Console.WriteLine(Ex.ToString());
-                throw;
-            }
-
+            await _characteristicProductValueService.AddCharacteristicProductsValue(value, CharacteristicProductId);
+            return Ok();
         }
         [HttpPut]
         public async Task<IActionResult> EditCharacteristicProductsValue(string CharacteristicProductValueId, string value)
         {
-            try
-            {
-                CharacteristicProductValue? characteristicProductValue =  db.CharacteristicProductValues.Where(x => x.CharacteristicProductValueId == CharacteristicProductValueId).FirstOrDefault();
-                characteristicProductValue.Value = value;
-                await db.SaveChangesAsync();
-                return Ok();
-            }
-            catch (Exception Ex)
-            {
-                Console.WriteLine(Ex.ToString());
-                throw;
-            }
-
+            await _characteristicProductValueService.EditCharacteristicProductsValue(value, CharacteristicProductValueId);
+            return Ok();
         }
         [HttpDelete]
         public async Task<IActionResult> DeleteCharacteristicProductsValue(string CharacteristicProductValueId)
         {
-            try
-            {
-                await db.CharacteristicProductValues.Where(x => x.CharacteristicProductValueId == CharacteristicProductValueId).ExecuteDeleteAsync();
-                await db.SaveChangesAsync();
-                return Ok();
-            }
-            catch (Exception Ex)
-            {
-                Console.WriteLine(Ex.ToString());
-                throw;
-            }
-
+            await _characteristicProductValueService.DeleteCharacteristicProductsValue(CharacteristicProductValueId);
+            return Ok();
         }
     }
 }
