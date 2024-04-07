@@ -107,14 +107,10 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
 
     async fetchModels() {
         let selectedFilters = this.getters.selectedFiltersState;
+
         if (selectedFilters.brandIDs) {
             try {
-                const response = await axios.get('http://localhost:5263/api/Filter/ModelKrosovocks', {
-                    headers: {
-                        'accept': '*/*',
-                        'brendsIds': selectedFilters.brandIDs.join()
-                    }
-                });
+                const response = await axios.get('http://localhost:5263/api/Filter/ModelKrosovocks', { headers: { 'accept': '*/*', 'brendsIds': selectedFilters.brandIDs.join() } });
 
                 let fetchedModels = response.data.reduce((accumulator: ModelInterface[], currentValue: { name: string, modelKrosovocks: ModelInterface[] }) => {
                     return accumulator.concat(currentValue.modelKrosovocks);

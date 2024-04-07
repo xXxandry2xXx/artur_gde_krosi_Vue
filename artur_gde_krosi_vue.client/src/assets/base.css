@@ -148,9 +148,9 @@ header {
         text-decoration: underline;
     }
 
-    .switch-auth-mode-buttons {
-        display: flex;
-    }
+.switch-auth-mode-buttons {
+    display: flex;
+}
 
 .switch-auth-mode-button {
     border: none;
@@ -179,9 +179,13 @@ header {
     margin-bottom: 5px;
 }
 
-.authorization-popup-field {
-    display: flex;
+.authorization-popup-field-wrapper {
     margin: 10px 0;
+}
+
+.authorization-popup-field {
+    position: relative;
+    display: flex;
 }
 
     .authorization-popup-field span {
@@ -198,6 +202,7 @@ header {
 
     .authorization-popup-field input {
         border: 1px solid var(--additional-font-color-lighter);
+        border-left: none;
         font-size: 18px;
         width: 100%;
         padding: 10px;
@@ -206,6 +211,31 @@ header {
         .authorization-popup-field input:focus {
             border-bottom: 1px solid var(--border-font-color);
         }
+
+.authorization-popup-field-incorrect span {
+    background: pink;
+    color: red;
+}
+
+.authorization-popup-field-incorrect input {
+    border: 1px solid red;
+}
+
+.authorization-popup-field-message {
+    color: red;
+}
+
+.toggle-password-button {
+    position: absolute;
+    right: 3%;
+    top: 25%;
+    font-size: 20px;
+    color: var(--additional-font-color)
+}
+
+    .toggle-password-button:hover {
+        cursor: pointer;
+    }
 
 .authorization-personal-data {
     display: flex;
@@ -216,7 +246,7 @@ header {
         padding: 10px 11px;
     }
 
-    .authorization-personal-data .authorization-popup-field {
+    .authorization-personal-data .authorization-popup-field-wrapper {
         width: 48%;
         margin: 0;
     }

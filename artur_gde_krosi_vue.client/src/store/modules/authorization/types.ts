@@ -1,13 +1,14 @@
-
+export interface isCorrectStatus {
+    status: boolean,
+    message: string
+}
 export interface IsCorrect {
-    logLogin: boolean,
-    logPassword: boolean,
-    regUsername: boolean,
-    regEmail: boolean,
-    regSurname: boolean,
-    regPatronymic: boolean,
-    regPassword: boolean,
-    regPasswordConfirmation: boolean
+    logLogin: isCorrectStatus,
+    logPassword: isCorrectStatus,
+    regUsername: isCorrectStatus,
+    regEmail: isCorrectStatus,
+    regPassword: isCorrectStatus,
+    regPasswordConfirmation: isCorrectStatus
 }
 
 export interface LoginUserData {

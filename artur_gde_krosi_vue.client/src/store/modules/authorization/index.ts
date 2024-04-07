@@ -22,14 +22,30 @@ const state: AuthorizationState = {
     },
 
     isCorrect: {
-        logLogin: true,
-        logPassword: true,
-        regUsername: true,
-        regEmail: true,
-        regSurname: true,
-        regPatronymic: true,
-        regPassword: true,
-        regPasswordConfirmation: true
+        logLogin: {
+            status: true,
+            message: ''
+        },
+        logPassword: {
+            status: true,
+            message: ''
+        },
+        regUsername: {
+            status: true,
+            message: ''
+        },
+        regEmail: {
+            status: true,
+            message: ''
+        },
+        regPassword: {
+            status: true,
+            message: ''
+        },
+        regPasswordConfirmation: {
+            status: true,
+            message: ''
+        }
     }
 }
 

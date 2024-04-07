@@ -6,7 +6,7 @@
         <div v-else class="nothing-found">
             <div class="nothing-found-content">
                 <span><i class="far fa-times-circle"></i></span>
-                <p>По вашему запросу ничего не найдено. Попробуйте сбросить фильтры или ввести другой поисковой запрос.</p>
+                <p>Ничего не найдено. Попробуйте сбросить фильтры или ввести другой поисковой запрос.</p>
             </div>
         </div>
     </div>
