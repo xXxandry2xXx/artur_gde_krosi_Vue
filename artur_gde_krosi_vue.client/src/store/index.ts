@@ -6,10 +6,9 @@ import authorization from '@/store/modules/authorization/index';
 
 export default createStore<RootState>({
     state: {
+        authorizedUser: null,
         showPreloader: false,
         showSearchPanel: false,
-        showLogInPopup: false,
-        loginPopupMode: ''
     },
 
     mutations: {
@@ -21,13 +20,21 @@ export default createStore<RootState>({
             state.showSearchPanel = value;
         },
 
-        setLogInPopupVisibility(state: RootState, value: boolean) {
-            state.showLogInPopup = value;
+        setUser(state, user) {
+            state.authorizedUser = user;
+        }
+    },
+
+    getters: {
+        isUserAuthorized: () => {
+            return localStorage.getItem('token') !== null;
         },
 
-        openLoginPopup(state: RootState, mode: string) {
-            state.showLogInPopup = true;
-            state.loginPopupMode = mode;
+        getAuthorizedUser: () => {
+            let userData = localStorage.getItem('userData');
+            if (userData !== null) {
+                return JSON.parse(userData);
+            }
         }
     },
 

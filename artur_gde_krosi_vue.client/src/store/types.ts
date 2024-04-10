@@ -1,7 +1,6 @@
 import type { ProductsCatalogState } from '@/store/modules/productsCatalog/types';
 export interface RootState {
+    authorizedUser: any | null,
     showPreloader: boolean,
     showSearchPanel: boolean,
-    showLogInPopup: boolean,
-    loginPopupMode: string
 };

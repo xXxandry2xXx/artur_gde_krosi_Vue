@@ -6,9 +6,13 @@ import { getters } from '@/store/modules/authorization/getters';
 import { actions } from '@/store/modules/authorization/actions';
 
 const state: AuthorizationState = {
+    showLogInPopup: false,
+    loginPopupMode: '',
+
     loginUserData: {
         login: '',
         password: '',
+        rememberUser: false
     },
 
     registrationUserData: {
@@ -18,10 +22,11 @@ const state: AuthorizationState = {
         surname: '',
         patronymic: '',
         password: '',
-        passwordConfirmation: ''
+        passwordConfirmation: '',
+        emailNewsletter: false
     },
 
-    isCorrect: {
+    isCorrectLogIn: {
         logLogin: {
             status: true,
             message: ''
@@ -30,6 +35,9 @@ const state: AuthorizationState = {
             status: true,
             message: ''
         },
+    },
+
+    isCorrectRegistration: {
         regUsername: {
             status: true,
             message: ''
@@ -45,8 +53,11 @@ const state: AuthorizationState = {
         regPasswordConfirmation: {
             status: true,
             message: ''
-        }
-    }
+        },
+    },
+
+    succesfulyAuthorized: false,
+    userDoesNotExist: true
 }
 
 const authorization: Module<AuthorizationState, RootState> = {

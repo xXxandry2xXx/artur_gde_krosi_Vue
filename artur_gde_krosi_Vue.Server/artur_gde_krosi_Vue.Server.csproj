@@ -8,6 +8,7 @@
     <SpaRoot>..\artur_gde_krosi_vue.client</SpaRoot>
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
     <SpaProxyServerUrl>https://localhost:5173</SpaProxyServerUrl>
+    <UserSecretsId>9222518d-c6c0-406b-bec9-919dc3449e5a</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

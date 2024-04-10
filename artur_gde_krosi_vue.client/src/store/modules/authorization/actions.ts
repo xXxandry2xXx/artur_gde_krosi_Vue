@@ -9,10 +9,75 @@ export const actions: ActionTree<AuthorizationState, RootState> = {
         const form = this.getters.getRegistrationFormData;
         try {
             const response = await axios.post('http://localhost:5263/api/identity/Authorize/Register', form, { headers: { 'accept': '*/*', 'Content-Type': 'multipart/form-data' } });
+            if (response.status === 200) this.commit('setRegistrationStatus', true);
             return response;
         } catch (error: any) {
             console.log(error);
         }
+    },
+
+    async sendConfirmationEmail() {
+        let email = this.getters.getRegistrationUserData.email;
+        try {
+            const response = axios.get('http://localhost:5263/api/identity/SetingsUser/GenerateTokenOnChangeEmeil', {
+                params: {
+                    'email': email
+                },
+                headers: {
+                    'accept': '*/*'
+                }
+            });
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    async logInToAccount() {
+        let loginUserData = this.getters.getLogInUserData;
+        try {
+            const response = await axios.get('http://localhost:5263/api/identity/Authorize/Login', {
+                params: {
+                    'usernameOrEmail': loginUserData.login,
+                    'password': loginUserData.password
+                },
+                headers: {
+                    'accept': '*/*'
+                }
+            });
+            return response;
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    logout() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userData');
+    },
+
+    validateLogin({ state }: { state: AuthorizationState }) {
+        let login = state.loginUserData.login;
+        if (login === '') {
+            this.commit('setLoginCorrectness', false);
+            this.commit('setLoginMessage', 'Заполните обязательное поле');
+            return
+        } 
+
+        this.commit('setLoginCorrectness', true);
+        this.commit('setLoginMessage', '');
+    },
+
+    validateLogInPassword({ state }: { state: AuthorizationState }) {
+        let password = state.loginUserData.password;
+        if (password === '') {
+            this.commit('setPasswordCorrectness', false);
+            this.commit('setPasswordMessage', 'Заполните обязательное поле');
+            return
+        }
+
+        this.commit('setPasswordCorrectness', true);
+        this.commit('setPasswordMessage', '');
     },
 
     validateUserName({ state }: { state: AuthorizationState }) {
@@ -28,7 +93,7 @@ export const actions: ActionTree<AuthorizationState, RootState> = {
             this.commit('setRegUsernameMessage', 'Имя пользователя должно быть длиннее 5 и короче 15 символов');
         } else if (!usernamePattern.test(username)) {
             this.commit('setRegUsernameCorrectness', false);
-            this.commit('setRegUsernameMessage', 'Имя пользователя должно состоять из латинских букв и арабских цифр');
+            this.commit('setRegUsernameMessage', 'Имя пользователя должно состоять из цифр и латинских букв');
         } else {
             this.commit('setRegUsernameCorrectness', true);
             this.commit('setRegUsernameMessage', '');

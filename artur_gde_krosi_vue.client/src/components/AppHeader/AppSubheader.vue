@@ -1,13 +1,20 @@
 ﻿<template>
     <nav class="app-subheader">
-        <div class="autorization-buttons">
-            <button class="autorization-button" @click="openLoginPopup('log-in')">Вход</button>
+        <div class="authorized-user-panel" @click="isUserPanelVisible = !isUserPanelVisible" v-if="isUserAuthorized()">
+            {{ $store.state.authorizedUser.userName }}
+            <div class="user-dropdown" v-show="isUserPanelVisible">
+                <button class="user-logout-button" @click="userLogout()">Выйти</button>
+            </div>
+        </div>
+
+        <div class="autorization-buttons" v-else>
+            <button class="autorization-button" @click="openAuthorizationPopup('log-in')">Вход</button>
             <span>или</span>
-            <button class="autorization-button" @click="openLoginPopup('registration')">Регистрация</button>
+            <button class="autorization-button" @click="openAuthorizationPopup('registration')">Регистрация</button>
         </div>
 
         <transition name="fade">
-            <AppSearchPanel @mouseenter="showSearchPanel" @mouseleave="hideSearchPanel"/>
+            <AppSearchPanel @mouseenter="showSearchPanel" @mouseleave="hideSearchPanel" />
         </transition>
 
         <div class="app-subheader-buttons">
@@ -22,7 +29,7 @@
 
 <script lang="ts">
     import { defineComponent } from 'vue';
-    import { mapMutations } from 'vuex';
+    import { mapMutations, mapGetters, mapActions } from 'vuex';
     import AppSearchPanel from '@/components/AppHeader/AppSearchPanel.vue';
 
     export default defineComponent({
@@ -30,13 +37,16 @@
 
         data() {
             return {
+                isUserPanelVisible: false,
                 isSearchPanelVisible: false,
                 currentCartCapacity: 0,
             }
         },
 
         methods: {
-            ...mapMutations(['setSearchPanelVisibility', 'openLoginPopup']),
+            ...mapActions(['logout']),
+            ...mapMutations(['setSearchPanelVisibility', 'openAuthorizationPopup']),
+            ...mapGetters(['isUserAuthorized']),
 
             showSearchPanel(this: any) {
                 this.setSearchPanelVisibility(true);
@@ -44,8 +54,13 @@
 
             hideSearchPanel(this: any) {
                 setTimeout(() => this.setSearchPanelVisibility(false), 500)
+            },
+
+            userLogout(this: any) {
+                this.logout();
+                location.reload();
             }
-        }
+        },
     })
 </script>
 

@@ -2,9 +2,12 @@ export interface isCorrectStatus {
     status: boolean,
     message: string
 }
-export interface IsCorrect {
+
+export interface IsCorrectLogIn {
     logLogin: isCorrectStatus,
-    logPassword: isCorrectStatus,
+    logPassword: isCorrectStatus
+}
+export interface IsCorrectRegistration {
     regUsername: isCorrectStatus,
     regEmail: isCorrectStatus,
     regPassword: isCorrectStatus,
@@ -14,6 +17,7 @@ export interface IsCorrect {
 export interface LoginUserData {
     login: string,
     password: string,
+    rememberUser: boolean
 }
 
 export interface RegistrationUserData {
@@ -23,11 +27,17 @@ export interface RegistrationUserData {
     surname: string,
     patronymic: string,
     password: string,
-    passwordConfirmation: string
+    passwordConfirmation: string,
+    emailNewsletter: boolean
 }
 
 export interface AuthorizationState {
+    showLogInPopup: boolean,
+    loginPopupMode: string,
     loginUserData: LoginUserData,
     registrationUserData: RegistrationUserData,
-    isCorrect: IsCorrect
+    isCorrectLogIn: IsCorrectLogIn,
+    isCorrectRegistration: IsCorrectRegistration,
+    succesfulyAuthorized: boolean,
+    userDoesNotExist: boolean
 }
