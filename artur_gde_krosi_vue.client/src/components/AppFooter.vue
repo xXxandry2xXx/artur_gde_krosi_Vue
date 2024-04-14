@@ -4,25 +4,28 @@
             <section class="footer-section footer-section-text">
                 <h2>О магазине</h2>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Качественные кроссовки по доступной цене. Мы находимся в самом центре г. Перми.
+                    Множество кроссовок в наличии в магазине и под заказ. Оригинал, реплика различного качества.
+                    Мы развеиваем мифы о реплике в нашем магазине вы можете увидеть разницу оригинала и реплики в живую.
                 </p>
             </section>
-            <section class="footer-section">
-                <h2>Контакты</h2>
-                <ul>
-                    <li>+7 (912) 599-77-79</li>
-                </ul>
-            </section>
-            <section class="footer-section">
-                <h2>О нас</h2>
-                <ul>
-                    <li>Контакты</li>
-                    <li>О нас</li>
-                    <li>Конфиденциальность</li>
-                </ul>
-            </section>
+            <div class="footer-list-sections">
+                <section class="footer-section">
+                    <h2>Контакты</h2>
+                    <ul>
+                        <li>+7 (912) 599-77-79</li>
+                        <li>arturkrossovki@gmail.com</li>
+                    </ul>
+                </section>
+                <section class="footer-section">
+                    <h2>О нас</h2>
+                    <ul>
+                        <li>Контакты</li>
+                        <li>О нас</li>
+                        <li>Конфиденциальность</li>
+                    </ul>
+                </section>
+            </div>
         </div>
         <div class="social-links">
             <a href="mailto:example@gmail.com"><font-awesome-icon :icon="['fas', 'envelope']" /></a>

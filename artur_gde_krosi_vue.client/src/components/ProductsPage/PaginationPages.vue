@@ -5,14 +5,14 @@
                      @click="changePage(1)"
                      v-show="getCurrentPage() !== 1">
 
-            <i class="fa-solid fa-angles-left"></i>
+            <font-awesome-icon :icon="['fas', 'angles-left']" />
         </router-link>
 
         <router-link :to="{ name: 'productsPage', params: { page: pervPage } }"
                      @click="toPervPage"
                      class="pagination-page pagination-arrow"
                      :class="{'pagination-arrow-unavailable': getCurrentPage() == 1}">
-            <i class="fas fa-angle-left"></i>
+            <font-awesome-icon :icon="['fas', 'angle-left']" />
         </router-link>
 
         <router-link :to="{ name: 'productsPage', params: { page: page } }" class="pagination-page"
@@ -27,14 +27,14 @@
                      @click="toNextPage"
                      class="pagination-page pagination-arrow"
                      :class="{'pagination-arrow-unavailable': getCurrentPage() == getTotalPages()}">
-            <i class="fas fa-angle-right"></i>
+            <font-awesome-icon :icon="['fas', 'angle-right']" />
         </router-link>
 
         <router-link :to="{ name: 'productsPage', params: { page: getTotalPages() } }"
                      class="pagination-page pagination-arrow"
                      @click="changePage(getTotalPages())"
                      v-show="getCurrentPage() !== getTotalPages()">
-            <i class="fa-solid fa-angles-right"></i>
+            <font-awesome-icon :icon="['fas', 'angles-right']" />
         </router-link>
     </nav>
 

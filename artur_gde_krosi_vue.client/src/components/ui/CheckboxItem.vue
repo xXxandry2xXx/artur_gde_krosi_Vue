@@ -18,6 +18,7 @@
     .default-checkbox-wrapper {
         display: flex;
         align-items: center;
+        justify-content: center;
     }
 
         .default-checkbox-wrapper:hover {
@@ -31,8 +32,10 @@
     .default-checkbox-fake {
         position: relative;
         display: inline-block;
-        width: 20px;
-        height: 20px;
+        min-width: 20px;
+        min-height: 20px;
+        max-width: 20px;
+        max-height: 20px;
         border: 1px solid var(--border-font-color);
     }
 

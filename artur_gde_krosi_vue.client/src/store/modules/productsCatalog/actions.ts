@@ -1,4 +1,4 @@
-import axios from 'axios';
+﻿import axios from 'axios';
 import type { ActionTree } from 'vuex';
 import type { RootState } from '@/store/types';
 import type { ProductsCatalogState } from '@/store/modules/productsCatalog/types';
@@ -52,35 +52,35 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
             };
 
             if (selectedFilters.hasOwnProperty('priceMin')) {
-                headers['priseDown'] = selectedFilters.priceMin.toString();
+                headers['priseDown'] = encodeURIComponent(selectedFilters.priceMin.toString());
             }
 
             if (selectedFilters.hasOwnProperty('priceMax')) {
-                headers['priseUp'] = selectedFilters.priceMax.toString();
+                headers['priseUp'] = encodeURIComponent(selectedFilters.priceMax.toString()) ;
             }
 
             if (selectedFilters.brandIDs) {
-                headers['brendsIds'] = selectedFilters.brandIDs.join();
+                headers['brendsIds'] = encodeURIComponent(selectedFilters.brandIDs.join()) ;
             }
 
             if (selectedFilters.modelIDs) {
-                headers['modelKrosovocksIds'] = selectedFilters.modelIDs.join();
+                headers['modelKrosovocksIds'] = encodeURIComponent(selectedFilters.modelIDs.join()) ;
             }
 
             if (selectedFilters.checkedSizes) {
-                headers['shoeSizesChecked'] = selectedFilters.checkedSizes.join();
+                headers['shoeSizesChecked'] = encodeURIComponent(selectedFilters.checkedSizes.join()) ;
             }
 
             if (selectedFilters.hasOwnProperty('inStock')) {
-                headers['availability'] = selectedFilters.inStock.toString();
+                headers['availability'] = encodeURIComponent(selectedFilters.inStock.toString()) ;
             }
 
             if (selectedFilters.searchValue) {
-                headers['PlaceholderContent'] = selectedFilters.searchValue.toString();
+                headers['PlaceholderContent'] = encodeURIComponent(selectedFilters.searchValue.toString());
             }
 
             if (selectedFilters.hasOwnProperty('sortOrder')) {
-                headers['sortOrder'] = selectedFilters.sortOrder.toString();
+                headers['sortOrder'] = encodeURIComponent(selectedFilters.sortOrder.toString());
             }
 
             headers['pageProducts'] = state.currentPage.toString();
@@ -91,7 +91,6 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
 
             return response.data;
         } catch (error) {
-            console.log(error);
             throw error;
         }
     },
@@ -107,14 +106,10 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
 
     async fetchModels() {
         let selectedFilters = this.getters.selectedFiltersState;
+
         if (selectedFilters.brandIDs) {
             try {
-                const response = await axios.get('http://localhost:5263/api/Filter/ModelKrosovocks', {
-                    headers: {
-                        'accept': '*/*',
-                        'brendsIds': selectedFilters.brandIDs.join()
-                    }
-                });
+                const response = await axios.get('http://localhost:5263/api/Filter/ModelKrosovocks', { headers: { 'accept': '*/*', 'brendsIds': selectedFilters.brandIDs.join() } });
 
                 let fetchedModels = response.data.reduce((accumulator: ModelInterface[], currentValue: { name: string, modelKrosovocks: ModelInterface[] }) => {
                     return accumulator.concat(currentValue.modelKrosovocks);

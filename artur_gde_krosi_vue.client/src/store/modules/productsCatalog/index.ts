@@ -20,8 +20,10 @@ const state: ProductsCatalogState = {
     sortingOptions: [
         { value: 0, name: 'По алфавиту (А-Я)' },
         { value: 1, name: 'По алфавиту (Я-А)' },
-        { value: 2, name: 'По цене (Сначала дешевле)' },
-        { value: 3, name: 'По цене (Сначала дороже)' }
+        { value: 2, name: 'Сначала дешевле' },
+        { value: 3, name: 'Сначала дороже' },
+        { value: 4, name: 'Сначала более популярные' },
+        { value: 5, name: 'Сначала менее популярные' }
     ],
     productsData: {} as ProductsDataInterface,
     filteredProductsData: {} as ProductsDataInterface,

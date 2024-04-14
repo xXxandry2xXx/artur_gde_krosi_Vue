@@ -14,7 +14,7 @@
                 <span class="logo-top">АРТУР, ГДЕ МОИ </span>
                 <span class="logo-bottom">КРОССОВКИ?</span>
             </div>
-            <div>
+            <div class="appheader-nav-buttons">
                 <router-link :to="{ name: 'productsPage', params: { page: 1 } }">
                     <button class="nav-button">ВСЕ КРОССОВКИ</button>
                 </router-link>

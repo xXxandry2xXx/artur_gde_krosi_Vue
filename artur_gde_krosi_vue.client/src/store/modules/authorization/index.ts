@@ -6,9 +6,15 @@ import { getters } from '@/store/modules/authorization/getters';
 import { actions } from '@/store/modules/authorization/actions';
 
 const state: AuthorizationState = {
+    showLogInPopup: false,
+    loginPopupMode: '',
+
+    serverUserMessage: null,
+
     loginUserData: {
         login: '',
         password: '',
+        rememberUser: false
     },
 
     registrationUserData: {
@@ -18,19 +24,42 @@ const state: AuthorizationState = {
         surname: '',
         patronymic: '',
         password: '',
-        passwordConfirmation: ''
+        passwordConfirmation: '',
+        emailNewsletter: false
     },
 
-    isCorrect: {
-        logLogin: true,
-        logPassword: true,
-        regUsername: true,
-        regEmail: true,
-        regSurname: true,
-        regPatronymic: true,
-        regPassword: true,
-        regPasswordConfirmation: true
-    }
+    isCorrectLogIn: {
+        logLogin: {
+            status: true,
+            message: ''
+        },
+        logPassword: {
+            status: true,
+            message: ''
+        },
+    },
+
+    isCorrectRegistration: {
+        regUsername: {
+            status: true,
+            message: ''
+        },
+        regEmail: {
+            status: true,
+            message: ''
+        },
+        regPassword: {
+            status: true,
+            message: ''
+        },
+        regPasswordConfirmation: {
+            status: true,
+            message: ''
+        },
+    },
+
+    succesfulyAuthorized: false,
+    userDoesNotExist: true,
 }
 
 const authorization: Module<AuthorizationState, RootState> = {

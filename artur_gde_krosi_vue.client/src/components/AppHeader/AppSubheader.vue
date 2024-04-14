@@ -1,13 +1,9 @@
 ﻿<template>
     <nav class="app-subheader">
-        <div class="autorization-buttons">
-            <button class="autorization-button" @click="openLoginPopup('log-in')">Вход</button>
-            <span>или</span>
-            <button class="autorization-button" @click="openLoginPopup('registration')">Регистрация</button>
-        </div>
+        <AppHeaderUserPanel />
 
         <transition name="fade">
-            <AppSearchPanel @mouseenter="showSearchPanel" @mouseleave="hideSearchPanel"/>
+            <AppSearchPanel @mouseenter="showSearchPanel" @mouseleave="hideSearchPanel" />
         </transition>
 
         <div class="app-subheader-buttons">
@@ -24,9 +20,10 @@
     import { defineComponent } from 'vue';
     import { mapMutations } from 'vuex';
     import AppSearchPanel from '@/components/AppHeader/AppSearchPanel.vue';
+    import AppHeaderUserPanel from '@/components/AppHeader/AppHeaderUserPanel.vue';
 
     export default defineComponent({
-        components: { AppSearchPanel },
+        components: { AppSearchPanel, AppHeaderUserPanel },
 
         data() {
             return {
@@ -36,7 +33,7 @@
         },
 
         methods: {
-            ...mapMutations(['setSearchPanelVisibility', 'openLoginPopup']),
+            ...mapMutations(['setSearchPanelVisibility']),
 
             showSearchPanel(this: any) {
                 this.setSearchPanelVisibility(true);
@@ -44,8 +41,8 @@
 
             hideSearchPanel(this: any) {
                 setTimeout(() => this.setSearchPanelVisibility(false), 500)
-            }
-        }
+            },
+        },
     })
 </script>
 
