@@ -9,21 +9,23 @@
                     Мы развеиваем мифы о реплике в нашем магазине вы можете увидеть разницу оригинала и реплики в живую.
                 </p>
             </section>
-            <section class="footer-section">
-                <h2>Контакты</h2>
-                <ul>
-                    <li>+7 (912) 599-77-79</li>
-                    <li>arturkrossovki@gmail.com</li>
-                </ul>
-            </section>
-            <section class="footer-section">
-                <h2>О нас</h2>
-                <ul>
-                    <li>Контакты</li>
-                    <li>О нас</li>
-                    <li>Конфиденциальность</li>
-                </ul>
-            </section>
+            <div class="footer-list-sections">
+                <section class="footer-section">
+                    <h2>Контакты</h2>
+                    <ul>
+                        <li>+7 (912) 599-77-79</li>
+                        <li>arturkrossovki@gmail.com</li>
+                    </ul>
+                </section>
+                <section class="footer-section">
+                    <h2>О нас</h2>
+                    <ul>
+                        <li>Контакты</li>
+                        <li>О нас</li>
+                        <li>Конфиденциальность</li>
+                    </ul>
+                </section>
+            </div>
         </div>
         <div class="social-links">
             <a href="mailto:example@gmail.com"><font-awesome-icon :icon="['fas', 'envelope']" /></a>

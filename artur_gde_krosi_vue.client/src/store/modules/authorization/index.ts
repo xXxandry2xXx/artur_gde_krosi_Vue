@@ -9,6 +9,8 @@ const state: AuthorizationState = {
     showLogInPopup: false,
     loginPopupMode: '',
 
+    serverUserMessage: null,
+
     loginUserData: {
         login: '',
         password: '',
@@ -57,7 +59,7 @@ const state: AuthorizationState = {
     },
 
     succesfulyAuthorized: false,
-    userDoesNotExist: true
+    userDoesNotExist: true,
 }
 
 const authorization: Module<AuthorizationState, RootState> = {

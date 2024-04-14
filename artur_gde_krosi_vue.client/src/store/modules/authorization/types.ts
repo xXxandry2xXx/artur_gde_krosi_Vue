@@ -34,6 +34,7 @@ export interface RegistrationUserData {
 export interface AuthorizationState {
     showLogInPopup: boolean,
     loginPopupMode: string,
+    serverUserMessage: string | null,
     loginUserData: LoginUserData,
     registrationUserData: RegistrationUserData,
     isCorrectLogIn: IsCorrectLogIn,

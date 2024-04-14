@@ -3,3 +3,87 @@
         max-width: 1366px;
     }
 }
+
+@media (max-width: 425px) {
+    .container {
+        max-width: 425px;
+    }
+
+    .appheader-top-bar {
+        height: fit-content;
+    }
+
+    .app-adress {
+        font-size: 10px;
+    }
+
+    .app-phone-and-adress {
+        padding: 5px;
+    }
+
+    .app-phone-and-adress span {
+        font-size: 10px;
+    }
+
+    .appheader-navbar {
+        padding: 0 15px;
+    }
+
+    .appheader-nav-buttons {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .nav-button {
+        width: fit-content;
+        font-size: 17px;
+        margin: 0;
+    }
+
+    .main-page-brands-list {
+        margin-top: 10px;
+    }
+
+    .main-page-brand {
+        margin: 10px;
+    }
+
+    .main-page-show-all-button {
+        font-size: 25px;
+        margin-top: 20px;
+    }
+
+    footer {
+        margin-top: 0;
+    }
+
+    .footer-content {
+        flex-direction: column;
+    }
+
+    .footer-list-sections {
+        margin-top: 20px;
+        width: 100%;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+    }
+
+    .footer-section-text {
+        width: initial;
+    }
+
+    .footer-section h2 {
+        font-size: 25px;
+    }
+
+    .footer-section p, .footer-section li {
+        font-size: 15px;
+    }
+
+    .social-links {
+        margin-top: 20px;
+        padding: 10px 20px;
+        justify-content: center;
+    }
+}

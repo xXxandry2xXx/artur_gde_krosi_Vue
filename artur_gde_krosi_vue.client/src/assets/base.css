@@ -1371,6 +1371,7 @@ header {
     }
 
 
+
 footer {
     box-sizing: border-box;
     position: absolute;
@@ -1396,6 +1397,12 @@ footer {
     .footer-content li {
         font-family: "Oswald", sans-serif;
     }
+
+.footer-list-sections {
+    width: 60%;
+    display: flex;
+    justify-content: space-around;
+}
 
 .footer-section ul {
     display: flex;
