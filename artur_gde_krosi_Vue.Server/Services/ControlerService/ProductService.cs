@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using Yandex.Cloud.Cdn.V1;
 using static artur_gde_krosi_Vue.Server.Models.ContelerViews.ProductVies.ProductListView;
 using Variant = artur_gde_krosi_Vue.Server.Models.BdModel.Variant;
 
@@ -13,33 +15,38 @@ namespace artur_gde_krosi_Vue.Server.Services.ControlerService
     public class ProductService
     {
         private readonly ApplicationIdentityContext db;
+        private readonly IMemoryCache _cache;
 
-        public ProductService(ApplicationIdentityContext _db)
+        public ProductService(ApplicationIdentityContext _db, IMemoryCache cache)
         {
             db = _db;
+            _cache = cache;
         }
         public async Task<Product> GetProduct(string ProductId)
         {
-            Product product = db.Products.Where(X => X.ProductId == ProductId).AsNoTracking()
-                .Include(x => x.ModelKrosovock).ThenInclude(x => x.Brend)
-                .Include(x => x.Images)
-                .Include(x => x.Variants)
-                .Include(x => x.CharacteristicProducts).ThenInclude(x => x.CharacteristicProductValues).FirstOrDefault();
+            Product? product = db.Products.Where(X => X.ProductId == ProductId).AsNoTracking()
+                                   .Include(x => x.ModelKrosovock).ThenInclude(x => x.Brend)
+                                   .Include(x => x.Images)
+                                   .Include(x => x.Variants)
+                                   .Include(x => x.CharacteristicProducts).ThenInclude(x => x.CharacteristicProductValues).FirstOrDefault();
             db.Products.Where(x => x.ProductId == ProductId).ExecuteUpdateAsync(x => x.SetProperty(y => y.views, y => y.views + 1));
             return product;
         }
         public List<AllProductSearchViews> GetAllProductSearch()
         {
             string cacheKey = "AllProduct";
-            List<AllProductSearchViews> product = db.Products.Include(x => x.Images.Where(x => x.Index == 0)).Select(x => MapAllProductSearch(x)).AsNoTracking().ToList();
-            return product;
+            if (!_cache.TryGetValue(cacheKey, out List<AllProductSearchViews> allProduct))
+            {
+                allProduct = db.Products.Include(x => x.Images.Where(x => x.Index == 0)).Select(x => MapAllProductSearch(x)).AsNoTracking().ToList();
+                _cache.Set(cacheKey, allProduct, new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(12)});
+            }
+            return allProduct;
         }
         public static AllProductSearchViews MapAllProductSearch(Product product)
         {
             AllProductSearchViews allProductSearchViews = new AllProductSearchViews(product.ProductId,
-             product.name,
-             product.Images[0].ImageSrc);
-
+                product.name,
+                product.Images[0].ImageSrc);
             return allProductSearchViews;
         }
         public ProductListView GetProductList(int priseDown, int priseUp, List<string> brendsIds, List<string> modelKrosovocksIds,
@@ -117,12 +124,12 @@ namespace artur_gde_krosi_Vue.Server.Services.ControlerService
             ProductListView.ProductList productList = new ProductListView.ProductList(product.name,
                 product.ModelKrosovock.name, product.ModelKrosovock.Brend.name,
                 product.views, product.ProductId,
-                product.Variants.Select(x => MapVariants(x)).ToList(),product.Images[0].ImageSrc);
+                product.Variants.Select(x => MapVariants(x)).ToList(), product.Images[0].ImageSrc);
             return productList;
         }
         private static ProductListView.Variant MapVariants(Variant variant)
         {
-            ProductListView.Variant variantLV = new ProductListView.Variant(variant.VariantId, 
+            ProductListView.Variant variantLV = new ProductListView.Variant(variant.VariantId,
                 variant.shoeSize, variant.quantityInStock, variant.prise);
             return variantLV;
         }

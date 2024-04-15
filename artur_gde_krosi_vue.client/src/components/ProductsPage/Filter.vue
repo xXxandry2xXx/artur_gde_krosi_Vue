@@ -33,7 +33,6 @@
                 required: true
             }
         },
-
         methods: {
             colapseExpandFilter(this: { isCollapsed: boolean }) {
                 this.isCollapsed = !this.isCollapsed;

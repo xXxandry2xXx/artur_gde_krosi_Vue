@@ -26,7 +26,6 @@
                 required: true
             }
         },
-
         methods: {
             ...mapMutations(['addFilter']),
             ...mapActions(['fetchModels']),

@@ -87,7 +87,7 @@ builder.Services.AddScoped<IPostImegesS3Service, PostImegesS3Service>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 
 IServiceCollection services = builder.Services;
-
+ 
 services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",

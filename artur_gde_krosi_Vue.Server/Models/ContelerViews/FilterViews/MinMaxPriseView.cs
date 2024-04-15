@@ -8,7 +8,7 @@
             this.priseMax = priseMax;
         }
 
-        double priseMin {  get; set; }
-        double priseMax {  get; set; }
+        public double priseMin {  get; set; }
+        public double priseMax {  get; set; }
     }
 }

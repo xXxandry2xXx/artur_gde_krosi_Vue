@@ -25,14 +25,14 @@ namespace artur_gde_krosi_Vue.Server.Controller
         [Route("Brends")]
         public async Task<IActionResult> GetBrends()
         {
-            var brend = _filterService.GetBrends();
+            List<Models.BdModel.Brend> brend = await _filterService.GetBrends();
             return Ok(brend);
         }
         [HttpGet]
         [Route("ModelKrosovocks")]
         public async Task<IActionResult> GetModelKrosovocks([FromHeader] List<string> brendsIds = null)
         {
-            var modelKrosovocks = _filterService.GetModelKrosovocks(brendsIds);
+            List<ModelKrosovoksView> modelKrosovocks = await _filterService.GetModelKrosovocks(brendsIds);
             return Ok(modelKrosovocks);
         }
         [HttpGet]

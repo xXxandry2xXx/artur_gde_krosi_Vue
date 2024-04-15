@@ -1,7 +1,9 @@
-﻿using artur_gde_krosi_Vue.Server.Models.BdModel;
+﻿using Amazon.Runtime.Internal.Util;
+using artur_gde_krosi_Vue.Server.Models.BdModel;
 using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace artur_gde_krosi_Vue.Server.Services.ControlerService.CharacteristicProductServices
 {

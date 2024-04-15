@@ -31,7 +31,6 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
         public async Task PreliminaryCheckEmeil(string email)
         {
             var trimmedEmail = email.Trim();
-
             if (trimmedEmail.EndsWith("."))
             {
                 throw new ArgumentException("неправильный вид почты");

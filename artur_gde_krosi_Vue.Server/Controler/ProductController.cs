@@ -23,14 +23,12 @@ public class ProductController : ControllerBase
     private readonly ILogger<ProductController> _logger;
 
     private readonly ApplicationIdentityContext db;
-    private readonly IMemoryCache _cache;
     private readonly ProductService _product;
 
-    public ProductController(ILogger<ProductController> logger, ApplicationIdentityContext context, IMemoryCache cache, ProductService product)
+    public ProductController(ILogger<ProductController> logger, ApplicationIdentityContext context, ProductService product)
     {
         _logger = logger;
         db = context;
-        _cache = cache;
         _product = product;
     }
 
@@ -52,9 +50,10 @@ public class ProductController : ControllerBase
     [Route("GetAllProductSearch")]
     public async Task<IActionResult> GetAllProductSearch()
     {
-        var product = _product.GetAllProductSearch();
+        List<AllProductSearchViews> product = _product.GetAllProductSearch();
         return Ok(product);
     }
+
     [Route("GetProductList")]
     [HttpGet]
     public async Task<IActionResult> GetProductsList([FromHeader] int priseDown = 0, [FromHeader] int priseUp = 0, [FromHeader] List<string> brendsIds = null, [FromHeader] List<string> modelKrosovocksIds = null,
