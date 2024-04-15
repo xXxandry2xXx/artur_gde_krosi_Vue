@@ -1,11 +1,10 @@
 ﻿using System.Text.Json;
 
-namespace artur_gde_krosi_Vue.Server.Dto
+namespace artur_gde_krosi_Vue.Server.Models.ProjecktSetings.Dto.ErrorClasses
 {
-    public class ErrorDto
+    public class BaseDto
     {
         public int StatusCode { get; set; }
-        public string Message { get; set; }
 
         public override string ToString()
         {

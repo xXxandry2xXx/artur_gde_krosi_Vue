@@ -1,4 +1,5 @@
 ﻿using artur_gde_krosi_Vue.Server.Models.BdModel;
+using artur_gde_krosi_Vue.Server.Models.ProjecktSetings.Dto.ExceptionModel;
 using artur_gde_krosi_Vue.Server.Models.UserModel;
 using FluentResults;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -8,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Newtonsoft.Json;
 using NuGet.Versioning;
+using Org.BouncyCastle.Ocsp;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Net.Mail;
@@ -46,15 +48,15 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
                 patronymic = userInfoModel.patronymic,
                 sendingMail = userInfoModel.sendingMail
             };
-
             IdentityResult result = await _userManager.CreateAsync(user, registerModel.Password);
             if (result.Succeeded)
             {
                 IdentityResult rez = await _userManager.AddToRoleAsync(user, "User");
-                if (!rez.Succeeded) throw new ArgumentException(JsonConvert.SerializeObject(rez));
+                IEnumerable<IdentityError> asd = rez.Errors;
+                if (!rez.Succeeded) throw new PasswordException(JsonConvert.SerializeObject(rez.Errors), rez.Errors);
                 return;
             }
-            throw new ArgumentException(JsonConvert.SerializeObject(result));
+            throw new PasswordException(JsonConvert.SerializeObject(result.Errors), result.Errors);
         }
 
         public async Task<ApplicationUser> LoginAsync(string usernameOrEmail, string password)
@@ -62,12 +64,22 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
             var user = await _userManager.FindByNameAsync(usernameOrEmail) ?? await _userManager.FindByEmailAsync(usernameOrEmail);
             if (user != null)
             {
+                var checkPasswordResult = await _userManager.CheckPasswordAsync(user, password);
+                if (!checkPasswordResult)
+                {
+                    throw new ArgumentException("Не правильный пароль");
+                }
+
                 var result = await _signInManager.PasswordSignInAsync(user, password, false, lockoutOnFailure: false);
-                var role = await _userManager.GetRolesAsync(user);
-                if (!result.Succeeded) throw new ArgumentException(JsonConvert.SerializeObject(result));
+                if (!result.Succeeded)
+                {
+                    if (result.IsNotAllowed) throw new AllowedOnMailException("Не подтверждена почта");
+                    if (!result.IsLockedOut) throw new ArgumentException("Пользователь заблокирован");
+                    throw new ArgumentException(JsonConvert.SerializeObject(result));
+                }
                 return user;
             }
-            throw new ArgumentException("");
+            throw new ArgumentException("Пользователь не найден");
         }
         public async Task<IdentityResult> AddRoleAsync(string username, string role)
         {
@@ -77,7 +89,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
                 IdentityResult rez = await _userManager.AddToRoleAsync(user, role);
                 return rez;
             }
-            throw  new ArgumentException(JsonConvert.SerializeObject(new IdentityError { Description = "Пользователь не найден." }));
+            throw new ArgumentException(JsonConvert.SerializeObject(new IdentityError { Description = "Пользователь не найден." }));
         }
         public async Task<IdentityResult> DeleteRoleAsync(string username, string role)
         {

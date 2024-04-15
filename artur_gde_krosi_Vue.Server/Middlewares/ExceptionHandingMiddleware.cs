@@ -1,5 +1,7 @@
-﻿using artur_gde_krosi_Vue.Server.Dto;
+﻿using artur_gde_krosi_Vue.Server.Models.ProjecktSetings.Dto.ErrorClasses;
+using artur_gde_krosi_Vue.Server.Models.ProjecktSetings.Dto.ExceptionModel;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System.Net;
 using System.Text.Json;
 
@@ -22,6 +24,19 @@ namespace artur_gde_krosi_Vue.Server.Middlewares
             {
                 await _requestDelegate(httpContext);
             }
+            catch(AllowedOnMailException ex)
+            {
+                await HandleExceptionClientAsync(httpContext,
+                    HttpStatusCode.Forbidden,
+                    ex.Message);
+            }
+            catch(PasswordException ex)
+            {
+                await HandlePasswordExceptionAsync(httpContext,
+                    ex.Message,
+                    HttpStatusCode.BadRequest,
+                    ex.errors);
+            }
             catch(ArgumentException ex)
             {
                 await HandleExceptionClientAsync(httpContext,
@@ -37,6 +52,26 @@ namespace artur_gde_krosi_Vue.Server.Middlewares
             }
         }
 
+        private async Task HandlePasswordExceptionAsync(HttpContext httpContent
+            ,string exMsg
+            ,HttpStatusCode statusCode
+            , IEnumerable<IdentityError> errorsEX)
+        {
+            _logger.LogError(exMsg);
+
+            HttpResponse response = httpContent.Response;
+
+            response.ContentType = "application/json";
+            response.StatusCode = (int)statusCode;
+
+            PasswordDto errorDto = new()
+            {
+                errors = errorsEX,
+                StatusCode = (int)statusCode
+            };
+
+            await response.WriteAsJsonAsync(errorDto);
+        }
         private async Task HandleExceptionAsync(HttpContext httpContent
             ,string exMsg
             ,HttpStatusCode statusCode
