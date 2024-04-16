@@ -44,8 +44,8 @@ namespace artur_gde_krosi_Vue.Server.Services.ControlerService
         }
         public async Task<MinMaxPriseView> MinMaxPrise()
         {
-            MinMaxPriseView minMaxPriseView = new MinMaxPriseView(db.Variants.AsNoTracking().OrderByDescending(x => x.prise).FirstOrDefault().prise,
-                db.Variants.AsNoTracking().OrderBy(x => x.prise).FirstOrDefault().prise);
+            MinMaxPriseView minMaxPriseView = new MinMaxPriseView(db.Variants.AsNoTracking().OrderBy(x => x.prise).FirstOrDefault().prise,
+                db.Variants.AsNoTracking().OrderByDescending(x => x.prise).FirstOrDefault().prise);
             return minMaxPriseView;
         }
     }
