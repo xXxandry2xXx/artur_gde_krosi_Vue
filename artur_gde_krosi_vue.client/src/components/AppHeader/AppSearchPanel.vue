@@ -9,7 +9,7 @@
         </div>
         <div class="search-hints" v-show="searchQuery != ''">
             <div class="search-hint" v-for="hint in sortedHints" @click="moveToProductPage(hint.id)">
-                <img :src="hint.herfImage[0].imageSrc" alt="product-image" />
+                <img :src="hint.herfImage" alt="product-image" />
                 <p>{{ hint.name }}</p>
             </div>
         </div>
@@ -66,8 +66,6 @@
                     this.setSearchPanelVisibility(false);
                     this.applyFilters();
                     this.$router.push('/products');
-                } else {
-                    console.log('ну а что ты ожидаешь найти с пустой строкой, бестолочь?');
                 }
             },
         },
