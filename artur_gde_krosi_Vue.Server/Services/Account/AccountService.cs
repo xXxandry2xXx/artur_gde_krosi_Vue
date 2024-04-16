@@ -67,7 +67,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
                 var checkPasswordResult = await _userManager.CheckPasswordAsync(user, password);
                 if (!checkPasswordResult)
                 {
-                    throw new ArgumentException("Не правильный пароль");
+                    throw new ArgumentException("Неверный логин или пароль");
                 }
 
                 var result = await _signInManager.PasswordSignInAsync(user, password, false, lockoutOnFailure: false);
@@ -79,7 +79,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
                 }
                 return user;
             }
-            throw new ArgumentException("Пользователь не найден");
+            throw new ArgumentException("Неверный логин или пароль");
         }
         public async Task<IdentityResult> AddRoleAsync(string username, string role)
         {

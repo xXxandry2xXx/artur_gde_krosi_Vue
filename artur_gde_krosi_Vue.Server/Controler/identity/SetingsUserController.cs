@@ -23,7 +23,7 @@ namespace artur_gde_krosi_Vue.Server.Controller.identity
         //{
         //    return Ok(await _accountSetingsService.(email));
         //}
-        [HttpGet("GenerateTokenOnChangeEmeil")]
+        [HttpGet("GenerateTokenOnRegEmail")]
         public async Task<IActionResult> generateTokenOnChangeEmeil(string email)
         {
             await _accountSetingsService.RegEmailTokenOnEmailAsync(email);

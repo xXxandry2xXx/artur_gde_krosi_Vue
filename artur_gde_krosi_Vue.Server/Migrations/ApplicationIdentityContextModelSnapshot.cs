@@ -264,7 +264,7 @@ namespace artur_gde_krosi_Vue.Server.Migrations
 
                     b.HasKey("BrendId");
 
-                    b.ToTable("Brends");
+                    b.ToTable("Brends", (string)null);
                 });
 
             modelBuilder.Entity("artur_gde_krosi_Vue.Server.Models.BdModel.CharacteristicProduct", b =>
@@ -285,7 +285,7 @@ namespace artur_gde_krosi_Vue.Server.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("CharacteristicProducts");
+                    b.ToTable("CharacteristicProducts", (string)null);
                 });
 
             modelBuilder.Entity("artur_gde_krosi_Vue.Server.Models.BdModel.CharacteristicProductValue", b =>
@@ -306,7 +306,7 @@ namespace artur_gde_krosi_Vue.Server.Migrations
 
                     b.HasIndex("CharacteristicProductId");
 
-                    b.ToTable("CharacteristicProductValues");
+                    b.ToTable("CharacteristicProductValues", (string)null);
                 });
 
             modelBuilder.Entity("artur_gde_krosi_Vue.Server.Models.BdModel.Image", b =>
@@ -329,7 +329,7 @@ namespace artur_gde_krosi_Vue.Server.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Images");
+                    b.ToTable("Images", (string)null);
                 });
 
             modelBuilder.Entity("artur_gde_krosi_Vue.Server.Models.BdModel.ImageVariant", b =>
@@ -353,7 +353,7 @@ namespace artur_gde_krosi_Vue.Server.Migrations
 
                     b.HasIndex("VariantId");
 
-                    b.ToTable("ImageVariants");
+                    b.ToTable("ImageVariants", (string)null);
                 });
 
             modelBuilder.Entity("artur_gde_krosi_Vue.Server.Models.BdModel.ModelKrosovock", b =>
@@ -373,7 +373,7 @@ namespace artur_gde_krosi_Vue.Server.Migrations
 
                     b.HasIndex("BrendID");
 
-                    b.ToTable("ModelKrosovocks");
+                    b.ToTable("ModelKrosovocks", (string)null);
                 });
 
             modelBuilder.Entity("artur_gde_krosi_Vue.Server.Models.BdModel.Product", b =>
@@ -399,7 +399,7 @@ namespace artur_gde_krosi_Vue.Server.Migrations
 
                     b.HasIndex("ModelKrosovockId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("artur_gde_krosi_Vue.Server.Models.BdModel.ShoppingСart", b =>
@@ -425,7 +425,7 @@ namespace artur_gde_krosi_Vue.Server.Migrations
 
                     b.HasIndex("VariantId");
 
-                    b.ToTable("ShoppingСarts");
+                    b.ToTable("ShoppingСarts", (string)null);
                 });
 
             modelBuilder.Entity("artur_gde_krosi_Vue.Server.Models.BdModel.Variant", b =>
@@ -454,7 +454,7 @@ namespace artur_gde_krosi_Vue.Server.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Variants");
+                    b.ToTable("Variants", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

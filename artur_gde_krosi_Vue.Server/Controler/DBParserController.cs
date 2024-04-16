@@ -32,7 +32,7 @@ namespace artur_gde_krosi_Vue.Server.Controller
             _parserService = parserService;
         }
 
-        [HttpPut("DBParserQuantityInStock")]
+        [HttpPost("DBParserQuantityInStock")]
         public async Task<IActionResult> ParserQuantityInStock()
         {
             if (!ParserService._semaphoreAllParser.Wait(0))
@@ -40,7 +40,7 @@ namespace artur_gde_krosi_Vue.Server.Controller
             await _parserService.AllParserDb();
             return Ok();
         }
-        [HttpPut("DBParser")]
+        [HttpPost("DBParser")]
         public async Task<IActionResult> Parser()
         {
             if (!ParserService._semaphoreStockParser.Wait(0))

@@ -98,7 +98,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
     async fetchProducts() {
         try {
             const response = await axios.get('http://localhost:5263/api/Product/GetProductList');
-            this.commit('setProducts', response.data);
+            this.commit('setProducts', response.data.productList);
         } catch (error) {
             console.log(error);
         }
@@ -111,11 +111,12 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
             try {
                 const response = await axios.get('http://localhost:5263/api/Filter/ModelKrosovocks', { headers: { 'accept': '*/*', 'brendsIds': selectedFilters.brandIDs.join() } });
 
-                let fetchedModels = response.data.reduce((accumulator: ModelInterface[], currentValue: { name: string, modelKrosovocks: ModelInterface[] }) => {
+                let fetchedModels = response.data.result.reduce((accumulator: ModelInterface[], currentValue: { name: string, modelKrosovocks: ModelInterface[] }) => {
                     return accumulator.concat(currentValue.modelKrosovocks);
                 }, []);
 
                 this.commit('setModels', fetchedModels);
+                console.log(fetchedModels)
             } catch (error) {
                 console.log(error);
             }
@@ -127,7 +128,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
     async fetchBrands() {
         try {
             const response = await axios.get('http://localhost:5263/api/Filter/Brends');
-            this.commit('setBrands', response.data);
+            this.commit('setBrands', response.data.result);
         } catch (error) {
             console.log(error);
         }
