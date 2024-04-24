@@ -145,13 +145,12 @@ public class ProductParserService : IAllProductParserService, IStokProductParser
     public async Task QuantityInStockPars(ApplicationIdentityContext _db, StockApi stockApi)
     {
         List<Variant> variants = _db.Variants.AsNoTracking().ToList();
-        foreach (var item in stockApi.root.rows)
+        foreach (StockApi.Row item in stockApi.root.rows)
         {
-            
+            if (item.stock.Contains("."))
+                item.stock = item.stock.Split('.')[0];
             if (variants.Any(x => x.externalCode == item.externalCode && x.quantityInStock == Convert.ToInt32(item.stock)))
             {
-                if (item.stock.Contains("."))
-                    item.stock = item.stock.Split('.')[0];
                 var variant = variants.Find(x => x.externalCode == item.externalCode);
                 if (variant?.quantityInStock == Convert.ToInt32(item.stock))
                 {
@@ -164,7 +163,7 @@ public class ProductParserService : IAllProductParserService, IStokProductParser
                         Console.WriteLine(ex);
                     }
                 }
-
+                 
             }
         }
     }

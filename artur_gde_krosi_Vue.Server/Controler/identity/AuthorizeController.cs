@@ -1,6 +1,7 @@
 ﻿using artur_gde_krosi_Vue.Server.Models.UserModel;
 using artur_gde_krosi_Vue.Server.Services.Account;
 using FluentResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Ocsp;
@@ -42,6 +43,11 @@ namespace artur_gde_krosi_Vue.Server.Controller.identity
             return Ok();
         }
 
+        [HttpGet("CheckToken")]
+        [Authorize(Roles = "User")]
+        public async Task CheckToken(string usernameOrEmail, string password, bool rememberUser) 
+        { 
+        }
         [HttpGet("Login")]
         public async Task<IActionResult> login(string usernameOrEmail, string password, bool rememberUser)
         {

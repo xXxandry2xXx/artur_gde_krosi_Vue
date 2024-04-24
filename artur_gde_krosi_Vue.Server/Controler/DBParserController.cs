@@ -35,16 +35,16 @@ namespace artur_gde_krosi_Vue.Server.Controller
         [HttpPost("DBParserQuantityInStock")]
         public async Task<IActionResult> ParserQuantityInStock()
         {
-            if (!ParserService._semaphoreAllParser.Wait(0))
-                return BadRequest("Парсинг всего апи уже выполняется");
-            await _parserService.AllParserDb();
+            if (!ParserService._semaphoreStockParser)
+                throw new ArgumentException("Парсинг остатков уже выполняется");
+            await _parserService.StockParserDb();
             return Ok();
         }
         [HttpPost("DBParser")]
         public async Task<IActionResult> Parser()
         {
-            if (!ParserService._semaphoreStockParser.Wait(0))
-                return BadRequest("Парсинг остатков уже выполняется");
+            if (!ParserService._semaphoreAllParser)
+                throw new ArgumentException("Парсинг всего апи уже выполняется");
             await _parserService.AllParserDb();
             return Ok();
         }

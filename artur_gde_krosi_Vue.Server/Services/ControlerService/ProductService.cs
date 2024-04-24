@@ -97,7 +97,7 @@ public class ProductService
                 products = products.OrderByDescending(x => x.Variants[0].prise);
                 break;
             case SortState.PopularityAsc:
-                products = products.OrderByDescending(x => x.views);
+                products = products.OrderBy(x => x.views);
                 break;
             case SortState.PopularityDesc:
                 products = products.OrderByDescending(x => x.views);

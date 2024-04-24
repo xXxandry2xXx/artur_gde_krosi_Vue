@@ -14,8 +14,8 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
         private readonly IAllProductParserService _productParserService;
         private readonly IStokProductParserService _stokProductParserService;
         private readonly IConfiguration _configuration;
-        public static readonly SemaphoreSlim _semaphoreStockParser = new SemaphoreSlim(1, 1);
-        public static readonly SemaphoreSlim _semaphoreAllParser = new SemaphoreSlim(1, 1);
+        public static bool _semaphoreStockParser = true;
+        public static bool _semaphoreAllParser = true;
 
         public ParserService(ApplicationIdentityContext db, IGroupParserService groupParserService, IAllProductParserService productParserService, IConfiguration configuration, IStokProductParserService stokProductParserService)
         {
@@ -30,7 +30,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
         {
             try
             {
-                await _semaphoreAllParser.WaitAsync();
+                _semaphoreAllParser = false;
                 Console.WriteLine("начало парсинга апи");
                 ProductApi productApi = new ProductApi();
                 getApiRequest<ProductApi.Root> requestProduct = new getApiRequest<ProductApi.Root>();
@@ -78,14 +78,14 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
             }
             finally
             {
-                _semaphoreAllParser.Release();
+                _semaphoreAllParser = true;
             }
         }
         public async Task StockParserDb()
         {
             try
             {
-                await _semaphoreAllParser.WaitAsync();
+                _semaphoreStockParser = false;
                 Console.WriteLine("начало парсинга остатков");
                 StockApi stockApi = new StockApi();
                 getApiRequest<StockApi.Root> requestVariant = new getApiRequest<StockApi.Root>();
@@ -102,7 +102,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
             }
             finally
             {
-                _semaphoreAllParser.Release();
+                _semaphoreStockParser = true;
             }
 
         }

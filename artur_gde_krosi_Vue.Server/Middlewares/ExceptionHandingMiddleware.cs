@@ -45,6 +45,7 @@ namespace artur_gde_krosi_Vue.Server.Middlewares
             }
             catch (Exception ex) 
             {
+                Console.WriteLine(ex.ToString());
                 await HandleExceptionAsync(httpContext,
                     ex.Message,
                     HttpStatusCode.BadRequest,
