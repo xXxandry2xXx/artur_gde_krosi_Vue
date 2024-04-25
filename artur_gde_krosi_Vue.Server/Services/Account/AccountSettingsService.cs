@@ -33,7 +33,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
                 if (user == null) throw new ArgumentException("Пользователь не найден");
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 await _emailService.SendEmailAsync(email,
-                    "твой токен",
+                    "Подтверждение E-mail адреса для доступа к Вашему аккаунту.",
                     _emailBodyService.EmailBody(user.UserName, user.Email, token));
                 return;
         }

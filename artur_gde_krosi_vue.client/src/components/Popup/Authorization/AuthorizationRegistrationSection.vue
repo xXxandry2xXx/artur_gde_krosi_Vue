@@ -1,5 +1,5 @@
 ﻿<template>
-    <div class="authorization-section" v-show="$store.state.authorization.loginPopupMode === 'registration'">
+    <div class="authorization-section">
         <h3>Регистрация</h3>
         <div class="authorization-section-fields">
             <div class="authorization-popup-field-wrapper">
@@ -66,7 +66,7 @@
             </CheckboxItem>
         </div>
         <BorderedButton class="authorization-popup-button" @click="registerUser">Зарегистрироваться</BorderedButton>
-        <p class="authorization-alternative">Уже есть аккаунт? <span @click="openAuthorizationPopup('log-in')">Войдите!</span></p>
+        <p class="authorization-alternative">Уже есть аккаунт? <span @click="setAuthorizationPopupMode('log-in')">Войдите!</span></p>
     </div>
 </template>
 
@@ -84,32 +84,34 @@
         },
 
         methods: {
-            ...mapMutations(['setAuthorizationPopupVisibility',
-                'openAuthorizationPopup',
-                'setRegEmail',
-                'setRegUsername',
-                'setRegName',
-                'setRegSurname',
-                'setRegPatronymic',
-                'setRegPassword',
-                'setRegPasswordConfirmation',
-                'setEmailNewsletter',
-                'resetRegistrationFields'
-            ]),
+            ...mapMutations(
+                [
+                    'setAuthorizationPopupMode',
+                    'setRegEmail',
+                    'setRegUsername',
+                    'setRegName',
+                    'setRegSurname',
+                    'setRegPatronymic',
+                    'setRegPassword',
+                    'setRegPasswordConfirmation',
+                    'setEmailNewsletter',
+                    'resetRegistrationFields'
+                ]),
 
-            ...mapActions([
-                'registerNewUser',
-                'validateUserName',
-                'validateEmail',
-                'validatePassword',
-                'validatePasswordMatching',
-                'sendConfirmationEmail'
-            ]),
+            ...mapActions(
+                [
+                    'registerNewUser',
+                    'validateUserName',
+                    'validateEmail',
+                    'validatePassword',
+                    'validatePasswordMatching',
+                    'sendConfirmationEmail'
+                ]),
 
             ...mapGetters(['registrationCorrectnessStatus', 'registrationStatus']),
 
             async registerUser() {
-               this.validateFields();
+                this.validateFields();
 
                 if (this.registrationCorrectnessStatus()) {
                     await this.registerNewUser();

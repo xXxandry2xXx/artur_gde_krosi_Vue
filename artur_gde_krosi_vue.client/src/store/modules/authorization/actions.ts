@@ -23,7 +23,7 @@ export const actions: ActionTree<AuthorizationState, RootState> = {
     async sendConfirmationEmail() {
         let email = this.getters.getRegistrationUserData.email;
         try {
-            const response = await axios.get('http://localhost:5263/api/identity/SetingsUser/GenerateTokenOnChangeEmeil', {
+            const response = await axios.get('http://localhost:5263/api/identity/SetingsUser/GenerateTokenOnRegEmail', {
                 params: {
                     'email': email
                 },

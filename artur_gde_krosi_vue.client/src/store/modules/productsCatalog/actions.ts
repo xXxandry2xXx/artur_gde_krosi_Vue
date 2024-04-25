@@ -11,9 +11,9 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
         this.dispatch('loadAppliedFilters')
     },
 
-    async clearFilters() {
+    async clearFilters({ state }: { state: ProductsCatalogState }) {
         const emptyFilters = {
-            priceMin: 0,
+            priceMin: state.availablePrices.priseMin / 100,
             priceMax: 0,
             brandIDs: [],
             modelIDs: [],
@@ -146,4 +146,13 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
         }
     },
 
+    async fetchPrices() {
+        try {
+            const response = await axios.get('http://localhost:5263/api/Filter/MinMaxPrise');
+            this.commit('setPrices', response.data);
+            this.commit('setMinSelectedPrice', response.data.priseMin / 100);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }

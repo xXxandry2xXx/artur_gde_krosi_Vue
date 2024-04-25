@@ -18,9 +18,9 @@
     </div>
 
     <div class="autorization-buttons" v-else>
-        <button class="autorization-button" @click="openAuthorizationPopup('log-in')">Вход</button>
+        <button class="autorization-button" @click="openAuthorizationPopup('authorization', 'log-in')">Вход</button>
         <span>или</span>
-        <button class="autorization-button" @click="openAuthorizationPopup('registration')">Регистрация</button>
+        <button class="autorization-button" @click="openAuthorizationPopup('authorization', 'registration')">Регистрация</button>
     </div>
 </template>
 
@@ -38,8 +38,14 @@
 
         methods: {
             ...mapActions(['logout']),
-            ...mapMutations(['openAuthorizationPopup']),
+            ...mapMutations(['setPopupVisibility', 'setPopupMode', 'setAuthorizationPopupMode']),
             ...mapGetters(['isUserAuthorized']),
+
+            openAuthorizationPopup(popupMode: string, authorizationMode: string) {
+                this.setPopupVisibility(true);
+                this.setPopupMode(popupMode);
+                this.setAuthorizationPopupMode(authorizationMode);
+            },
         },
     })
 </script>

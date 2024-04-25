@@ -2,7 +2,7 @@
     <Preloader v-show="$store.state.showPreloader" />
 
     <transition name="fade">
-        <AuthorizationPopup v-show="$store.state.authorization.showLogInPopup" />
+        <Popup v-show="$store.state.showPopup" />
     </transition>
 
     <AppHeader />
@@ -21,10 +21,10 @@
     import { mapMutations, mapGetters } from 'vuex';
     import AppHeader from '@/components/AppHeader/AppHeader.vue';
     import AppFooter from '@/components/AppFooter.vue';
-    import AuthorizationPopup from '@/components/AuthorizationPopup/AuthorizationPopup.vue';
+    import Popup from '@/components/Popup/Popup.vue';
 
     export default defineComponent({
-        components: { AppHeader, AppFooter, AuthorizationPopup },
+        components: { AppHeader, AppFooter, Popup },
 
         methods: {
             ...mapMutations(['setUser']),
@@ -33,6 +33,10 @@
             setCurrentUser() {
                 let user = this.getAuthorizedUser();
                 this.setUser(user);
+            },
+
+            checkIfUserExists() {
+
             }
         },
 

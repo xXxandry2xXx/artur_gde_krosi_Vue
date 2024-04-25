@@ -2,25 +2,20 @@ import type { MutationTree } from 'vuex';
 import type { AuthorizationState } from '@/store/modules/authorization/types';
 
 export const mutations: MutationTree<AuthorizationState> = {
-    setAuthorizationPopupVisibility(state, value: boolean) {
-        state.showLogInPopup = value;
-        state.succesfulyRegistered.status = false;
-    },
 
-    openAuthorizationPopup(state, mode: string) {
-        state.showLogInPopup = true;
+    setAuthorizationPopupMode(state, mode: string) {
         state.loginPopupMode = mode;
-    },
+    }, 
 
     setLogin(state, loginInput) {
         state.loginUserData.login = loginInput.target.value;
     },
 
-    setLoginCorrectness(state, isCorrect) {
+    setLoginCorrectness(state, isCorrect: boolean) {
         state.isCorrectLogIn.logLogin.status = isCorrect;
     },
 
-    setLoginMessage(state, message) {
+    setLoginMessage(state, message: string) {
         state.isCorrectLogIn.logLogin.message = message;
     },
 
@@ -28,11 +23,11 @@ export const mutations: MutationTree<AuthorizationState> = {
         state.loginUserData.password = passwordInput.target.value;
     },
 
-    setPasswordCorrectness(state, isCorrect) {
+    setPasswordCorrectness(state, isCorrect: boolean) {
         state.isCorrectLogIn.logPassword.status = isCorrect;
     },
 
-    setPasswordMessage(state, message) {
+    setPasswordMessage(state, message: string) {
         state.isCorrectLogIn.logPassword.message = message;
     },
 
@@ -72,35 +67,35 @@ export const mutations: MutationTree<AuthorizationState> = {
         state.registrationUserData.emailNewsletter = !state.registrationUserData.emailNewsletter;
     },
 
-    setRegUsernameCorrectness(state, isCorrect) {
+    setRegUsernameCorrectness(state, isCorrect: boolean) {
         state.isCorrectRegistration.regUsername.status = isCorrect;
     },
 
-    setRegUsernameMessage(state, message) {
+    setRegUsernameMessage(state, message: string) {
         state.isCorrectRegistration.regUsername.message = message;
     },
 
-    setRegEmailCorrectness(state, isCorrect) {
+    setRegEmailCorrectness(state, isCorrect: boolean) {
         state.isCorrectRegistration.regEmail.status = isCorrect;
     },
 
-    setRegEmailMessage(state, message) {
+    setRegEmailMessage(state, message: string) {
         state.isCorrectRegistration.regEmail.message = message;
     },
 
-    setRegPasswordCorrectness(state, isCorrect) {
+    setRegPasswordCorrectness(state, isCorrect: boolean) {
         state.isCorrectRegistration.regPassword.status = isCorrect;
     },
 
-    setRegPasswordMessage(state, message) {
+    setRegPasswordMessage(state, message: string) {
         state.isCorrectRegistration.regPassword.message = message;
     },
 
-    setRegPasswordConfirmationCorrectness(state, isCorrect) {
+    setRegPasswordConfirmationCorrectness(state, isCorrect: boolean) {
         state.isCorrectRegistration.regPasswordConfirmation.status = isCorrect;
     },
 
-    setRegPasswordConfirmationMessage(state, message) {
+    setRegPasswordConfirmationMessage(state, message: string) {
         state.isCorrectRegistration.regPasswordConfirmation.message = message;
     },
 
@@ -117,19 +112,19 @@ export const mutations: MutationTree<AuthorizationState> = {
         }
     },
 
-    setLoginStatus(state, status) {
+    setLoginStatus(state, status: boolean) {
         state.succesfulyAuthorized.status = status;
     },
 
-    setLoginStatusMessage(state, message) {
+    setLoginStatusMessage(state, message: string) {
         state.succesfulyAuthorized.message = message;
     },
 
-    setRegistrationStatus(state, status) {
+    setRegistrationStatus(state, status: boolean) {
         state.succesfulyRegistered.status = status;
     },
 
-    setRegistrationStatusMessage(state, message) {
+    setRegistrationStatusMessage(state, message: string) {
         state.succesfulyRegistered.message = message;
     },
 }

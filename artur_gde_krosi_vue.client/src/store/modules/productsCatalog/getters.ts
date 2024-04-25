@@ -1,6 +1,7 @@
 import type { GetterTree } from 'vuex';
 import type { RootState } from '@/store/types';
 import type { ProductsCatalogState } from '@/store/modules/productsCatalog/types';
+import type { AvailablePricesInterface } from '@/store/modules/productsCatalog/types';
 
 export const getters: GetterTree<ProductsCatalogState, RootState> = {
     getProductsData: state => {
@@ -17,7 +18,13 @@ export const getters: GetterTree<ProductsCatalogState, RootState> = {
     },
 
     availablePrices: state => {
-        return { minAvailablePrice: 0, maxAvailablePrice: state.productsData.priseMax }
+        const availablePrices: AvailablePricesInterface = {};
+
+        for (const price in state.availablePrices) {
+            availablePrices[price] = state.availablePrices[price]/100
+        }
+
+        return availablePrices;
     },
 
     currentFiltersFormData: (state, getters) => {

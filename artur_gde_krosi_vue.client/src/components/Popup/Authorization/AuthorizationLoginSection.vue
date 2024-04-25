@@ -1,5 +1,5 @@
 ﻿<template>
-    <div class="authorization-section" v-show="$store.state.authorization.loginPopupMode === 'log-in'">
+    <div class="authorization-section">
         <h3>Вход</h3>
         <div class="authorization-section-fields">
             <div class="authorization-popup-field-wrapper">
@@ -30,7 +30,7 @@
         </div>
         <BorderedButton class="authorization-popup-button" @click="logInUser">Войти</BorderedButton>
 
-        <p class="authorization-alternative">Ещё нет аккаунта? <span @click="openAuthorizationPopup('registration')">Зарегистрируйтесь!</span></p>
+        <p class="authorization-alternative">Ещё нет аккаунта? <span @click="setAuthorizationPopupMode('registration')">Зарегистрируйтесь!</span></p>
     </div>
 </template>
 
@@ -48,12 +48,7 @@
         },
 
         methods: {
-            ...mapMutations(['setAuthorizationPopupVisibility',
-                'openAuthorizationPopup',
-                'setLogin',
-                'setPassword',
-                'setRememberUser'
-            ]),  
+            ...mapMutations(['setAuthorizationPopupMode', 'setLogin', 'setPassword', 'setRememberUser']),
             ...mapActions(['logInToAccount', 'validateLogin', 'validateLogInPassword']),
             ...mapGetters(['logInCorrectnessStatus', 'logInStatus']),
 

@@ -1,8 +1,12 @@
 ﻿<template>
-    <div class="confirmation-content">
+    <div class="confirmation-content" v-if="isAllowed">
         <h1>E-mail адрес успешно подтвержден!</h1>
         <p>Отлично! Вы успешно подтвердили свой E-mail адрес.</p>
         <a href="/">На главную</a>
+    </div>
+    <div v-else>
+        <Preloader />
+        <div style="height: 400px;"></div>
     </div>
 </template>
 <script lang="ts">
@@ -11,6 +15,12 @@
 
     export default defineComponent({
         props: ['email', 'token'],
+
+        data() {
+            return {
+                isAllowed: false
+            }
+        },
 
         methods: {
             async confirmEmail(this: any) {
@@ -28,7 +38,8 @@
                             }
                         }
                     );
-                } catch(error) {
+                    if (response.status === 200) this.isAllowed = true;
+                } catch (error) {
                     this.$router.push('/');
                 }
             }

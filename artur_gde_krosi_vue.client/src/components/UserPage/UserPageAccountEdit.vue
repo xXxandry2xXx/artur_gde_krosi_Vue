@@ -1,19 +1,22 @@
 ﻿<template>
     <div class="user-account-editing">
-        <h1>Личные данные</h1>
+        <div class="user-account-editing-headings">
+            <h1>Личные данные</h1>
+            <p v-show="$store.state.account.succesMessage != ''">{{ $store.state.account.succesMessage }}</p>
+        </div>
         <div class="user-account-editing-all-fields">
             <div class="user-account-fields">
                 <div class="user-account-field">
                     <span>Имя:</span>
-                    <DefaultInput :value="editableUserData.name" v-model="editableUserData.name" placeholder="Введите своё имя" />
+                    <DefaultInput :value="getEditableUserData().name" @input="enterNewName" placeholder="Введите своё имя" />
                 </div>
                 <div class="user-account-field">
                     <span>Фамилия:</span>
-                    <DefaultInput :value="editableUserData.surname" v-model="editableUserData.surname" placeholder="Введите свою фамилию" />
+                    <DefaultInput :value="getEditableUserData().surname" @input="enterNewSurname" placeholder="Введите свою фамилию" />
                 </div>
                 <div class="user-account-field">
                     <span>Отчество:</span>
-                    <DefaultInput :value="editableUserData.patronymic" v-model="editableUserData.patronymic" placeholder="Введите своё отчество" />
+                    <DefaultInput :value="getEditableUserData().patronymic" @input="enterPatronymic" placeholder="Введите своё отчество" />
                 </div>
                 <div class="user-account-field">
                     <span>E-mail:</span>
@@ -30,20 +33,22 @@
                 </div>
             </div>
             <div class="user-account-change-data-fields">
-                <div class="user-account-field">
-                    <span>Новый пароль</span>
-                    <DefaultInput placeholder="Введите новый пароль" />
-                </div>
-                <div class="user-account-field">
-                    <span>Подтвердите новый пароль</span>
-                    <DefaultInput placeholder="Подтвердите новый пароль" />
-                </div>
+                <button class="user-account-change-button" @click="openChangeDataPopup('change-password')">Сменить пароль</button>
+                <!--<div class="user-account-field">
+        <span>Новый пароль</span>
+        <DefaultInput placeholder="Введите новый пароль" />
+    </div>
+    <div class="user-account-field">
+        <span>Подтвердите новый пароль</span>
+        <DefaultInput placeholder="Подтвердите новый пароль" />
+    </div>-->
             </div>
             <div class="user-account-change-data-fields">
-                <div class="user-account-field">
-                    <span>Новый E-mail</span>
-                    <DefaultInput placeholder="Введите новый E-mail" />
-                </div>
+                <button class="user-account-change-button" @click="openChangeDataPopup('change-email')">Сменить E-mail</button>
+                <!--<div class="user-account-field">
+        <span>Новый E-mail</span>
+        <DefaultInput placeholder="Введите новый E-mail" />
+    </div>-->
             </div>
         </div>
         <BorderedButton @click="confirmChanges">Сохранить</BorderedButton>
@@ -52,87 +57,52 @@
 
 <script lang="ts">
     import { defineComponent } from 'vue';
-    import { mapGetters } from 'vuex';
-    import axios from 'axios';
+    import { mapMutations, mapGetters, mapActions } from 'vuex';
 
 
     export default defineComponent({
-        data() {
-            return {
-                editableUserData: {
-                    name: '',
-                    surname: '',
-                    patronymic: '',
-                    sendingMail: ''
-                }
-            }
-        },
 
         methods: {
-            ...mapGetters(['getAuthorizedUser']),
+            ...mapGetters(['getAuthorizedUser', 'getEditableUserData']),
+            ...mapMutations([
+                'setNewUserName',
+                'setNewUserSurname',
+                'setNewUserPatronymic',
+                'setUserNewsletterStatus',
+                'setPopupVisibility',
+                'setPopupMode'
+            ]),
+            ...mapActions([
+                'saveUserDataChanges',
+                'updateLocalUserData',
+                'initEditableUserData',
+                'confirmChanges'
+            ]),
 
-            confirmChanges(this: any) {
-                this.saveUserDataChanges().then((response: any, error: any) => {
-                    if (response.status === 200) {
-                        this.updateLocalUserData()
-                        location.reload();
-                    } else {
-                        console.log(error);
-                    }
-                });
-
+            enterNewName(event: Event) {
+                let input = event.target as HTMLInputElement;
+                this.setNewUserName(input.value);
             },
 
-            async saveUserDataChanges(this: any) {
-                const username = this.getAuthorizedUser().userName;
-                const data = this.gatherUserFormData;
-
-                try {
-                    const response = await axios.put(
-                        'http://localhost:5263/api/identity/SetingsUser/UserSettings',
-                        data,
-                        {
-                            params: {
-                                'userName': username.toString()
-                            },
-                        }
-                    );
-
-                    return response;
-                } catch (error) {
-                    console.log(error);
-                }
+            enterNewSurname(event: Event) {
+                let input = event.target as HTMLInputElement;
+                this.setNewUserSurname(input.value);
             },
 
-            updateLocalUserData(this: any) {
-                let userData = this.getAuthorizedUser();
-                userData.name = this.editableUserData.name;
-                userData.surname = this.editableUserData.surname;
-                userData.patronymic = this.editableUserData.patronymic;
-                userData.sendingMail = this.editableUserData.sendingMail;
-
-                localStorage.setItem('userData', JSON.stringify(userData));
+            enterPatronymic(event: Event) {
+                let input = event.target as HTMLInputElement;
+                this.setNewUserPatronymic(input.value);
             },
 
-            initEditableUserData(this: any) {
-                let userData = this.getAuthorizedUser();
-                this.editableUserData.name = userData.name;
-                this.editableUserData.surname = userData.surname;
-                this.editableUserData.patronymic = userData.patronymic;
-                this.editableUserData.sendingMail = userData.sendingMail;
+            setNewsletterSatus(event: Event) {
+                let input = event.target as HTMLInputElement;
+            },
+
+            openChangeDataPopup(mode: string) {
+                this.setPopupVisibility(true);
+                this.setPopupMode(mode);
             }
-        },
 
-        computed: {
-            gatherUserFormData(this: any) {
-                const data = new FormData();
-                data.append('name', this.editableUserData.name.toString());
-                data.append('surname', this.editableUserData.surname.toString());
-                data.append('patronymic', this.editableUserData.patronymic.toString());
-                data.append('sendingMail', this.editableUserData.sendingMail.toString());
-
-                return data;
-            }
         },
 
         mounted() {

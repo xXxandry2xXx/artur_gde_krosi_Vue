@@ -94,5 +94,9 @@ export const mutations: MutationTree<ProductsCatalogState> = {
 
     setSelectedSortingOrder(state, order) {
         state.selectedFilters.sortOrder = order;
+    },
+
+    setPrices(state, value) {
+        state.availablePrices = value;
     }
 }

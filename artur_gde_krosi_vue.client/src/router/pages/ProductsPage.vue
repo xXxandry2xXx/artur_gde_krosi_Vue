@@ -33,15 +33,19 @@
 
         methods: {
             ...mapMutations(['setCurrentPage']),
-            ...mapActions(['fetchProducts', 'fetchBrands', 'fetchSizes', 'changePage', 'loadAppliedFilters']),
-            ...mapGetters(['getCurrentPage', 'getTotalPages'])
+            ...mapActions(['fetchProducts', 'fetchBrands', 'fetchSizes', 'changePage', 'loadAppliedFilters', 'fetchPrices']),
+            ...mapGetters(['getCurrentPage', 'getTotalPages']),
+
+            initProductsPage(this: any) {
+                this.fetchProducts();
+                this.fetchBrands();
+                this.fetchSizes();
+                this.changePage(Number(this.$route.params.page));
+            }
         },
 
         async mounted() {
-            this.fetchProducts();
-            this.fetchBrands();
-            this.fetchSizes();
-            this.changePage(Number(this.$route.params.page));
+            this.initProductsPage();
 
             this.$router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
                 if (to.meta.requiresFiltersLoading) {

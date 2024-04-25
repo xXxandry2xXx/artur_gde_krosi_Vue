@@ -1,7 +1,7 @@
 ﻿import type { Module } from 'vuex';
 import type { RootState } from '@/store/types';
 import type { ProductsCatalogState } from '@/store/modules/productsCatalog/types';
-import type { ProductsDataInterface, BrandsInterface, ModelsInterface, SizesInterface } from '@/store/modules/productsCatalog/types';
+import type { ProductsDataInterface, BrandsInterface, ModelsInterface, SizesInterface, AvailablePricesInterface } from '@/store/modules/productsCatalog/types';
 import { mutations } from '@/store/modules/productsCatalog/mutations';
 import { getters } from '@/store/modules/productsCatalog/getters';
 import { actions } from '@/store/modules/productsCatalog/actions';
@@ -28,6 +28,7 @@ const state: ProductsCatalogState = {
         { value: 5, name: 'Сначала менее популярные' }
     ],
     productsData: {} as ProductsDataInterface,
+    availablePrices: {} as AvailablePricesInterface,
     filteredProductsData: {} as ProductsDataInterface,
     brands: {} as BrandsInterface,
     sizes: {} as SizesInterface,
