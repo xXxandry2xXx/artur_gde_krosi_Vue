@@ -12,7 +12,7 @@
         <FiltersPanel />
         <div class="products-content">
             <SearchAndSort :sortingOptions="$store.state.productsCatalog.sortingOptions" />
-            <ProductList v-if="$store.state.productsCatalog.filteredProductsData.products" :products="$store.state.productsCatalog.filteredProductsData.products" />
+            <ProductList v-if="$store.state.productsCatalog.filteredProductsData" :products="$store.state.productsCatalog.filteredProductsData" />
         </div>
     </div>
 

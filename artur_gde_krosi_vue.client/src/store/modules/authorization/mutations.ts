@@ -4,20 +4,12 @@ import type { AuthorizationState } from '@/store/modules/authorization/types';
 export const mutations: MutationTree<AuthorizationState> = {
     setAuthorizationPopupVisibility(state, value: boolean) {
         state.showLogInPopup = value;
-        state.succesfulyAuthorized = false;
+        state.succesfulyRegistered.status = false;
     },
 
     openAuthorizationPopup(state, mode: string) {
         state.showLogInPopup = true;
         state.loginPopupMode = mode;
-    },
-
-    setRegistrationStatus(state, status) {
-        state.succesfulyAuthorized = status;
-    },
-
-    setUserExistance(state, status) {
-        state.userDoesNotExist = status;
     },
 
     setLogin(state, loginInput) {
@@ -123,5 +115,21 @@ export const mutations: MutationTree<AuthorizationState> = {
             passwordConfirmation: '',
             emailNewsletter: false
         }
-    }
+    },
+
+    setLoginStatus(state, status) {
+        state.succesfulyAuthorized.status = status;
+    },
+
+    setLoginStatusMessage(state, message) {
+        state.succesfulyAuthorized.message = message;
+    },
+
+    setRegistrationStatus(state, status) {
+        state.succesfulyRegistered.status = status;
+    },
+
+    setRegistrationStatusMessage(state, message) {
+        state.succesfulyRegistered.message = message;
+    },
 }

@@ -1,8 +1,19 @@
 ﻿<template>
     <div class="authorized-user-panel" @click="isUserPanelVisible = !isUserPanelVisible" v-if="isUserAuthorized()">
-        {{ $store.state.authorizedUser.userName }}
+        <p>{{ $store.state.authorizedUser.userName }}</p>
         <div class="user-dropdown" v-show="isUserPanelVisible">
-            <button class="user-logout-button" @click="userLogout()">Выйти</button>
+            <div class="user-account-button" @click="$router.push('/account')">
+                <font-awesome-icon :icon="['fas', 'user']" />
+                <span class="user-account-button-text">Личные данные</span>
+            </div>
+            <div class="user-account-button">
+                <font-awesome-icon :icon="['fas', 'box']" />
+                <span class="user-account-button-text">Заказы</span>
+            </div>
+            <div class="user-account-button logout-button">
+                <span><font-awesome-icon :icon="['fas', 'right-from-bracket']" /></span>
+                <span class="user-account-button-text" @click="logout()">Выход</span>
+            </div>
         </div>
     </div>
 
@@ -29,11 +40,6 @@
             ...mapActions(['logout']),
             ...mapMutations(['openAuthorizationPopup']),
             ...mapGetters(['isUserAuthorized']),
-
-            userLogout(this: any) {
-                this.logout();
-                location.reload();
-            }
         },
     })
 </script>

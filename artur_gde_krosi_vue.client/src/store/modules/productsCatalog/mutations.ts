@@ -2,6 +2,10 @@ import type { MutationTree } from 'vuex';
 import type { ProductsCatalogState } from '@/store/modules/productsCatalog/types';
 
 export const mutations: MutationTree<ProductsCatalogState> = {
+    setCatalogPreloaderVisibility(state, value) {
+        state.showCatalogPreloader = value;
+    },
+
     addFilter(state, value) {
         let targetFiltersArray;
 

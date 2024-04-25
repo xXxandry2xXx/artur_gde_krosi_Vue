@@ -62,6 +62,7 @@ export interface SelectedFiltersInterface {
     sortOrder: string,
 };
 export interface ProductsCatalogState {
+    showCatalogPreloader: boolean,
     selectedFilters: SelectedFiltersInterface,
     sortingOptions: Array<Object>,
     productsData: ProductsDataInterface,

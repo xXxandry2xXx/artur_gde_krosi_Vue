@@ -58,8 +58,11 @@
                 <p class="authorization-popup-field-message">{{ $store.state.authorization.isCorrectRegistration.regPasswordConfirmation.message }}</p>
                 <span class="required-field-indicator">*</span>
             </div>
+            <p class="authorization-common-message" v-if="$store.state.authorization.succesfulyRegistered.message !== ''">
+                {{ $store.state.authorization.succesfulyRegistered.message }}
+            </p>
             <CheckboxItem class="authorization-newsletter-checkbox" :checked="$store.state.authorization.registrationUserData.emailNewsletter" @change="setEmailNewsletter()">
-                Отправлять мне уведомления об акциях и скидках 
+                Отправлять мне уведомления об акциях и скидках
             </CheckboxItem>
         </div>
         <BorderedButton class="authorization-popup-button" @click="registerUser">Зарегистрироваться</BorderedButton>
@@ -103,14 +106,17 @@
                 'sendConfirmationEmail'
             ]),
 
-            ...mapGetters(['registrationStatus']),
+            ...mapGetters(['registrationCorrectnessStatus', 'registrationStatus']),
 
             async registerUser() {
-                this.validateFields();
-                if (this.registrationStatus()) {
+               this.validateFields();
+
+                if (this.registrationCorrectnessStatus()) {
                     await this.registerNewUser();
-                    this.sendConfirmationEmail().then((response: any) => console.log(response.data));
-                    this.resetRegistrationFields();
+                    if (this.registrationStatus()) {
+                        this.sendConfirmationEmail();
+                        this.resetRegistrationFields();
+                    }
                 }
             },
 

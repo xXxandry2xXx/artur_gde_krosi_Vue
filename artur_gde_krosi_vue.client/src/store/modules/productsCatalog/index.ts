@@ -7,6 +7,8 @@ import { getters } from '@/store/modules/productsCatalog/getters';
 import { actions } from '@/store/modules/productsCatalog/actions';
 
 const state: ProductsCatalogState = {
+    showCatalogPreloader: false,
+
     selectedFilters: {
         priceMin: 0,
         priceMax: 0,
