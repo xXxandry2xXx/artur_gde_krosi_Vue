@@ -198,7 +198,6 @@ namespace artur_gde_krosi_Vue.Server.Services.EmailService
     </center>    
 </body>";
         }
-
         public string EmailBodyPasswordReset(string username, string email, string token)
         {
             string encodedEmail = HttpUtility.UrlEncode(email);
