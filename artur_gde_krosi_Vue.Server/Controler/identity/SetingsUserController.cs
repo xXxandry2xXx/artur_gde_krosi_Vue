@@ -41,12 +41,17 @@ namespace artur_gde_krosi_Vue.Server.Controller.identity
             await _accountSetingsService.PasswordResetTokenOnEmailAsync(email);
             return Ok();
         }
+        [HttpPut("VerifyPasswordResetTokenAsync")]
+        public async Task<IActionResult> VerifyPasswordResetTokenAsync(string email, string token)
+        {
+            await _accountSetingsService.VerifyPasswordResetTokenAsync(email, token);
+            return Ok();
+        }
         [HttpPut("PasswordReset")]
         public async Task<IActionResult> passwordReset(string email, string token, string newPassword)
         {
-            var rez = await _accountSetingsService.PasswordResetCheckingEmailTokenAsync(email, token, newPassword);
-            if (rez.Succeeded) return Ok();
-            else throw new ArgumentException(JsonConvert.SerializeObject(rez));
+            await _accountSetingsService.PasswordResetCheckingEmailTokenAsync(email, token, newPassword);
+            return Ok();
         }
         [HttpGet("GenerateTokenOnEmailChange")]
         public async Task<IActionResult> generateTokenOnEmailChange(string userName, string newEmail)

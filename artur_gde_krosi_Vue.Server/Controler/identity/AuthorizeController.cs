@@ -35,18 +35,11 @@ namespace artur_gde_krosi_Vue.Server.Controller.identity
             if (rez.Succeeded) return Ok();
             else throw new ArgumentException(JsonConvert.SerializeObject(rez));
         }
-
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromForm] RegisterModel registerModel, [FromForm] UserInfoModel userInfoModel)
         {
             await _accountService.RegisterAsync(registerModel, userInfoModel);
             return Ok();
-        }
-
-        [HttpGet("CheckToken")]
-        [Authorize(Roles = "User")]
-        public async Task CheckToken(string usernameOrEmail, string password, bool rememberUser) 
-        { 
         }
         [HttpGet("Login")]
         public async Task<IActionResult> login(string usernameOrEmail, string password, bool rememberUser)
