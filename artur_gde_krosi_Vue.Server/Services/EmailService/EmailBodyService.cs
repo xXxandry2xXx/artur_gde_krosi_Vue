@@ -329,7 +329,7 @@ namespace artur_gde_krosi_Vue.Server.Services.EmailService
             </tr>
             <tr>
               <th style=""background-color: #FDDD00; padding: 10px 20px;"" align=""center"">
-                <img src=""Logo.png"" alt=""Logo"" style=""width: 300px;"">
+                <img src=""https://bucetimg.storage.yandexcloud.net/Logo_1.png"" alt=""Logo"" style=""width: 300px;"">
               </th>
             </tr>
             <tr>

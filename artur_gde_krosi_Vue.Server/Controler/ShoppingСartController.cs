@@ -32,7 +32,7 @@ namespace artur_gde_krosi_Vue.Server.Controller
         [HttpGet]
         public async Task<IActionResult> GetShoppingСarts(string name)
         {
-            var shoppingСarts = _shoppingCartService.GetShoppingСarts(name);
+            var shoppingСarts = await _shoppingCartService.GetShoppingСarts(name);
             return Ok(shoppingСarts);
         }
 

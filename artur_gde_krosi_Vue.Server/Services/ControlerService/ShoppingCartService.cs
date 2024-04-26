@@ -21,18 +21,20 @@ namespace artur_gde_krosi_Vue.Server.Services.ControlerService
         {
             string username = name;/*HttpContext.User.Identity.Name;*/
             var user = await _userManager.FindByNameAsync(username);
+            if (user == null) throw new ArgumentException("Данного пользователя не существует");
             var shoppingСarts = db.ShoppingСarts.Include(x => x.Variant).Select(x => MapGetShoppingСarts(x,x.Variant.quantityInStock > x.quantity)).AsNoTracking().ToList();
             return shoppingСarts;
         }
         private static ShoppingCartView MapGetShoppingСarts(ShoppingСart shoppingСart,bool availability)
         {
-            ShoppingCartView shoppingCartView = new ShoppingCartView(shoppingСart.ShoppingСartId,shoppingСart.quantity, availability);
+            ShoppingCartView shoppingCartView = new ShoppingCartView(shoppingСart.ShoppingСartId,shoppingСart.quantity, availability, shoppingСart.VariantId,shoppingСart.Variant.ProductId);
             return shoppingCartView;
         }
         public async Task AddShoppingСarts(string name, string VariantId)
         {
             string username = name;/*HttpContext.User.Identity.Name;*/
             var user = await _userManager.FindByNameAsync(username);
+            if (user == null) throw new ArgumentException("Данного пользователя не существует");
             if (!db.ShoppingСarts.Any(x => x.UserId == user.Id && x.VariantId == VariantId))
             {
                 db.ShoppingСarts.Add(new ShoppingСart { UserId = user.Id, VariantId = VariantId, quantity = 1 });
@@ -45,6 +47,7 @@ namespace artur_gde_krosi_Vue.Server.Services.ControlerService
         {
             string username = name;/* HttpContext.User.Identity.Name;*/
             var user = await _userManager.FindByNameAsync(username);
+            if (user == null) throw new ArgumentException("Данного пользователя не существует");
             bool error = false;
             foreach (var item in VariantId)
             {

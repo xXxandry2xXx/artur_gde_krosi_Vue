@@ -6,7 +6,7 @@
                 <div class="authorization-popup-field-wrapper">
                     <div class="authorization-popup-field" :class="{'authorization-popup-field-incorrect': passwordCorrectness.status === false }">
                         <span><font-awesome-icon :icon="['fas', 'key']" /></span>
-                        <DefaultInput name="changePassord" placeholder="Новый пароль" :type="passwordInputType" v-model="newPassword" @input="validatePassword"/>
+                        <DefaultInput name="changePassord" placeholder="Новый пароль" :type="passwordInputType" v-model="newPassword" @input="validatePassword" />
                         <div class="toggle-password-button" @click="togglePassword">
                             <font-awesome-icon :icon="['fas', 'eye']" v-if="showPassword === false" />
                             <font-awesome-icon :icon="['fas', 'eye-slash']" v-else />
@@ -17,12 +17,11 @@
                 <div class="authorization-popup-field-wrapper">
                     <div class="authorization-popup-field" :class="{'authorization-popup-field-incorrect': passwordMatching.status === false }">
                         <span><font-awesome-icon :icon="['fas', 'key']" /></span>
-                        <DefaultInput name="changePassordConfirmation" 
-                                      placeholder="Подтвердите новый пароль" 
-                                      :type="passwordInputType" 
+                        <DefaultInput name="changePassordConfirmation"
+                                      placeholder="Подтвердите новый пароль"
+                                      :type="passwordInputType"
                                       v-model="newPasswordConfirmation"
-                                      @input="validatePasswordMatching"
-                                      />
+                                      @input="validatePasswordMatching" />
                     </div>
                     <p class="authorization-popup-field-message">{{ passwordMatching.message }}</p>
                 </div>
@@ -50,7 +49,7 @@
 
         data() {
             return {
-                isAllowed: true,
+                isAllowed: false,
                 succesfulyChanged: false,
                 showPassword: false,
                 passwordInputType: 'password',
@@ -69,6 +68,27 @@
         },
 
         methods: {
+            async checkTokenCorrectness(this: any) {
+                try {
+                    const response = await axios.put(
+                        'http://localhost:5263/api/identity/SetingsUser/VerifyPasswordResetTokenAsync',
+                        '',
+                        {
+                            params: {
+                                'email': this.email,
+                                'token': this.token
+                            },
+                            headers: {
+                                'accept': '*/*'
+                            }
+                        }
+                    );
+                    if(response.status === 200) this.isAllowed = true;
+                } catch (error) {
+                    this.$router.push('/');
+                }
+            },
+
             async confirmNewPassword(this: any) {
                 try {
                     const response = await axios.put(
@@ -150,5 +170,9 @@
                 }
             }
         },
+
+        mounted() {
+            this.checkTokenCorrectness();
+        }
     })
 </script>
