@@ -26,17 +26,25 @@ export const getters: GetterTree<AuthorizationState, RootState> = {
         return form;
     },
 
-    logInStatus: (state) => {
+    logInCorrectnessStatus: (state) => {
         const logInDataCorrectness = state.isCorrectLogIn;
         const succes = Object.values(logInDataCorrectness).every(condition => condition.status === true);
 
         return succes;
     },
 
-    registrationStatus: (state) => {
+    registrationCorrectnessStatus: (state) => {
         const registrationDataCorrectnes = state.isCorrectRegistration;
         const succes = Object.values(registrationDataCorrectnes).every(condition => condition.status === true);
 
         return succes;
     },
+
+    logInStatus: (state) => {
+        return state.succesfulyAuthorized.status;
+    },
+
+    registrationStatus: (state) => {
+        return state.succesfulyRegistered.status;
+    }
 }

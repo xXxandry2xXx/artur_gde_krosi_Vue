@@ -8,7 +8,7 @@
             <BorderedButton class="search-button" @click="advancedSearch">Найти</BorderedButton>
         </div>
         <div class="search-hints" v-show="searchQuery != ''">
-            <div class="search-hint" v-for="hint in sortedHints" @click="moveToProductPage(hint.id)">
+            <div class="search-hint" v-for="hint in sortedHints" @click="moveToProductPage(hint.productId)">
                 <img :src="hint.herfImage" alt="product-image" />
                 <p>{{ hint.name }}</p>
             </div>

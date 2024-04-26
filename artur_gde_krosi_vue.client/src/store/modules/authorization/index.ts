@@ -9,8 +9,6 @@ const state: AuthorizationState = {
     showLogInPopup: false,
     loginPopupMode: '',
 
-    serverUserMessage: null,
-
     loginUserData: {
         login: '',
         password: '',
@@ -30,36 +28,43 @@ const state: AuthorizationState = {
 
     isCorrectLogIn: {
         logLogin: {
-            status: true,
+            status: null,
             message: ''
         },
         logPassword: {
-            status: true,
+            status: null,
             message: ''
         },
     },
 
     isCorrectRegistration: {
         regUsername: {
-            status: true,
+            status: null,
             message: ''
         },
         regEmail: {
-            status: true,
+            status: null,
             message: ''
         },
         regPassword: {
-            status: true,
+            status: null,
             message: ''
         },
         regPasswordConfirmation: {
-            status: true,
+            status: null,
             message: ''
         },
     },
 
-    succesfulyAuthorized: false,
-    userDoesNotExist: true,
+    succesfulyAuthorized: {
+        status: null,
+        message: ''
+    },
+
+    succesfulyRegistered: {
+        status: null,
+        message: ''
+    }
 }
 
 const authorization: Module<AuthorizationState, RootState> = {

@@ -15,17 +15,15 @@
             <div class="progress" :style="{ left: progressLeft, right: progressRight }"></div>
         </div>
         <div class="price-ranger-range-inputs">
-            <input type="range" class="range-price-min" @input="handleMinPrice" :value="minRangerValue" :min="minPrice" :max="maxPrice" ref="minPriceSlider"/>
-            <input type="range" class="range-price-max" @input="handleMaxPrice" :value="maxRangerValue" :min="minPrice" :max="maxPrice" ref="maxPriceSlider"/>
+            <input type="range" class="range-price-min" @input="handleMinPrice" :value="minRangerValue" :min="minPrice" :max="maxPrice" ref="minPriceSlider" />
+            <input type="range" class="range-price-max" @input="handleMaxPrice" :value="maxRangerValue" :min="minPrice" :max="maxPrice" ref="maxPriceSlider" />
         </div>
     </div>
 </template>
 
 <script lang="ts">
     import { defineComponent } from "vue";
-    import { mapMutations, mapGetters } from 'vuex';
-    import store from '@/store';
-    import type { SelectedFiltersInterface } from '@/store/modules/productsCatalog/types';
+    import { mapActions, mapMutations, mapGetters } from 'vuex';
 
     export default defineComponent({
 
@@ -41,17 +39,10 @@
             }
         },
 
-        computed: {
-            currentSelectedFilters(): SelectedFiltersInterface {
-                return store.getters.selectedFiltersState;
-            },
-            availablePrices(): Object {
-                return store.getters.availablePrices;
-            },
-        },
-
         methods: {
+            ...mapActions(['fetchPrices']),
             ...mapMutations(['setMinSelectedPrice', 'setMaxSelectedPrice']),
+            ...mapGetters(['availablePrices', 'selectedFiltersState']),
 
             handleMinPrice(this: any, event: Event) {
                 let target = event.target as HTMLInputElement;
@@ -129,20 +120,31 @@
                 this.handleMaxPrice(event)
             },
 
-            initRangerData(this: any) {
+            fillRangerData(this: any) {
                 this.minPrice = 0;
-                this.maxPrice = this.availablePrices.maxAvailablePrice;
+                this.maxPrice = this.currentAvailablePrices.priseMax;
                 this.minRangerValue = this.currentSelectedFilters.priceMin;
-                this.maxRangerValue = this.currentSelectedFilters.priceMax !== 0 ? this.currentSelectedFilters.priceMax : this.availablePrices.maxAvailablePrice;
+                this.maxRangerValue = this.currentSelectedFilters.priceMax !== 0 ? this.currentSelectedFilters.priceMax : this.currentAvailablePrices.priseMax;
                 this.progressLeft = (this.minRangerValue / this.maxPrice) * 100 + '%';
                 this.progressRight = 100 - (this.maxRangerValue / this.maxPrice) * 100 + '%';
+            },
 
-                setTimeout(() => {
-                    if (this.$refs.minPriceSlider && this.$refs.maxPriceSlider) {
-                        this.$refs.minPriceSlider.value = this.minRangerValue;
-                        this.$refs.maxPriceSlider.value = this.maxRangerValue;
-                    }
-                }, 100);
+            async initRangerData(this: any) {
+                await this.fillRangerData();
+                if (this.$refs.minPriceSlider && this.$refs.maxPriceSlider) {
+                    this.$refs.minPriceSlider.value = this.minRangerValue;
+                    this.$refs.maxPriceSlider.value = this.maxRangerValue;
+                }
+            }
+        },
+
+        computed: {
+            currentSelectedFilters(this: any) {
+                return this.selectedFiltersState();
+            },
+
+            currentAvailablePrices(this: any) {
+                return this.availablePrices();
             }
         },
 
@@ -153,7 +155,7 @@
                     this.initRangerData();
                 },
             },
-            availablePrices: {
+            currentAvailablePrices: {
                 deep: true,
                 handler(this: any) {
                     this.initRangerData();
@@ -161,7 +163,8 @@
             },
         },
 
-        mounted() {
+        async mounted() {
+            await this.fetchPrices();
             this.initRangerData();
         }
     })

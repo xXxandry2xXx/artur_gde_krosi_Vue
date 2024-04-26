@@ -1,11 +1,11 @@
 ﻿<template>
     <article class="product" @mouseenter="toggleSizesPanel" @mouseleave="toggleSizesPanel" @click="$router.push(`/products/productId=${product.productId}`)">
-        <img class="product-preview-image" :src="product.images[0].imgSrc" alt="preview" />
+        <img class="product-preview-image" :src="product.imgSrc" alt="preview" />
         <div class="product-info">
                 <div class="product-info-main">
                     <div class="product-info-categories">
                         <span class="product-info-category">{{ product.brend_Name }}, </span>
-                        <span class="product-info-category">{{ product.modelKrosovock_Name }}</span>
+                        <span class="product-info-category">{{ product.modelKrosovock }}</span>
                     </div>
                     <span class="product-info-name">{{ product.name }}</span>
                     <span class="product-info-price">{{ product.variants[0].prise / 100 }} </span>

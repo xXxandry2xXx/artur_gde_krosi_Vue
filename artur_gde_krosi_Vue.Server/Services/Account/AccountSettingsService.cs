@@ -34,7 +34,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 await _emailService.SendEmailAsync(email,
                     "твой токен",
-                    _emailBodyService.EmailBody(user.UserName, user.Email, token));
+                    _emailBodyService.EmailBodyPasswordReset(user.UserName, user.Email, token));
                 return;
         }
         public async Task RegEmailCheckingEmailTokenAsync(string email, string tokinToEmail)
