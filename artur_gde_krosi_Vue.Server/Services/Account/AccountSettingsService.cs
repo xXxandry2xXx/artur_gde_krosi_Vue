@@ -33,8 +33,8 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
                 if (user == null) throw new ArgumentException("Пользователь не найден");
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 await _emailService.SendEmailAsync(email,
-                    "Изменение пароля от Вашего аккаунта",
-                    _emailBodyService.EmailBodyPasswordReset(user.UserName, user.Email, token));
+                    "Подтверждение E-mail адреса для доступа к Вашему аккаунту",
+                    _emailBodyService.EmailBodyRestEmail(user.UserName, user.Email, token));
                 return;
         }
         public async Task RegEmailCheckingEmailTokenAsync(string email, string tokinToEmail)
@@ -51,7 +51,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
             if (user == null) throw new ArgumentException("Пользователь не найден");
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             await _emailService.SendEmailAsync(email,
-                "твой токен",
+                "Изменение пароля от Вашего аккаунта",
                     _emailBodyService.EmailBodyPasswordReset(user.UserName, user.Email, token));
             return;
         }
@@ -77,7 +77,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
             if (user == null) throw new ArgumentException("Пользователь не найден");
             var token = await _userManager.GenerateChangeEmailTokenAsync(user, newEmail);
             await _emailService.SendEmailAsync(user.Email,
-                "твой токен",
+                "АМЕРИКА СОСАТЬ",
                 "\r\nHello [name/email address]\r\n\r\nAre you ready to gain access to all of the assets we prepared for clients of [company]?\r\n\r\nFirst, you must complete your registration by clicking on the button below:\r\n\r\n[button]\r\n\r\nThis link will verify your email address, and then you’ll officially be a part of the [customer portal] community.\r\n\r\nSee you there!\r\n\r\nBest regards, the [company] team" + token);
             return;
         }
