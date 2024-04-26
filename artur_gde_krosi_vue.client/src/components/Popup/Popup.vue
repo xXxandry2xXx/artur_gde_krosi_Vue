@@ -5,6 +5,7 @@
             <AuthorizationPopupContent v-if="$store.state.popupMode === 'authorization'" />
             <ChangeEmailConfirmation v-else-if="$store.state.popupMode === 'change-email'" />
             <ChangePasswordConfirmation v-else-if="$store.state.popupMode === 'change-password'" />
+            <MailSuccesfulySended v-else-if="$store.state.popupMode === 'mail-succesfuly-sended'" />
         </div>
     </div>
 </template>
@@ -15,10 +16,16 @@
     import AuthorizationPopupContent from '@/components/Popup/Authorization/AuthorizationPopup.vue';
     import ChangeEmailConfirmation from '@/components/Popup/Confirmations/ChangeEmailConfirmation.vue';
     import ChangePasswordConfirmation from '@/components/Popup/Confirmations/ChangePasswordConfirmation.vue';
+    import MailSuccesfulySended from '@/components/Popup/MailSuccesfulySended.vue';
 
     export default defineComponent({
 
-        components: { AuthorizationPopupContent, ChangeEmailConfirmation, ChangePasswordConfirmation },
+        components: {
+            AuthorizationPopupContent,
+            ChangeEmailConfirmation,
+            ChangePasswordConfirmation,
+            MailSuccesfulySended
+        },
 
         methods: {
             ...mapMutations(['setPopupVisibility', 'setRegistrationStatus']),

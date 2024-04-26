@@ -1588,11 +1588,16 @@ header {
         font-weight: 600;
     }
 
-.change-data-confirmation-popup {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
+    .password-changed-succes p {
+        margin-top: 5px;
+        text-align: center;
+    }
+
+    .change-data-confirmation-popup {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
 
     .change-data-confirmation-popup p {
         font-weight: 300;

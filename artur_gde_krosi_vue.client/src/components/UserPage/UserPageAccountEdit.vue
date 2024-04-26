@@ -61,7 +61,8 @@
                 'saveUserDataChanges',
                 'updateLocalUserData',
                 'initEditableUserData',
-                'confirmChanges'
+                'confirmChanges',
+                'sendMessageForPasswordChanging'
             ]),
 
             enterNewName(event: Event) {
@@ -86,8 +87,7 @@
             openChangeDataPopup(mode: string) {
                 this.setPopupVisibility(true);
                 this.setPopupMode(mode);
-            }
-
+            },
         },
 
         mounted() {

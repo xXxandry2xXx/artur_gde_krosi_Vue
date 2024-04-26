@@ -196,7 +196,8 @@ namespace artur_gde_krosi_Vue.Server.Services.EmailService
           </table>
         </div>
     </center>    
-</body>";
+</body>
+</html>";
         }
 
         public string EmailBodyPasswordReset(string username, string email, string token)
@@ -216,7 +217,7 @@ namespace artur_gde_krosi_Vue.Server.Services.EmailService
   <meta name=""color-scheme"" content=""light dark"" />
   <meta name=""supported-color-schemes"" content=""light dark"" />
   <script src=""https://kit.fontawesome.com/0d90cb17ec.js"" crossorigin=""anonymous""></script>
-  <title>Артур, где мои кроссовки? - Подтверждение E-mail</title>
+  <title>Артур, где мои кроссовки? - Изменение пароля</title>
   <style type=""text/css"">
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
@@ -318,7 +319,7 @@ namespace artur_gde_krosi_Vue.Server.Services.EmailService
         <div style=""max-width: 600px; background-color: #fafdfe; box-shadow: 0 0 10px rgba(0, 0, 0, .2);"">
 
           <div style=""font-size: 0px;color: #fafdfe;line-height: 1px; mso-line-height-rule:exactly; display: none; max-width: 0px; max-height: 0px; opacity: 0; overflow: hidden;  mso-hide:all;"">
-            Подтверждение E-mail адреса для доступа к Вашему аккаунту.
+            Изменение пароля от Вашего аккаунта.
           </div>
           
           <table align=""center"" border=""0"" cellspacing=""0"" cellpadding=""0"" role=""presentation"" style=""color:#1C1E23; font-family: 'Poppins',sans-serif, Arial, Helvetica; background-color: #fafdfe; Margin:0; padding:0; width: 100%; max-width: 600px;"">
@@ -328,29 +329,27 @@ namespace artur_gde_krosi_Vue.Server.Services.EmailService
             </tr>
             <tr>
               <th style=""background-color: #FDDD00; padding: 10px 20px;"" align=""center"">
-                <img src=""https://bucetimg.storage.yandexcloud.net/Logo_1.png"" alt=""Logo"" style=""width: 300px;"">
+                <img src=""Logo.png"" alt=""Logo"" style=""width: 300px;"">
               </th>
             </tr>
             <tr>
               <td>
                 <table align=""center"" border=""0"" cellspacing=""0"" cellpadding=""0"" role=""presentation"" style=""color:#1C1E23; font-family: 'Poppins',sans-serif, Arial, Helvetica; background-color: #fafdfe; Margin:0; padding:25px; width: 100%; max-width: 600px;"">
                   <tr>
-                    <td style=""padding: 10px 20px; padding-top: 20px;"">Уважаемый(ая) " + username + @$",</td>
+                    <td style=""padding: 10px 20px; padding-top: 20px;"">Уважаемый(ая) [Имя пользователя],</td>
                   </tr>
                   <tr>
                     <td style=""padding: 10px 20px;"">
-                      Добро пожаловать в наш интернет-магазин! 
-                      Мы рады видеть вас среди наших клиентов.</td>
+                      Мы получили запрос на смену пароля для вашего аккаунта.</td>
                   </tr>
                   <tr>
                     <td style=""padding: 10px 20px; padding-bottom: 0;"">
-                      Для завершения процесса регистрации вашего аккаунта, 
-                      пожалуйста, подтвердите ваш E-mail адрес, 
-                      нажав на кнопку ниже:</td>
+                      Для изменения  пароля от вашего аккаунта, 
+                      пожалуйста, нажмите на кнопку ниже:</td>
                   </tr>
                   <tr>
-                    <td align=""center"" style=""padding: 50px 0; border-bottom: 1px solid #D2A805;"">
-                      <a href=""https://localhost:5173/#/confirmation/"+ encodedEmail + "/"+ encodedToken + @$""" target=""_blank""><button class=""bordered-button-default"">Подтвердить E-mail</button></a>
+                    <td align=""center"" style=""padding: 30px 0; border-bottom: 1px solid #D2A805;"">
+                      <a href=""https://localhost:5173/#/changePasswordConfirmation/" + encodedEmail + "/"+ encodedToken + $@"""><button class=""bordered-button-default"">Изменить пароль</button></a>
                     </td>
                   </tr>
                 </table>
@@ -361,18 +360,7 @@ namespace artur_gde_krosi_Vue.Server.Services.EmailService
                 <table align=""center"" border=""0"" cellspacing=""0"" cellpadding=""0"" role=""presentation"" style=""color:#1C1E23; font-family: 'Poppins',sans-serif, Arial, Helvetica; background-color: #fafdfe; Margin:0; padding: 25px; padding-top: 0; width: 100%; max-width: 600px;"">
                   <tr>
                     <td style=""padding: 0 20px;"">
-                      Подтвержденный E-mail адрес даёт Вам возможность входить в свой аккаунт, 
-                      редактировать данные в Вашем личном кабинете, 
-                      а также позволяет предотвратить другие неудобства:
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <ul style=""font-size: 15px; padding: 0 30px; padding-left: 45px;"">
-                        <li style=""padding: 10px 0;"">Подтвержденный E-mail адрес помогает защитить ваш аккаунт от несанкционированного доступа.</li>
-                        <li style=""padding: 10px 0;"">Мы сможем связываться с Вами посредством E-mail для отправки уведомлений о заказах, акциях и информации о товарах.</li>
-                        <li style=""padding: 10px 0;"">В случае утери пароля или других проблем с доступом к аккаунту, подтвержденный E-mail адрес позволит Вам восстановить доступ.</li>
-                      </ul>
+                      Если вы не инициировали изменение пароля или обнаружили какие-либо подозрительные действия в своем аккаунте, пожалуйста, немедленно свяжитесь с нами.
                     </td>
                   </tr>
                 </table>
