@@ -11,9 +11,9 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
         this.dispatch('loadAppliedFilters')
     },
 
-    async clearFilters() {
+    async clearFilters({ state }: { state: ProductsCatalogState }) {
         const emptyFilters = {
-            priceMin: 0,
+            priceMin: state.availablePrices.priseMin / 100,
             priceMax: 0,
             brandIDs: [],
             modelIDs: [],
@@ -34,12 +34,12 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
     },
 
     async loadAppliedFilters() {
-        this.commit('setPreloaderVisibility', true);
+        this.commit('setCatalogPreloaderVisibility', true);
         this.commit('setSelectedFilters', this.getters.currentSelectedFilters);
 
         this.dispatch('getFilteredData', this.getters.currentSelectedFilters).then(response => {
             this.commit('setFilteredProducts', response);
-            this.commit('setPreloaderVisibility', false);
+            this.commit('setCatalogPreloaderVisibility', false);
             this.commit('countPages');
         });
         this.dispatch('fetchModels');
@@ -89,16 +89,20 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
                 headers: headers
             });
 
-            return response.data;
+            return response.data.productList;
         } catch (error) {
             throw error;
         }
     },
 
     async fetchProducts() {
+        this.commit('setPreloaderVisibility', true);
         try {
             const response = await axios.get('http://localhost:5263/api/Product/GetProductList');
-            this.commit('setProducts', response.data.productList);
+            if (response.status === 200) {
+                this.commit('setProducts', response.data.productList);
+                this.commit('setPreloaderVisibility', false);
+            }
         } catch (error) {
             console.log(error);
         }
@@ -111,12 +115,11 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
             try {
                 const response = await axios.get('http://localhost:5263/api/Filter/ModelKrosovocks', { headers: { 'accept': '*/*', 'brendsIds': selectedFilters.brandIDs.join() } });
 
-                let fetchedModels = response.data.result.reduce((accumulator: ModelInterface[], currentValue: { name: string, modelKrosovocks: ModelInterface[] }) => {
-                    return accumulator.concat(currentValue.modelKrosovocks);
+                let fetchedModels = response.data.reduce((accumulator: ModelInterface[], currentValue: { name: string, modelKrosovoks: ModelInterface[] }) => {
+                    return accumulator.concat(currentValue.modelKrosovoks);
                 }, []);
 
                 this.commit('setModels', fetchedModels);
-                console.log(fetchedModels)
             } catch (error) {
                 console.log(error);
             }
@@ -128,7 +131,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
     async fetchBrands() {
         try {
             const response = await axios.get('http://localhost:5263/api/Filter/Brends');
-            this.commit('setBrands', response.data.result);
+            this.commit('setBrands', response.data);
         } catch (error) {
             console.log(error);
         }
@@ -143,4 +146,13 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
         }
     },
 
+    async fetchPrices() {
+        try {
+            const response = await axios.get('http://localhost:5263/api/Filter/MinMaxPrise');
+            this.commit('setPrices', response.data);
+            this.commit('setMinSelectedPrice', response.data.priseMin / 100);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }

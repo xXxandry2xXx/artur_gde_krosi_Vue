@@ -61,10 +61,17 @@ export interface SelectedFiltersInterface {
     searchValue: string,
     sortOrder: string,
 };
+
+export interface AvailablePricesInterface {
+    [key: string]: number, 
+};
+
 export interface ProductsCatalogState {
+    showCatalogPreloader: boolean,
     selectedFilters: SelectedFiltersInterface,
     sortingOptions: Array<Object>,
     productsData: ProductsDataInterface,
+    availablePrices: AvailablePricesInterface,
     filteredProductsData: ProductsDataInterface,
     brands: BrandsInterface,
     sizes: SizesInterface,

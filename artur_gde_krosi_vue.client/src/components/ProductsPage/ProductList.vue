@@ -1,12 +1,13 @@
 ﻿<template>
     <div class="product-list-wrapper">
+        <Preloader v-show="$store.state.productsCatalog.showCatalogPreloader" />
         <div v-if="products.length > 0" class="product-list">
             <Product v-for="product in products" :key="product.productId" :product="product"/>
         </div>
         <div v-else class="nothing-found">
             <div class="nothing-found-content">
-                <span><i class="far fa-times-circle"></i></span>
-                <p>Ничего не найдено. Попробуйте сбросить фильтры или ввести другой поисковой запрос.</p>
+                <span><font-awesome-icon :icon="['fas', 'face-frown']" /></span>
+                <p>У Артура нет таких кроссовок</p>
             </div>
         </div>
     </div>
@@ -21,7 +22,7 @@
         components: { Product },
         props: {
             products: {
-                type: Array as () => ProductInterface[],
+                type: Object as () => ProductInterface[],
                 required: true
             }
         }

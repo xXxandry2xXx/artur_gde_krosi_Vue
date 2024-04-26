@@ -9,17 +9,21 @@ export const actions: ActionTree<AuthorizationState, RootState> = {
         const form = this.getters.getRegistrationFormData;
         try {
             const response = await axios.post('http://localhost:5263/api/identity/Authorize/Register', form, { headers: { 'accept': '*/*', 'Content-Type': 'multipart/form-data' } });
-            if (response.status === 200) this.commit('setRegistrationStatus', true);
+            if (response.status === 200) {
+                this.commit('setRegistrationStatus', true);
+                this.commit('setRegistrationStatusMessage', '');
+            }
+
             return response;
         } catch (error: any) {
-            console.log(error);
+            this.commit('setRegistrationStatusMessage', error.response.data.message);
         }
     },
 
     async sendConfirmationEmail() {
         let email = this.getters.getRegistrationUserData.email;
         try {
-            const response = axios.get('http://localhost:5263/api/identity/SetingsUser/GenerateTokenOnChangeEmeil', {
+            const response = await axios.get('http://localhost:5263/api/identity/SetingsUser/GenerateTokenOnRegEmail', {
                 params: {
                     'email': email
                 },
@@ -45,15 +49,19 @@ export const actions: ActionTree<AuthorizationState, RootState> = {
                     'accept': '*/*'
                 }
             });
+
+            if (response.status === 200) this.commit('setLoginStatus', true);
             return response;
-        } catch (error) {
-            console.log(error)
+        } catch (error: any) {
+            this.commit('setLoginStatus', false);
+            this.commit('setLoginStatusMessage', error.response.data.message);
         }
     },
 
     logout() {
         localStorage.removeItem('token');
         localStorage.removeItem('userData');
+        location.reload();
     },
 
     validateLogin({ state }: { state: AuthorizationState }) {
@@ -62,7 +70,7 @@ export const actions: ActionTree<AuthorizationState, RootState> = {
             this.commit('setLoginCorrectness', false);
             this.commit('setLoginMessage', 'Заполните обязательное поле');
             return
-        } 
+        }
 
         this.commit('setLoginCorrectness', true);
         this.commit('setLoginMessage', '');
@@ -157,6 +165,6 @@ export const actions: ActionTree<AuthorizationState, RootState> = {
             this.commit('setRegPasswordConfirmationCorrectness', false);
             this.commit('setRegPasswordConfirmationMessage', 'Пароли не совпадают');
         }
-    } 
+    }
 }
 

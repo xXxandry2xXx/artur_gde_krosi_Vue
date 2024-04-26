@@ -1,10 +1,15 @@
-﻿namespace artur_gde_krosi_Vue.Server.Services.EmailService
+﻿using System;
+using System.Web;
+
+namespace artur_gde_krosi_Vue.Server.Services.EmailService
 {
     public class EmailBodyService
     {
         public string EmailBody(string username, string email, string token)
         {
-            string a;
+            string encodedEmail = HttpUtility.UrlEncode(email);
+            string encodedToken = HttpUtility.UrlEncode(token);
+
             return @$"<!DOCTYPE html
   PUBLIC ""-//W3C//DTD XHTML 1.0 Transitional//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"">
 <html xmlns=""http://www.w3.org/1999/xhtml"" xmlns:v=""urn:schemas-microsoft-com:vml""
@@ -151,7 +156,7 @@
                   </tr>
                   <tr>
                     <td align=""center"" style=""padding: 50px 0; border-bottom: 1px solid #D2A805;"">
-                      <a href=""http://localhost:5263/api/identity/SetingsUser/RegEmeil?email="+email+"&token="+token+@$"""><button class=""bordered-button-default"">Подтвердить E-mail</button></a>
+                      <a href=""https://localhost:5173/#/confirmation/"+ encodedEmail + "/"+ encodedToken + @$""" target=""_blank""><button class=""bordered-button-default"">Подтвердить E-mail</button></a>
                     </td>
                   </tr>
                 </table>

@@ -3,12 +3,15 @@ import type { RootState } from '@/store/types'
 
 import productsCatalog from '@/store/modules/productsCatalog/index';
 import authorization from '@/store/modules/authorization/index';
+import account from '@/store/modules/account/index';
 
 export default createStore<RootState>({
     state: {
         authorizedUser: null,
         showPreloader: false,
         showSearchPanel: false,
+        showPopup: false,
+        popupMode: ''
     },
 
     mutations: {
@@ -20,8 +23,16 @@ export default createStore<RootState>({
             state.showSearchPanel = value;
         },
 
+        setPopupVisibility(state, value: boolean) {
+            state.showPopup = value;
+        },
+
+        setPopupMode(state, value: string) {
+            state.popupMode = value;
+        },
+
         setUser(state, user) {
-            state.authorizedUser = user;
+            if(user !== undefined) state.authorizedUser = user;
         }
     },
 
@@ -40,6 +51,7 @@ export default createStore<RootState>({
 
     modules: {
         productsCatalog,
-        authorization
+        authorization,
+        account
     },
 })
