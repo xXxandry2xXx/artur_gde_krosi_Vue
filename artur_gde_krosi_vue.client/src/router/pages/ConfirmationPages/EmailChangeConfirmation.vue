@@ -1,8 +1,11 @@
-п»ї<template>
+<template>
     <div class="confirmation-content" v-if="isAllowed">
-        <h1>E-mail Р°РґСЂРµСЃ СѓСЃРїРµС€РЅРѕ РїРѕРґС‚РІРµСЂР¶РґРµРЅ!</h1>
-        <p>РћС‚Р»РёС‡РЅРѕ! Р’С‹ СѓСЃРїРµС€РЅРѕ РїРѕРґС‚РІРµСЂРґРёР»Рё СЃРІРѕР№ E-mail Р°РґСЂРµСЃ.</p>
-        <a href="/">РќР° РіР»Р°РІРЅСѓСЋ</a>
+        <!--<h1>E-mail адрес успешно изменен!</h1>
+        <p>Отлично! Вы успешно подтвердили новый E-mail адрес.</p>
+        <a href="/">На главную</a>-->
+        <span>{{ username }}</span>
+        <span>{{ email }}</span>
+        <span>{{ token }}</span>
     </div>
     <div v-else>
         <Preloader />
@@ -14,16 +17,16 @@
     import { defineComponent } from 'vue';
 
     export default defineComponent({
-        props: ['email', 'token'],
+        props: [ 'username', 'email', 'token'],
 
         data() {
             return {
-                isAllowed: false
+                isAllowed: true
             }
         },
 
         methods: {
-            async confirmEmail(this: any) {
+            async confirmNewEmail(this: any) {
                 try {
                     const response = await axios.put(
                         'http://localhost:5263/api/identity/SetingsUser/RegEmeil',
@@ -46,7 +49,7 @@
         },
 
         mounted() {
-            this.confirmEmail();
+            //this.confirmNewEmail();
         }
     })
 </script>

@@ -375,10 +375,10 @@ header {
         font-size: 25px;
     }
 
-.authorized-user-panel:hover {
-    cursor: pointer;
-    text-decoration: underline;
-}
+    .authorized-user-panel:hover {
+        cursor: pointer;
+        text-decoration: underline;
+    }
 
 .user-dropdown {
     display: flex;
@@ -1438,11 +1438,11 @@ header {
     transform: rotateZ(180deg);
 }
 
-    .user-account-editing {
-        display: flex;
-        flex-direction: column;
-        width: 45%;
-    }
+.user-account-editing {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+}
 
 .user-account-editing-headings {
     margin-bottom: 25px;
@@ -1513,16 +1513,17 @@ header {
         color: var(--border-font-color);
     }
 
-    .confirmation-content {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 320px;
-    }
+.confirmation-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 380px;
+}
 
     .confirmation-content h1 {
         font-weight: 500;
+        margin-top: 25px;
     }
 
     .confirmation-content p {
@@ -1537,16 +1538,101 @@ header {
         color: var(--border-font-color);
     }
 
-    footer {
-        box-sizing: border-box;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: #000;
-        color: #fff;
-        width: 100%;
-        margin-top: 150px;
+    .confirmation-content
+    .password-confirmation-content {
+        width: 30%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
+
+        .confirmation-content
+        .password-confirmation-content
+        .password-confirmation-fields {
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .confirmation-content
+        .password-confirmation-content
+        .authorization-popup-field-wrapper {
+            width: 100%;
+            margin: 0;
+            margin-top: 10px;
+        }
+
+        .confirmation-content
+        .password-confirmation-content p {
+            margin: 0;
+            margin-top: 5px;
+            font-size: 13px;
+        }
+
+        .confirmation-content
+        .password-confirmation-content h1 {
+            width: 100%;
+            font-size: 40px;
+            font-weight: 600;
+        }
+
+.password-changed-succes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+    .password-changed-succes h2 {
+        margin-top: 25px;
+        font-size: 30px;
+        font-weight: 600;
+    }
+
+.change-data-confirmation-popup {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+    .change-data-confirmation-popup p {
+        font-weight: 300;
+        text-align: center;
+        margin-top: 10px;
+        font-size: 18px;
+    }
+
+    .change-data-confirmation-popup .user-account-field {
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+        .change-data-confirmation-popup .user-account-field input {
+            width: 80%;
+            margin: 0;
+        }
+
+.password-change-confirmation-popup p {
+    margin: 10px 0;
+}
+
+.confirm-popup-changes-button {
+    margin-top: 25px;
+    width: fit-content;
+    padding: 10px 30px;
+    font-size: 20px;
+    align-self: center;
+}
+
+footer {
+    box-sizing: border-box;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #000;
+    color: #fff;
+    width: 100%;
+    margin-top: 150px;
+}
 
 .footer-content {
     display: flex;

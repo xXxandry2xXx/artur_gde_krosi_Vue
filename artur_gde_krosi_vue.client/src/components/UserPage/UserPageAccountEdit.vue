@@ -34,21 +34,6 @@
             </div>
             <div class="user-account-change-data-fields">
                 <button class="user-account-change-button" @click="openChangeDataPopup('change-password')">Сменить пароль</button>
-                <!--<div class="user-account-field">
-        <span>Новый пароль</span>
-        <DefaultInput placeholder="Введите новый пароль" />
-    </div>
-    <div class="user-account-field">
-        <span>Подтвердите новый пароль</span>
-        <DefaultInput placeholder="Подтвердите новый пароль" />
-    </div>-->
-            </div>
-            <div class="user-account-change-data-fields">
-                <button class="user-account-change-button" @click="openChangeDataPopup('change-email')">Сменить E-mail</button>
-                <!--<div class="user-account-field">
-        <span>Новый E-mail</span>
-        <DefaultInput placeholder="Введите новый E-mail" />
-    </div>-->
             </div>
         </div>
         <BorderedButton @click="confirmChanges">Сохранить</BorderedButton>

@@ -4,9 +4,9 @@ import ProductPage from '@/router/pages/ProductPage.vue';
 import UserPage from '@/router/pages/UserPage.vue';
 import MainPage from '@/router/pages/MainPage.vue';
 import NotFound from '@/router/pages/NotFound.vue';
-import Confirmation from '@/router/pages/EmailConfirmation.vue';
+import RegEmailConfirmation from '@/router/pages/ConfirmationPages/EmailConfirmation.vue';
+import ChangePasswordConfirmation from '@/router/pages/ConfirmationPages/PasswordChangeConfirmation.vue';
 import store from '@/store/index';
-import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
 
 const router = createRouter({
     routes: [
@@ -16,7 +16,8 @@ const router = createRouter({
         { name: 'productPage', path: '/products/productId=:productId', component: ProductPage },
         { name: 'userPage', path: '/account', component: UserPage, meta: { requiresAuthorizedUser: true } },
         { name: 'notFound', path: '/notfound', component: NotFound },
-        { name: 'confirmation', path: '/confirmation/:email/:token', component: Confirmation, props: true },
+        { name: 'regEmailConfirmation', path: '/regEmailConfirmation/:email/:token', component: RegEmailConfirmation, props: true },
+        { name: 'changePasswordConfirmation', path: '/changePasswordConfirmation/:email/:token', component: ChangePasswordConfirmation, props: true },
         { path: '/:catchAll(.*)', component: NotFound },
     ],
     history: createWebHashHistory(),

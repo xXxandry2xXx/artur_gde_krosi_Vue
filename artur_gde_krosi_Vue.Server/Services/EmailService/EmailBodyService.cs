@@ -156,7 +156,7 @@ namespace artur_gde_krosi_Vue.Server.Services.EmailService
                   </tr>
                   <tr>
                     <td align=""center"" style=""padding: 50px 0; border-bottom: 1px solid #D2A805;"">
-                      <a href=""https://localhost:5173/#/confirmation/"+ encodedEmail + "/"+ encodedToken + @$""" target=""_blank""><button class=""bordered-button-default"">Подтвердить E-mail</button></a>
+                      <a href=""https://localhost:5173/#/regEmailConfirmation/" + encodedEmail + "/"+ encodedToken + @$""" target=""_blank""><button class=""bordered-button-default"">Подтвердить E-mail</button></a>
                     </td>
                   </tr>
                 </table>
@@ -389,7 +389,8 @@ namespace artur_gde_krosi_Vue.Server.Services.EmailService
           </table>
         </div>
     </center>    
-</body>";
+</body>
+</html>";
         }
     }
 }
