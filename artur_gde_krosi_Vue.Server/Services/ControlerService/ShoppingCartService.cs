@@ -4,6 +4,7 @@ using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static artur_gde_krosi_Vue.Server.Models.ContelerViews.ShoppingCartView;
 
 namespace artur_gde_krosi_Vue.Server.Services.ControlerService
 {
@@ -17,17 +18,19 @@ namespace artur_gde_krosi_Vue.Server.Services.ControlerService
             this.db = db;
             _userManager = userManager;
         }
-        public async Task<List<ShoppingCartView>> GetShoppingСarts(string name)
+        public async Task<ShoppingCartView> GetShoppingСarts(string name)
         {
             string username = name;/*HttpContext.User.Identity.Name;*/
             var user = await _userManager.FindByNameAsync(username);
             if (user == null) throw new ArgumentException("Данного пользователя не существует");
-            var shoppingСarts = db.ShoppingСarts.Include(x => x.Variant).Select(x => MapGetShoppingСarts(x,x.Variant.quantityInStock > x.quantity)).AsNoTracking().ToList();
-            return shoppingСarts;
+            ShoppingCartView shoppingCartView = new ShoppingCartView();
+            shoppingCartView.shoppingCartList = db.ShoppingСarts.Include(x => x.Variant).Select(x => MapGetShoppingСarts(x,x.Variant.quantityInStock > x.quantity)).AsNoTracking().ToList();
+            shoppingCartView.maxPrise = shoppingCartView.shoppingCartList.Max(x => x.prise);
+            return shoppingCartView;
         }
-        private static ShoppingCartView MapGetShoppingСarts(ShoppingСart shoppingСart,bool availability)
+        private static ShoppingCartView.ShoppingCartListElement MapGetShoppingСarts(ShoppingСart shoppingСart,bool availability)
         {
-            ShoppingCartView shoppingCartView = new ShoppingCartView(shoppingСart.ShoppingСartId,shoppingСart.quantity, availability, shoppingСart.VariantId,shoppingСart.Variant.ProductId);
+            ShoppingCartView.ShoppingCartListElement shoppingCartView = new ShoppingCartView.ShoppingCartListElement(shoppingСart.ShoppingСartId, shoppingСart.quantity, availability, shoppingСart.VariantId,shoppingСart.Variant.ProductId, shoppingСart.Variant.prise);
             return shoppingCartView;
         }
         public async Task AddShoppingСarts(string name, string VariantId)

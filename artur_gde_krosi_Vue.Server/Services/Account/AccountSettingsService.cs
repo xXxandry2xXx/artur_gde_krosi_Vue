@@ -1,4 +1,5 @@
 ﻿using artur_gde_krosi_Vue.Server.Models.BdModel;
+using artur_gde_krosi_Vue.Server.Models.ContelerViews;
 using artur_gde_krosi_Vue.Server.Models.UserModel;
 using artur_gde_krosi_Vue.Server.Services.EmailService;
 using Microsoft.AspNetCore.Identity;
@@ -22,22 +23,11 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
             _emailBodyService = emailBodyService;
         }
 
-        public async Task<(string name, string surname, string patronymic, bool sendingMail, string Email)> GetInfoUser(string Username)
+        public async Task<UserView> GetInfoUser(string Username)
         {
             var user = await _userManager.FindByNameAsync(Username);
-            var rez = (user.name, user.surname, user.patronymic, user.sendingMail, user.Email);
+            var rez = new UserView(user.name, user.surname, user.patronymic, user.sendingMail, user.Email);
             return rez;
-        }
-
-        public async Task RegEmailTokenOnEmailAsync(string email)
-        {
-                var user = await _userManager.FindByEmailAsync(email);
-                if (user == null) throw new ArgumentException("Пользователь не найден");
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                await _emailService.SendEmailAsync(email,
-                    "Подтверждение E-mail адреса для доступа к Вашему аккаунту",
-                    _emailBodyService.EmailBodyRestEmail(user.UserName, user.Email, token));
-                return;
         }
 
         public async Task RegEmailCheckingEmailTokenAsync(string email, string tokinToEmail)
@@ -49,24 +39,13 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
             if (!result.Succeeded) throw new ArgumentException("Ошибка токена");
         }
 
-        public async Task PasswordResetTokenOnEmailAsync(string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null) throw new ArgumentException("Пользователь не найден");
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            await _emailService.SendEmailAsync(email,
-                "Изменение пароля от Вашего аккаунта",
-                    _emailBodyService.EmailBodyPasswordReset(user.UserName, user.Email, token));
-            return;
-        }
-
         public async Task VerifyPasswordResetTokenAsync(string email, string tokinToEmail)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null) throw new ArgumentException("Пользователь не найден");
             var tokenValid = await _userManager.VerifyUserTokenAsync(user,
                     _userManager.Options.Tokens.PasswordResetTokenProvider, "ResetPassword", tokinToEmail);
-            if (!tokenValid) throw new ArgumentException("Токен истёк");
+            if (!tokenValid) throw new ArgumentException("Ошибка токена");
         }
         public async Task PasswordResetCheckingEmailTokenAsync(string email, string tokinToEmail, string newPassword)
         {
@@ -75,17 +54,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
             var result = await _userManager.ResetPasswordAsync(user, tokinToEmail, newPassword);
             if (!result.Succeeded) throw new ArgumentException("Ошибка токена");
         }
-
-        public async Task ChangeEmailTokenOnEmailAsync(string userName, string newEmail)
-        {
-            var user = await _userManager.FindByNameAsync(userName);
-            if (user == null) throw new ArgumentException("Пользователь не найден");
-            var token = await _userManager.GenerateChangeEmailTokenAsync(user, newEmail);
-            await _emailService.SendEmailAsync(user.Email,
-                "АМЕРИКА СОСАТЬ",
-                "\r\nHello [name/email address]\r\n\r\nAre you ready to gain access to all of the assets we prepared for clients of [company]?\r\n\r\nFirst, you must complete your registration by clicking on the button below:\r\n\r\n[button]\r\n\r\nThis link will verify your email address, and then you’ll officially be a part of the [customer portal] community.\r\n\r\nSee you there!\r\n\r\nBest regards, the [company] team" + token);
-            return;
-        }
+        
         public async Task ChangeEmailAsync(string userName, string newEmail, string tokinToEmail)
         {
             var user = await _userManager.FindByNameAsync(userName);

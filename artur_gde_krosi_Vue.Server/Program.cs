@@ -77,6 +77,7 @@ builder.Services.AddTransient<CharacteristicProductValueService>();
 builder.Services.AddTransient<ParserService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IAccountValidationService, AccountValidationService>();
+builder.Services.AddScoped<IAccountMailingTokenService, AccountMailingTokenService>();
 builder.Services.AddScoped<IAccountSettingsService, AccountSettingsService>();
 
 builder.Services.AddScoped<IGroupParserService, GroupParserService>();
