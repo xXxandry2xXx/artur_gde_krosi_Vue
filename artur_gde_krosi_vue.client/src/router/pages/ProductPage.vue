@@ -51,6 +51,7 @@
                     this.productData = response.data;
                     this.productImages = this.productData.images.reverse()
                     this.currentImgIndex = this.productImages[0].index;
+                    this.setPreloaderVisibility(false);
                 } catch (error) {
                     console.log(error)
                 }
@@ -64,9 +65,8 @@
             },
 
             async productPageInit(this: any) {
-                this.setPreloaderVisibility(true);
                 await this.fetchSizes();
-                await this.fetchProduct().then(this.setPreloaderVisibility(false));
+                await this.fetchProduct();
 
                 this.$router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
                     if (to.meta.isProductPage) this.productId = to.params.productId;
@@ -93,6 +93,7 @@
         },
 
         async mounted() {
+            this.setPreloaderVisibility(true);
             await this.productPageInit();
             this.getRelatedProducts()
         },

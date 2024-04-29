@@ -1,20 +1,24 @@
 ﻿<template>
-    <div class="authorized-user-panel" @click="isUserPanelVisible = !isUserPanelVisible" v-if="isUserAuthorized()">
-        <p>{{ $store.state.authorizedUser.userName }}</p>
-        <div class="user-dropdown" v-show="isUserPanelVisible">
-            <div class="user-account-button" @click="$router.push('/account')">
-                <font-awesome-icon :icon="['fas', 'user']" />
-                <span class="user-account-button-text">Личные данные</span>
+    <div class="authorized-user-panel" v-if="isUserAuthorized()">
+        <p @mouseenter="showUserPanel" @mouseleave="hideUserPanel">{{ $store.state.authorizedUser.userName }}</p>
+
+        <transition name="fade">
+            <div class="user-dropdown" @mouseenter="showUserPanel" @mouseleave="hideUserPanel" v-show="isUserPanelVisible" ref="userPanel">
+                <div class="user-account-button" @click="moveToTheLink('/account')">
+                    <font-awesome-icon :icon="['fas', 'user']" />
+                    <span class="user-account-button-text">Личные данные</span>
+                </div>
+                <div class="user-account-button" @click="moveToTheLink('/')">
+                    <font-awesome-icon :icon="['fas', 'box']" />
+                    <span class="user-account-button-text">Заказы</span>
+                </div>
+                <div class="user-account-button logout-button">
+                    <span><font-awesome-icon :icon="['fas', 'right-from-bracket']" /></span>
+                    <span class="user-account-button-text" @click="logout()">Выход</span>
+                </div>
             </div>
-            <div class="user-account-button">
-                <font-awesome-icon :icon="['fas', 'box']" />
-                <span class="user-account-button-text">Заказы</span>
-            </div>
-            <div class="user-account-button logout-button">
-                <span><font-awesome-icon :icon="['fas', 'right-from-bracket']" /></span>
-                <span class="user-account-button-text" @click="logout()">Выход</span>
-            </div>
-        </div>
+        </transition>
+
     </div>
 
     <div class="autorization-buttons" v-else>
@@ -26,13 +30,14 @@
 
 <script lang="ts">
     import { defineComponent } from 'vue';
+    import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
     import { mapMutations, mapGetters, mapActions } from 'vuex';
 
     export default defineComponent({
-
         data() {
             return {
                 isUserPanelVisible: false,
+                userPanelTimeout: null
             }
         },
 
@@ -46,6 +51,37 @@
                 this.setPopupMode(popupMode);
                 this.setAuthorizationPopupMode(authorizationMode);
             },
+
+            moveToTheLink(this: any, link: string) {
+                this.isUserPanelVisible = false;
+                this.$router.push(link);
+            },
+
+            showUserPanel(this: any, event: Event) {
+                let target = event.target;
+                if (target === this.$refs.userPanel) this.clearUserPanelTimeout(this.userPanelTimeout);
+                this.isUserPanelVisible = true;
+            },
+
+            hideUserPanel() {
+                this.setUserPanelTimeout();
+            },
+
+            setUserPanelTimeout(this: any) {
+                this.userPanelTimeout = setTimeout(() => this.isUserPanelVisible = false, 500);
+            },
+
+            clearUserPanelTimeout(this: any) {
+                this.userPanelTimeout = clearTimeout(this.userPanelTimeout);
+            }
         },
+
+        mounted() {
+            this.$router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+                this.clearUserPanelTimeout();
+                this.isUserPanelVisible = false;
+                next();
+            })
+        }
     })
 </script>
