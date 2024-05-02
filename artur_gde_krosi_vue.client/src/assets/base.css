@@ -384,13 +384,22 @@ header {
     display: flex;
     flex-direction: column;
     left: 15px;
-    top: 55px;
+    top: 71px;
     width: 180px;
     padding: 5px 15px;
     position: absolute;
     background: #fff;
     box-shadow: rgba(0, 0, 0, 0.2) 4px 5px 4px 0px;
 }
+
+    .user-dropdown::after {
+        content: '';
+        position: absolute;
+        top: -55px;
+        left: 35px;
+        border: 40px solid transparent;
+        border-bottom: 15px solid #fff;
+    }
 
     .user-dropdown .user-account-button {
         padding: 10px 0;
@@ -415,11 +424,11 @@ header {
     box-shadow: rgba(0, 0, 0, 0.2) 3px 3px 5px 0px;
 }
 
-.app-subheader-buttons {
+.app-subheader-search-and-cart {
     display: flex;
 }
 
-    .app-subheader-buttons button:hover {
+    .app-subheader-button:hover {
         cursor: pointer;
         transform: scale(1.01);
     }
@@ -464,9 +473,18 @@ header {
     background: #fff;
     padding: 10px;
     box-shadow: rgba(0, 0, 0, 0.2) 2px 0px 5px 0px;
-    top: 66px;
-    right: 75px;
+    top: 70px;
+    right: 35px;
 }
+
+    .app-search-panel::after {
+        content: '';
+        position: absolute;
+        top: -45px;
+        right: 35px;
+        border: 30px solid transparent;
+        border-bottom: 15px solid #fff;
+    }
 
 .search-hints {
     padding: 0 10px;
@@ -1593,11 +1611,11 @@ header {
         text-align: center;
     }
 
-    .change-data-confirmation-popup {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
+.change-data-confirmation-popup {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
 
     .change-data-confirmation-popup p {
         font-weight: 300;
