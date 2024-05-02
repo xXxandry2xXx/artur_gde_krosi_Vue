@@ -53,6 +53,16 @@ public class ProductController : ControllerBase
         List<AllProductSearchViews> product = _product.GetAllProductSearch();
         return Ok(product);
     }
+    //
+    //надо переделать
+    //
+    [HttpGet]
+    [Route("Variant")]
+    public async Task<IActionResult> Variant([FromHeader] string VariantId)
+    {
+        Variant? variant = db.Variants.Where(x=> x.VariantId == VariantId).FirstOrDefault();
+        return Ok(variant);
+    }
 
     [Route("GetProductList")]
     [HttpGet]

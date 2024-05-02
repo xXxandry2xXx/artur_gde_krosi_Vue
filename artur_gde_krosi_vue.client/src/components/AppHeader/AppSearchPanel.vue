@@ -1,24 +1,32 @@
 ﻿<template>
-    <div class="app-search-panel" v-show="$store.state.showSearchPanel">
-        <div class="search-input-wrapper">
-            <div class="search-input">
-                <DefaultInput v-model="searchQuery" :value="searchQuery" @input="addSearchValue" placeholder="Введите название или бренд..." />
-                <button class="clear-search-value" v-show="showClearButton" @click="clearSearchValue"><i class="fa-solid fa-xmark"></i></button>
+    <button class="app-subheader-button" @mouseenter="showSearchPanel" @mouseleave="hideSearchPanel">
+        <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
+    </button>
+
+    <transition name="fade">
+        <div class="app-search-panel" ref="searchPanel" @mouseenter="showSearchPanel" @mouseleave="hideSearchPanel" v-show="isSearchPanelVisible">
+            <div class="search-input-wrapper">
+                <div class="search-input">
+                    <DefaultInput v-model="searchQuery" :value="searchQuery" @input="addSearchValue" placeholder="Введите название или бренд..." />
+                    <button class="clear-search-value" v-show="showClearButton" @click="clearSearchValue"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <BorderedButton class="search-button" @click="advancedSearch">Найти</BorderedButton>
             </div>
-            <BorderedButton class="search-button" @click="advancedSearch">Найти</BorderedButton>
-        </div>
-        <div class="search-hints" v-show="searchQuery != ''">
-            <div class="search-hint" v-for="hint in sortedHints" @click="moveToProductPage(hint.productId)">
-                <img :src="hint.herfImage" alt="product-image" />
-                <p>{{ hint.name }}</p>
+            <div class="search-hints" v-show="searchQuery != '' && sortedHints.length > 0">
+                <div class="search-hint" v-for="hint in sortedHints" @click="moveToProductPage(hint.productId)">
+                    <img :src="hint.herfImage" alt="product-image" />
+                    <p>{{ hint.name }}</p>
+                </div>
             </div>
         </div>
-    </div>
+    </transition>
+
 </template>
 
 <script lang="ts">
     import { defineComponent } from 'vue';
     import { mapMutations, mapActions, mapGetters } from 'vuex';
+        import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
     import axios from 'axios';
 
     export default defineComponent({
@@ -27,7 +35,10 @@
             return {
                 searchQuery: '',
                 showClearButton: false,
-                allProducts: []
+                allProducts: [],
+
+                isSearchPanelVisible: false,
+                searchPanelTimeout: null,
             }
         },
 
@@ -57,7 +68,6 @@
             },
 
             moveToProductPage(this: any, hintId: string) {
-                this.setSearchPanelVisibility(false);
                 this.$router.push(`/products/productId=${hintId}`)
             },
 
@@ -67,6 +77,24 @@
                     this.applyFilters();
                     this.$router.push('/products');
                 }
+            },
+
+            showSearchPanel(this: any, event: Event) {
+                let target = event.target;
+                if (target === this.$refs.searchPanel) this.clearSearchPanelTimeout(this.searchPanelTimeout);
+                this.isSearchPanelVisible = true;
+            },
+
+            hideSearchPanel() {
+                this.setSearchPanelTimeout();
+            },
+
+            setSearchPanelTimeout(this: any) {
+                this.searchPanelTimeout = setTimeout(() => this.isSearchPanelVisible = false, 500);
+            },
+
+            clearSearchPanelTimeout(this: any) {
+                this.searchPanelTimeout = clearTimeout(this.searchPanelTimeout);
             },
         },
 
@@ -79,6 +107,12 @@
         mounted() {
             this.fetchAllProducts();
             this.searchQuery = this.currentSelectedFilters().searchValue;
+
+            this.$router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+                this.clearSearchPanelTimeout();
+                this.isSearchPanelVisible = false;
+                next();
+            })
         }
     })
 </script>

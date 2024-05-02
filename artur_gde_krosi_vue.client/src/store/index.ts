@@ -9,7 +9,7 @@ export default createStore<RootState>({
     state: {
         authorizedUser: null,
         showPreloader: false,
-        showSearchPanel: false,
+        showSearchPanel: true,
         showPopup: false,
         popupMode: ''
     },

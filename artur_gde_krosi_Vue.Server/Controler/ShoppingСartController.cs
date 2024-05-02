@@ -37,7 +37,7 @@ namespace artur_gde_krosi_Vue.Server.Controller
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddShoppingСarts(string name, string VariantId)
+        public async Task<IActionResult> AddShoppingСarts(string name, [FromHeader] string VariantId)
         {
             await _shoppingCartService.AddShoppingСarts(name, VariantId);
             return Ok();
@@ -52,13 +52,13 @@ namespace artur_gde_krosi_Vue.Server.Controller
         }
 
         [HttpPut]
-        public async Task<IActionResult> EditShoppingСarts([FromForm] string ShoppingСartId, [FromForm] int quantity)
+        public async Task<IActionResult> EditShoppingСarts([FromHeader] string ShoppingСartId, [FromHeader] int quantity)
         {
             int rezQuantity = await _shoppingCartService.EditShoppingСarts(ShoppingСartId, quantity);
             return Ok(rezQuantity);
         }
         [HttpDelete]
-        public async Task<IActionResult> DeleteShoppingСarts([FromForm] string ShoppingСartId)
+        public async Task<IActionResult> DeleteShoppingСarts([FromHeader] string ShoppingСartId)
         {
             await _shoppingCartService.DeleteShoppingСarts(ShoppingСartId);
             return Ok();
