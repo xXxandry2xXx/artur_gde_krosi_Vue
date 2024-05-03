@@ -18,7 +18,7 @@
 
 <script lang="ts">
     import { defineComponent } from 'vue';
-    import { mapMutations, mapGetters } from 'vuex';
+    import { mapMutations, mapGetters, mapActions } from 'vuex';
     import AppHeader from '@/components/AppHeader/AppHeader.vue';
     import AppFooter from '@/components/AppFooter.vue';
     import Popup from '@/components/Popup/Popup.vue';
@@ -27,6 +27,7 @@
         components: { AppHeader, AppFooter, Popup },
 
         methods: {
+            ...mapActions(['fetchUserCart']),
             ...mapMutations(['setUser']),
             ...mapGetters(['getAuthorizedUser']),
 
@@ -42,6 +43,7 @@
 
         beforeMount() {
             this.setCurrentUser();
+            this.fetchUserCart();
         }
     })
 </script>

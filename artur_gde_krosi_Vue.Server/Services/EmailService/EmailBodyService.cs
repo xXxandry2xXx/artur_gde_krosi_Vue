@@ -336,7 +336,7 @@ namespace artur_gde_krosi_Vue.Server.Services.EmailService
               <td>
                 <table align=""center"" border=""0"" cellspacing=""0"" cellpadding=""0"" role=""presentation"" style=""color:#1C1E23; font-family: 'Poppins',sans-serif, Arial, Helvetica; background-color: #fafdfe; Margin:0; padding:25px; width: 100%; max-width: 600px;"">
                   <tr>
-                    <td style=""padding: 10px 20px; padding-top: 20px;"">Уважаемый(ая)" + username + $@",</td>
+                    <td style=""padding: 10px 20px; padding-top: 20px;"">Уважаемый(ая) " + username + $@",</td>
                   </tr>
                   <tr>
                     <td style=""padding: 10px 20px;"">
@@ -359,7 +359,7 @@ namespace artur_gde_krosi_Vue.Server.Services.EmailService
               <td>
                 <table align=""center"" border=""0"" cellspacing=""0"" cellpadding=""0"" role=""presentation"" style=""color:#1C1E23; font-family: 'Poppins',sans-serif, Arial, Helvetica; background-color: #fafdfe; Margin:0; padding: 25px; padding-top: 0; width: 100%; max-width: 600px;"">
                   <tr>
-                    <td style=""padding: 0 20px;"">
+                    <td style=""padding: 0 20px; text-align: center;"">
                       Если вы не инициировали изменение пароля или обнаружили какие-либо подозрительные действия в своем аккаунте, пожалуйста, немедленно свяжитесь с нами.
                     </td>
                   </tr>

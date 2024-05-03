@@ -5,7 +5,7 @@ import type { UserAccountState } from '@/store/modules/account/types';
 
 export const actions: ActionTree<UserAccountState, RootState> = {
 
-    async saveUserDataChanges(this: any) {
+    async saveUserDataChanges() {
         const username = this.getters.getAuthorizedUser.userName;
         const data = this.getters.gatherUserFormData;
 

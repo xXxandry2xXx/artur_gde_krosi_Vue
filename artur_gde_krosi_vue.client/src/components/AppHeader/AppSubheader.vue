@@ -1,13 +1,9 @@
 ﻿<template>
     <nav class="app-subheader">
         <AppHeaderUserPanel />
-
         <div class="app-subheader-search-and-cart">
             <AppSearchPanel />
-            <button class="cart-button">
-                <span class="cart-capacity">{{ currentCartCapacity }}</span>
-                <span class="app-subheader-button"><font-awesome-icon :icon="['fas', 'cart-shopping']" /></span>
-            </button>
+            <Cart />
         </div>
     </nav>
 </template>
@@ -16,15 +12,10 @@
     import { defineComponent } from 'vue';
     import AppSearchPanel from '@/components/AppHeader/AppSearchPanel.vue';
     import AppHeaderUserPanel from '@/components/AppHeader/AppHeaderUserPanel.vue';
+    import Cart from '@/components/Cart/Cart.vue';
 
     export default defineComponent({
-        components: { AppSearchPanel, AppHeaderUserPanel },
-
-        data() {
-            return {
-                currentCartCapacity: 0,
-            }
-        },
+        components: { AppSearchPanel, AppHeaderUserPanel, Cart },
     })
 </script>
 

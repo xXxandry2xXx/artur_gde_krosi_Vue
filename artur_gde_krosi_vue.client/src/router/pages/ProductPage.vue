@@ -42,7 +42,7 @@
         },
 
         methods: {
-            ...mapMutations(['setPreloaderVisibility']),
+            ...mapMutations(['setPreloaderVisibility', 'setCurrentChosenVariantId']),
             ...mapActions(['fetchSizes', 'getFilteredData']),
 
             async fetchProduct(this: any) {
@@ -67,6 +67,7 @@
             async productPageInit(this: any) {
                 await this.fetchSizes();
                 await this.fetchProduct();
+                this.setCurrentChosenVariantId(this.productData.variants[0].variantId);
 
                 this.$router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
                     if (to.meta.isProductPage) this.productId = to.params.productId;

@@ -11,7 +11,10 @@
                     <div class="product-page-sizes">
                         <p class="product-page-detail">Размеры: </p>
                         <div class="product-page-sizes-list">
-                            <span class="product-page-size-box" v-for="size in $store.state.productsCatalog.sizes" :class="{'product-page-size-box-unavailable': !availableSizes.includes(size)}">{{ size }}</span>
+                            <ProductPickSizeButton v-for="variant in productData.variants"
+                                                   :productId="productData.productId"
+                                                   :currentVariant="variant"
+                                                   :class="{'product-page-size-box-picked': variant.variantId === getChosenVariant()}" />
                         </div>
                     </div>
                 </div>
@@ -21,7 +24,7 @@
                         {{ productData.variants && productData.variants[0] && productData.variants[0].prise/100 }}
                         <span> руб.</span>
                     </p>
-                    <BorderedButton class="add-to-cart-button">
+                    <BorderedButton class="add-to-cart-button" @click="addToCart">
                         <font-awesome-icon :icon="['fas', 'cart-shopping']" />
                         В корзину
                     </BorderedButton>
@@ -33,10 +36,12 @@
 
 <script lang="ts">
     import { defineComponent } from 'vue';
+    import { mapActions, mapGetters, mapMutations } from 'vuex';
+    import ProductPickSizeButton from '@/components/ProductPage/ProductPickSizeButton.vue';
     import ProductsImageSlider from '@/components/ProductPage/ProductImageSlider.vue';
 
     export default defineComponent({
-        components: { ProductsImageSlider },
+        components: { ProductsImageSlider, ProductPickSizeButton },
 
         props: {
             productData: {
@@ -50,20 +55,23 @@
             }
         },
 
+        methods: {
+            ...mapActions(['addItemToCart']),
+            ...mapGetters(['getChosenVariant']),
+
+            async addToCart(this: any) {
+                const currentSelectedVariantID = this.getChosenVariant();
+                if (currentSelectedVariantID !== '') {
+                    this.addItemToCart(currentSelectedVariantID);
+                } else {
+                    console.log('Товар не выбран');
+                }
+            }
+        },
+
         computed: {
             quantityInStock(this: any) {
                 if (this.productData.variants) return this.productData.variants.reduce((total: number, variant: any) => total + variant.quantityInStock, 0);
-            },
-
-            availableSizes(this: any) {
-                if (this.productData.variants) {
-                    const availableSizes = this.productData.variants
-                        .filter((variant: any) => variant.quantityInStock > 0)
-                        .map((variant: any) => variant.shoeSize);
-
-                    return availableSizes;
-                }
-                return [];
             },
 
             isInStock(this: any) {
@@ -73,6 +81,6 @@
                     return 'Нет в наличии'
                 }
             },
-        }
+        },
     })
 </script>

@@ -1,5 +1,5 @@
 ﻿<template>
-    <button class="app-subheader-button" @mouseenter="showSearchPanel" @mouseleave="hideSearchPanel">
+    <button class="app-subheader-button" @mouseenter="showSearchPanel" @mouseleave="hideSearchPanel" ref="searchPanelButton">
         <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
     </button>
 
@@ -8,7 +8,9 @@
             <div class="search-input-wrapper">
                 <div class="search-input">
                     <DefaultInput v-model="searchQuery" :value="searchQuery" @input="addSearchValue" placeholder="Введите название или бренд..." />
-                    <button class="clear-search-value" v-show="showClearButton" @click="clearSearchValue"><i class="fa-solid fa-xmark"></i></button>
+                    <button class="clear-search-value" v-show="showClearButton" @click="clearSearchValue">
+                        <font-awesome-icon :icon="['fas', 'xmark']" />
+                    </button>
                 </div>
                 <BorderedButton class="search-button" @click="advancedSearch">Найти</BorderedButton>
             </div>
@@ -81,7 +83,7 @@
 
             showSearchPanel(this: any, event: Event) {
                 let target = event.target;
-                if (target === this.$refs.searchPanel) this.clearSearchPanelTimeout(this.searchPanelTimeout);
+                if (target === this.$refs.searchPanel || target === this.$refs.searchPanelButton) this.clearSearchPanelTimeout(this.searchPanelTimeout);
                 this.isSearchPanelVisible = true;
             },
 

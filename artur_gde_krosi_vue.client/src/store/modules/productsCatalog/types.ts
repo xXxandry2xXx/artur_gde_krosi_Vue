@@ -1,10 +1,12 @@
 
+export interface VariantInterface {
+    shoeSize: number,
+    quantityInStock: number,
+    prise: number
+}
+
 export interface VariantsInterface {
-    variants: {
-        shoeSize: number,
-        quantityInStock: number,
-        prise: number
-    }[]
+    variants: Array<VariantInterface>
 };
 
 export interface ProductImagesInterface {

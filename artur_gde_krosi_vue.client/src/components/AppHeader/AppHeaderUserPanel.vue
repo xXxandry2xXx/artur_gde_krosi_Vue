@@ -1,6 +1,6 @@
 ﻿<template>
     <div class="authorized-user-panel" v-if="isUserAuthorized()">
-        <p @mouseenter="showUserPanel" @mouseleave="hideUserPanel">{{ $store.state.authorizedUser.userName }}</p>
+        <p @mouseenter="showUserPanel" @mouseleave="hideUserPanel" ref="userPanelButton">{{ $store.state.authorizedUser.userName }}</p>
 
         <transition name="fade">
             <div class="user-dropdown" @mouseenter="showUserPanel" @mouseleave="hideUserPanel" v-show="isUserPanelVisible" ref="userPanel">
@@ -59,7 +59,7 @@
 
             showUserPanel(this: any, event: Event) {
                 let target = event.target;
-                if (target === this.$refs.userPanel) this.clearUserPanelTimeout(this.userPanelTimeout);
+                if (target === this.$refs.userPanel || target === this.$refs.userPanelButton) this.clearUserPanelTimeout(this.userPanelTimeout);
                 this.isUserPanelVisible = true;
             },
 
