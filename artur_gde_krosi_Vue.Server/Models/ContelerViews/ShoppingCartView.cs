@@ -3,7 +3,7 @@
     public class ShoppingCartView
     {
         public List<ShoppingCartListElement> shoppingCartList { get; set; }
-        public double maxPrise { get; set; }
+        public double totalPrise { get; set; }
 
         public class ShoppingCartListElement
         {

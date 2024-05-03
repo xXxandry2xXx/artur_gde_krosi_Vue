@@ -25,7 +25,7 @@ namespace artur_gde_krosi_Vue.Server.Services.ControlerService
             if (user == null) throw new ArgumentException("Данного пользователя не существует");
             ShoppingCartView shoppingCartView = new ShoppingCartView();
             shoppingCartView.shoppingCartList = db.ShoppingСarts.Include(x => x.Variant).Select(x => MapGetShoppingСarts(x,x.Variant.quantityInStock > x.quantity)).AsNoTracking().ToList();
-            shoppingCartView.maxPrise = shoppingCartView.shoppingCartList.Max(x => x.prise);
+            shoppingCartView.totalPrise = shoppingCartView.shoppingCartList.Sum(x => x.prise);
             return shoppingCartView;
         }
         private static ShoppingCartView.ShoppingCartListElement MapGetShoppingСarts(ShoppingСart shoppingСart,bool availability)

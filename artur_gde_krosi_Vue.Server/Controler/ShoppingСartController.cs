@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using Newtonsoft.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -52,13 +53,13 @@ namespace artur_gde_krosi_Vue.Server.Controller
         }
 
         [HttpPut]
-        public async Task<IActionResult> EditShoppingСarts([FromHeader] string ShoppingСartId, [FromHeader] int quantity)
+        public async Task<IActionResult> EditShoppingСarts( string ShoppingСartId, int quantity)
         {
             int rezQuantity = await _shoppingCartService.EditShoppingСarts(ShoppingСartId, quantity);
             return Ok(rezQuantity);
         }
         [HttpDelete]
-        public async Task<IActionResult> DeleteShoppingСarts([FromHeader] string ShoppingСartId)
+        public async Task<IActionResult> DeleteShoppingСarts(string ShoppingСartId)
         {
             await _shoppingCartService.DeleteShoppingСarts(ShoppingСartId);
             return Ok();
