@@ -1,7 +1,7 @@
 <template>
     <div class="product-page-images">
-        <div class="product-current-image-wrapper" ref="currentImageWrapper">
-            <img class="product-current-image" :src="currentImageSrc" ref="currentProductImage" @mousemove="zoomCurrentImage" @mouseleave="nullifyImageCondition" />
+        <div class="product-current-image-wrapper" ref="currentImageWrapper" @mousemove="zoomCurrentImage" @mouseleave="nullifyImageCondition" >
+            <img class="product-current-image" :src="currentImageSrc" ref="currentProductImage" />
         </div>
         <div class="product-all-images">
             <img v-for="(image, index) in images"
@@ -39,7 +39,7 @@
                 this.currentImage = this.images[this.currentImgIndex];
             },
 
-            zoomCurrentImage(event) {
+            zoomCurrentImage(this: any, event: Event) {
                 this.$refs.currentProductImage.style.transform = 'scale(1.8)';
 
                 const { top, left, width, height } = this.$refs.currentProductImage.getBoundingClientRect();
@@ -50,7 +50,7 @@
                 this.$refs.currentProductImage.style.transformOrigin = `${this.mouseX}% ${this.mouseY}%`;
             },
 
-            nullifyImageCondition() {
+            nullifyImageCondition(this: any) {
                 this.$refs.currentProductImage.style.transform = null;
             }
         },

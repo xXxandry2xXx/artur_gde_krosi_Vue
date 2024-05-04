@@ -53,7 +53,7 @@ export const mutations: MutationTree<ProductsCatalogState> = {
     },
 
     countPages(state) {
-        state.totalPages = Math.ceil(state.filteredProductsData.productcount / 20);
+        state.totalPages = Math.ceil(state.filteredProductsData.count / 20);
     },
 
     setCurrentPage(state, page) {

@@ -24,10 +24,8 @@ export interface ProductInterface {
 };
 
 export interface ProductsDataInterface {
-    priseMax: number,
-    priseMin: number,
-    productcount: number,
-    products: ProductInterface[]
+    productList: ProductInterface[]
+    count: number,
 };
 
 export interface ModelInterface {

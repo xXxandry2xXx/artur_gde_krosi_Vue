@@ -45,7 +45,9 @@
 
         computed: {
             availableProductSizes(this: any) {
-                let gatheredProductSizes = this.product.variants.map((variant: any) => variant.shoeSize);
+                let gatheredProductSizes = this.product.variants.map((variant: any) => {
+                    if (variant.quantityInStock > 0) return variant.shoeSize
+                });
                 gatheredProductSizes = gatheredProductSizes.sort((a: number, b: number) => a - b);
                 return gatheredProductSizes;
             }

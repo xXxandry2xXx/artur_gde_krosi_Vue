@@ -33,7 +33,7 @@
             await this.fetchProducts();
             this.setPreloaderVisibility(false);
 
-            this.popularProducts = this.getProductsData();
+            this.popularProducts = this.getProductsData().productList;
         }
     })
 </script>

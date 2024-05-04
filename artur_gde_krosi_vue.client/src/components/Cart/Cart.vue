@@ -6,12 +6,13 @@
         </button>
         <transition name="fade">
             <div class="cart-wrapper" ref="cartPanel" v-show="isCartPanelVisible" @mouseenter="showCartPanel" @mouseleave="hideCartPanel">
-                <div class="cart-items">
-                    <CartItem v-if="$store.state.cart.itemsInCart.length > 0" v-for="item in $store.state.cart.itemsInCart" :cartItemId="item.shoppingСartId" :productId="item.productId" :variantId="item.variantId" />
+                <div class="cart-items" :key="$store.state.cart.itemsInCart.length">
+                    <CartItem v-if="$store.state.cart.itemsInCart.length > 0" v-for="item in $store.state.cart.itemsInCart" :cartItem="item" />
                     <p v-else class="cart-is-empty-text">Корзина пуста.</p>
                 </div>
                 <div class="cart-order-section" v-if="$store.state.cart.itemsInCart.length > 0">
-                    <p>{{ getTotalQuantity() }} {{ declension }} на сумму {{ getTotalCartPrice() }}₽</p>
+                    <p>В корзине {{ getTotalQuantity() }} {{ declension }} на сумму {{ getTotalCartPrice() }}₽</p>
+                    <BorderedButton>Оформить заказ</BorderedButton>
                 </div>
             </div>
         </transition>

@@ -20,7 +20,7 @@ export const actions: ActionTree<UserCartState, RootState> = {
 
                 if (response.status === 200) {
                     this.commit('setProductsInCart', response.data.shoppingCartList);
-                    this.commit('setTotalPrice', response.data.maxPrise)
+                    this.commit('setTotalPrice', response.data.totalPrise);
                 }
 
             } catch (error) {
@@ -40,12 +40,12 @@ export const actions: ActionTree<UserCartState, RootState> = {
                     '',
                     {
                         params: {
-                            'name': authorizedUser.userName,
-                            'VariantId': itemVariantID
+                            'name': authorizedUser.userName.toString()
                         },
                         headers: {
                             'accept': '*/*',
-                            'content-type': 'application/x-www-form-urlencoded'
+                            'VariantId': itemVariantID.toString(),
+                            'Content-Type': 'application/x-www-form-urlencoded'
                         }
                     }
                 );
@@ -71,10 +71,12 @@ export const actions: ActionTree<UserCartState, RootState> = {
                     'http://localhost:5263/api/ShoppingСart',
                     '',
                     {
-                        headers: {
-                            'accept': '*/*',
+                        params: {
                             'ShoppingСartId': currentCartItem.shoppingСartId.toString(),
                             'quantity': (currentCartItem.quantity + 1).toString()
+                        },
+                        headers: {
+                            'accept': '*/*'
                         }
                     }
                 );
@@ -88,11 +90,14 @@ export const actions: ActionTree<UserCartState, RootState> = {
     async removeItemFromCart({ state }: { state: UserCartState }, cartItemID) {
         try {
             const response = await axios.delete('http://localhost:5263/api/ShoppingСart', {
-                headers: {
-                    'accept': '*/*',
+                params: {
                     'ShoppingСartId': cartItemID.toString()
+                },
+                headers: {
+                    'accept': '*/*'
                 }
             });
+            if (response.status === 200) this.dispatch('fetchUserCart');
         } catch (error) {
             console.log(error)
         }

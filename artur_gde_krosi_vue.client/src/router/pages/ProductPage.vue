@@ -60,7 +60,7 @@
             async getRelatedProducts(this: any) {
                 const sameCategoryFilters = { modelIDs: [this.productData.modelKrosovock.modelKrosovockId] }
                 await this.getFilteredData(sameCategoryFilters).then((response: any) => {
-                    this.sameCategoryProducts = response;
+                    this.sameCategoryProducts = response.productList;
                 });
             },
 

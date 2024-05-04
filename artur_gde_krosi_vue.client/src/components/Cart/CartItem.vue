@@ -1,14 +1,15 @@
 ﻿<template>
     <div class="cart-item">
-        <div class="cart-item-main" @click="$router.push(`/products/productId=${productId}`)">
+        <div class="cart-item-main" @click="$router.push(`/products/productId=${cartItem.productId}`)">
             <img class="cart-item-img" :src="itemData.previewImage.imageSrc" />
             <div class="cart-item-info">
                 <p class="cart-item-name">{{ itemData.name }}</p>
                 <p class="cart-item-price">{{ itemData.price }}</p>
+                <p class="cart-item-size" style=" color: #000; ">{{ cartItem.quantity }} шт.</p>
                 <p class="cart-item-size"> Размер: {{ itemData.size }}</p>
             </div>
         </div>
-        <button class="cart-item-remove-button" @click="removeItemFromCart(cartItemId)">
+        <button class="cart-item-remove-button" @click="removeItemFromCart(cartItem.shoppingСartId)">
             <font-awesome-icon :icon="['fas', 'xmark']" />
         </button>
     </div>
@@ -32,18 +33,8 @@
         },
 
         props: {
-            productId: {
-                type: String,
-                required: true
-            },
-
-            variantId: {
-                type: String,
-                required: true
-            },
-
-            cartItemId: {
-                type: String,
+            cartItem: {
+                type: Object,
                 required: true
             }
         },
@@ -56,12 +47,12 @@
                     const response = await axios.get(
                         'http://localhost:5263/api/Product/GetProduct',
                         {
-                            params: { 'ProductId': this.productId },
+                            params: { 'ProductId': this.cartItem.productId },
                             headers: { 'accept': '*/*' }
                         });
 
                     if (response.status === 200) {
-                        const currentVariant = response.data.variants.find((variant: any) => variant.variantId === this.variantId)
+                        const currentVariant = response.data.variants.find((variant: any) => variant.variantId === this.cartItem.variantId)
                         this.itemData.previewImage = response.data.images.reverse()[0];
                         this.itemData.name = response.data.name;
                         this.itemData.size = currentVariant.shoeSize;

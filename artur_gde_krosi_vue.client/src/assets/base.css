@@ -384,22 +384,13 @@ header {
     display: flex;
     flex-direction: column;
     left: 15px;
-    top: 71px;
+    top: 56px;
     width: 180px;
     padding: 5px 15px;
     position: absolute;
     background: #fff;
     box-shadow: rgba(0, 0, 0, 0.2) 4px 5px 4px 0px;
 }
-
-    .user-dropdown::after {
-        content: '';
-        position: absolute;
-        top: -55px;
-        left: 35px;
-        border: 40px solid transparent;
-        border-bottom: 15px solid #fff;
-    }
 
     .user-dropdown .user-account-button {
         padding: 10px 0;
@@ -474,8 +465,8 @@ header {
     position: absolute;
     background: #fff;
     padding: 10px;
-    box-shadow: rgba(0, 0, 0, 0.2) 2px 0px 5px 0px;
-    top: 70px;
+    box-shadow: rgba(0, 0, 0, 0.2) 4px 4px 5px 0px;
+    top: 56px;
     right: 35px;
 }
 
@@ -491,7 +482,7 @@ header {
 .search-hints {
     padding: 0 10px;
     margin-top: 10px;
-    max-height: 450px;
+    max-height: 355px;
     overflow: hidden scroll;
 }
 
@@ -815,6 +806,7 @@ header {
 
     .product-page-size-box:hover {
         cursor: pointer;
+        border: 2px solid var(--border-font-color);
     }
 
 .product-page-size-box-picked {
@@ -1660,10 +1652,13 @@ header {
 
 .cart-wrapper {
     width: 450px;
+    box-sizing: border-box;
     position: absolute;
     top: 56px;
     right: 15px;
-    background: #fff;
+    padding: 0px 10px;
+    padding-top: 10px;
+    background: rgb(255, 255, 255);
     box-shadow: rgba(0, 0, 0, 0.2) 0px 9px 10px 0px;
 }
 
@@ -1676,26 +1671,43 @@ header {
 .cart-items {
     display: flex;
     flex-direction: column;
-    max-height: 365px;
-    padding: 5px 10px;
+    max-height: 310px;
+    padding: 5px 0;
     padding-right: 15px;
-    overflow: scroll;
+    overflow: auto;
     overflow-x: hidden;
 }
 
 .cart-order-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    padding: 10px;
+    padding: 10px 0;
     font-size: 20px;
-    background: #e9e9e9;
 }
+
+    .cart-order-section p {
+        width: 90%;
+        font-size: 17px;
+        padding-top: 15px;
+        margin-bottom: 15px;
+        border-top: 1px solid var(--border-font-color);
+    }
+
+    .cart-order-section .bordered-button-default {
+        width: 100%;
+        font-size: 20px;
+        padding: 10px;
+    }
 
 .cart-item {
     width: 100%;
     display: flex;
     align-items: center;
     border-bottom: 1px solid transparent;
-    margin: 10px 0;
+    margin: 5px 0;
 }
 
 .cart-item-main {
@@ -1709,15 +1721,15 @@ header {
         transform: translateX(5px);
     }
 
-    .cart-item-info {
-        display: flex;
-        justify-content: space-between;
-        flex-direction: column;
-        margin-left: 10px;
-    }
+.cart-item-info {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    margin-left: 10px;
+}
 
 .cart-item-name {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
 }
 
@@ -1734,7 +1746,7 @@ header {
 
 .cart-item-img {
     border-radius: 5px;
-    width: 20%;
+    width: 23%;
 }
 
 .cart-item-remove-button {
@@ -1757,16 +1769,16 @@ header {
         background: var(--border-font-color);
     }
 
-    footer {
-        box-sizing: border-box;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: #000;
-        color: #fff;
-        width: 100%;
-        margin-top: 150px;
-    }
+footer {
+    box-sizing: border-box;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #000;
+    color: #fff;
+    width: 100%;
+    margin-top: 150px;
+}
 
 .footer-content {
     display: flex;
@@ -1849,16 +1861,19 @@ header {
 }
 
 
-.cart-items::-webkit-scrollbar {
+.cart-items::-webkit-scrollbar,
+.search-hints::-webkit-scrollbar {
     width: 5px;
 }
 
-.cart-items::-webkit-scrollbar-track {
+.cart-items::-webkit-scrollbar-track,
+.search-hints::-webkit-scrollbar-track {
     background: #f3f3f3;
     -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
 }
 
-.cart-items::-webkit-scrollbar-thumb {
+.cart-items::-webkit-scrollbar-thumb,
+.search-hints::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background: var(--border-font-color);
 }

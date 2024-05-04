@@ -56,23 +56,23 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
             }
 
             if (selectedFilters.hasOwnProperty('priceMax')) {
-                headers['priseUp'] = encodeURIComponent(selectedFilters.priceMax.toString()) ;
+                headers['priseUp'] = encodeURIComponent(selectedFilters.priceMax.toString());
             }
 
             if (selectedFilters.brandIDs) {
-                headers['brendsIds'] = encodeURIComponent(selectedFilters.brandIDs.join()) ;
+                headers['brendsIds'] = encodeURIComponent(selectedFilters.brandIDs.join());
             }
 
             if (selectedFilters.modelIDs) {
-                headers['modelKrosovocksIds'] = encodeURIComponent(selectedFilters.modelIDs.join()) ;
+                headers['modelKrosovocksIds'] = encodeURIComponent(selectedFilters.modelIDs.join());
             }
 
             if (selectedFilters.checkedSizes) {
-                headers['shoeSizesChecked'] = encodeURIComponent(selectedFilters.checkedSizes.join()) ;
+                headers['shoeSizesChecked'] = encodeURIComponent(selectedFilters.checkedSizes.join());
             }
 
             if (selectedFilters.hasOwnProperty('inStock')) {
-                headers['availability'] = encodeURIComponent(selectedFilters.inStock.toString()) ;
+                headers['availability'] = encodeURIComponent(selectedFilters.inStock.toString());
             }
 
             if (selectedFilters.searchValue) {
@@ -89,7 +89,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
                 headers: headers
             });
 
-            return response.data.productList;
+            return response.data;
         } catch (error) {
             throw error;
         }
@@ -100,7 +100,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
         try {
             const response = await axios.get('http://localhost:5263/api/Product/GetProductList');
             if (response.status === 200) {
-                this.commit('setProducts', response.data.productList);
+                this.commit('setProducts', response.data);
                 this.commit('setPreloaderVisibility', false);
             }
         } catch (error) {
@@ -151,6 +151,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
             const response = await axios.get('http://localhost:5263/api/Filter/MinMaxPrise');
             this.commit('setPrices', response.data);
             this.commit('setMinSelectedPrice', response.data.priseMin / 100);
+            this.commit('setMaxSelectedPrice', response.data.priseMax / 100);
         } catch (error) {
             console.log(error);
         }
