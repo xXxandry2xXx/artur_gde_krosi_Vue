@@ -9,6 +9,6 @@ export interface CartItemInterface {
 
 export interface UserCartState {
     itemsInCart: Array<CartItemInterface>,
-    currentCartPrices: any,
-    chosenVariantId: string
+    chosenVariantId: string,
+    totalPrice: number
 }

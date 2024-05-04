@@ -7,8 +7,8 @@ import { actions } from '@/store/modules/cart/actions';
 
 const state: UserCartState = {
     itemsInCart: [],
-    currentCartPrices: [] as Array<number>,
-    chosenVariantId: ''
+    chosenVariantId: '',
+    totalPrice: 0
 }
 
 const cart: Module<UserCartState, RootState> = {

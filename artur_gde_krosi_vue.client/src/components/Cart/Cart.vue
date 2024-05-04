@@ -11,7 +11,7 @@
                     <p v-else class="cart-is-empty-text">Корзина пуста.</p>
                 </div>
                 <div class="cart-order-section" v-if="$store.state.cart.itemsInCart.length > 0">
-                    <p>{{ getTotalQuantity() }} {{ declension }} на сумму </p>
+                    <p>{{ getTotalQuantity() }} {{ declension }} на сумму {{ getTotalCartPrice() }}₽</p>
                 </div>
             </div>
         </transition>
@@ -36,7 +36,7 @@
 
         methods: {
             ...mapActions(['gatherPrices', 'fetchCartPrices']),
-            ...mapGetters(['getTotalQuantity', 'getCartItems', 'countTotalCartPrice']),
+            ...mapGetters(['getTotalQuantity', 'getCartItems', 'getTotalCartPrice']),
 
             showCartPanel(this: any, event: Event) {
                 let target = event.target;

@@ -18,12 +18,7 @@ export const getters: GetterTree<UserCartState, RootState> = {
         }, 0)
     },
 
-    countTotalCartPrice: state => {
-        const totalPrice = state.currentCartPrices.reduce((accumulator: any, currentValue: any) => {
-            let price = accumulator + currentValue;
-            return price;
-        }, 0)
-
-        return totalPrice;
+    getTotalCartPrice: state => {
+        return state.totalPrice;
     }
 }

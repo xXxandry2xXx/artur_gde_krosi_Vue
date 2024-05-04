@@ -1,7 +1,7 @@
 ﻿<template>
     <div class="cart-item">
         <div class="cart-item-main" @click="$router.push(`/products/productId=${productId}`)">
-            <img :src="itemData.previewImage.imageSrc" />
+            <img class="cart-item-img" :src="itemData.previewImage.imageSrc" />
             <div class="cart-item-info">
                 <p class="cart-item-name">{{ itemData.name }}</p>
                 <p class="cart-item-price">{{ itemData.price }}</p>

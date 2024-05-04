@@ -11,7 +11,7 @@ export const actions: ActionTree<UserCartState, RootState> = {
                 let authorizedUser = this.getters.getAuthorizedUser;
                 const response = await axios.get('http://localhost:5263/api/ShoppingСart', {
                     params: {
-                        'name': authorizedUser.userName
+                        'name': authorizedUser.userName.toString()
                     },
                     headers: {
                         'accept': '*/*'
@@ -19,8 +19,8 @@ export const actions: ActionTree<UserCartState, RootState> = {
                 });
 
                 if (response.status === 200) {
-                    this.commit('setProductsInCart', response.data);
-                    //this.dispatch('gatherPrices');
+                    this.commit('setProductsInCart', response.data.shoppingCartList);
+                    this.commit('setTotalPrice', response.data.maxPrise)
                 }
 
             } catch (error) {
@@ -53,7 +53,7 @@ export const actions: ActionTree<UserCartState, RootState> = {
 
             } catch (error: any) {
                 if (error.response.status === 400) {
-                    this.dispatch('increaseQuantityIfItemExists', itemVariantID);
+                    this.dispatch('increaseItemQuantity', itemVariantID);
                 } else {
                     console.log(error);
                 }
@@ -63,34 +63,25 @@ export const actions: ActionTree<UserCartState, RootState> = {
         }
     },
 
-    async increaseItemQuantity({ state }: { state: UserCartState }, form) {
+    async increaseItemQuantity({ state }: { state: UserCartState }, itemVariantID) {
         try {
-            const response = await axios.put(
-                'http://localhost:5263/api/ShoppingСart',
-                form,
-                {
-                    headers: {
-                        'accept': '*/*',
-                        'Content-Type': 'multipart/form-data'
+            const currentCartItem = state.itemsInCart.find((item: any) => item.variantId === itemVariantID);
+            if (currentCartItem !== undefined) {
+                const response = await axios.put(
+                    'http://localhost:5263/api/ShoppingСart',
+                    '',
+                    {
+                        headers: {
+                            'accept': '*/*',
+                            'ShoppingСartId': currentCartItem.shoppingСartId.toString(),
+                            'quantity': (currentCartItem.quantity + 1).toString()
+                        }
                     }
-                }
-            );
-            if (response.status === 200) this.dispatch('fetchUserCart');
-
+                );
+                if (response.status === 200) this.dispatch('fetchUserCart');
+            }
         } catch (error) {
             console.log(error)
-        }
-    },
-
-    increaseQuantityIfItemExists({ state }: { state: UserCartState }, itemVariantID) {
-        const currentCartItem = state.itemsInCart.find((item: any) => item.variantId === itemVariantID);
-        if (currentCartItem !== undefined) {
-            const form = new FormData();
-
-            form.append('ShoppingСartId', currentCartItem.shoppingСartId.toString());
-            form.append('quantity', (currentCartItem.quantity + 1).toString());
-
-            this.dispatch('increaseItemQuantity', form);
         }
     },
 
@@ -99,9 +90,8 @@ export const actions: ActionTree<UserCartState, RootState> = {
             const response = await axios.delete('http://localhost:5263/api/ShoppingСart', {
                 headers: {
                     'accept': '*/*',
-                    'Content-Type': 'multipart/form-data'
-                },
-                data: `{\n  "ShoppingСartId": "${cartItemID}" \n}`
+                    'ShoppingСartId': cartItemID.toString()
+                }
             });
         } catch (error) {
             console.log(error)

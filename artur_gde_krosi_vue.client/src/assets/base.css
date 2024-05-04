@@ -1700,11 +1700,13 @@ header {
 
 .cart-item-main {
     display: flex;
+    transition: 0.2s;
+    padding-bottom: 10px;
 }
 
     .cart-item-main:hover {
         cursor: pointer;
-        box-shadow: rgba(0, 0, 0, 0.2) 4px 5px 4px 0px;
+        transform: translateX(5px);
     }
 
     .cart-item-info {
@@ -1730,9 +1732,8 @@ header {
     color: var(--border-font-color);
 }
 
-.cart-item img {
+.cart-item-img {
     border-radius: 5px;
-    object-fit: contain;
     width: 20%;
 }
 
@@ -1854,7 +1855,7 @@ header {
 
 .cart-items::-webkit-scrollbar-track {
     background: #f3f3f3;
-    -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.5);
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
 }
 
 .cart-items::-webkit-scrollbar-thumb {

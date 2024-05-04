@@ -11,11 +11,7 @@ export const mutations: MutationTree<UserCartState> = {
         state.chosenVariantId = id;
     },
 
-    setPrices(state, pricesArray) {
-        state.currentCartPrices = pricesArray;
+    setTotalPrice(state, price) {
+        state.totalPrice = price / 100;
     },
-
-    addPrice(state, price) {
-        state.currentCartPrices.push(price);
-    }
 }
