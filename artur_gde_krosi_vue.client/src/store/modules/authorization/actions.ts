@@ -50,7 +50,9 @@ export const actions: ActionTree<AuthorizationState, RootState> = {
                 }
             });
 
-            if (response.status === 200) this.commit('setLoginStatus', true);
+            if (response.status === 200) {
+                this.commit('setLoginStatus', true);
+            }
             return response;
         } catch (error: any) {
             this.commit('setLoginStatus', false);

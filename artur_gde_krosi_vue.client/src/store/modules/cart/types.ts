@@ -7,8 +7,14 @@ export interface CartItemInterface {
     productId: string
 }
 
-export interface UserCartState {
+export interface CartInterface {
     itemsInCart: Array<CartItemInterface>,
-    chosenVariantId: string,
     totalPrice: number
+}
+
+export interface UserCartState {
+    serverCart: CartInterface,
+    localCart: CartInterface,
+    chosenVariantId: string,
+    chosenProductId: string
 }

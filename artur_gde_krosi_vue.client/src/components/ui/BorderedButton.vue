@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+    import { defineComponent } from "vue";
 
     export default defineComponent({
         name: 'BorderedButton'
@@ -19,9 +19,20 @@ import { defineComponent } from "vue";
         color: var(--border-font-color);
         transition: 0.2s;
     }
-    
-    .bordered-button-default:hover {
-        cursor: pointer;
-        background: var(--featured-hover-color);
+
+        .bordered-button-default:hover {
+            cursor: pointer;
+            background: var(--featured-hover-color);
+        }
+
+    .bordered-button-default-unavailable {
+        color: var(--additional-font-color);
+        border: 1px solid var(--additional-font-color);
+        background: var(--additional-font-color-lighter);
     }
+
+        .bordered-button-default-unavailable:hover {
+            cursor: not-allowed;
+            background: var(--additional-font-color-lighter);
+        }
 </style>

@@ -155,5 +155,29 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
         } catch (error) {
             console.log(error);
         }
+    },
+
+    async fetchProduct(state, productId) {
+        try {
+            const response = await axios.get('http://localhost:5263/api/Product/GetProduct', { params: { 'ProductId': productId }, headers: { 'accept': '*/*' } });
+            console.log(response.data)
+            return response;
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    async fetchVariant(state, variantId) {
+        try {
+            const response = await axios.get('http://localhost:5263/api/Product/Variant', {
+                headers: {
+                    'accept': '*/*',
+                    'VariantId': variantId
+                }
+            });
+            return response;
+        } catch (error) {
+            console.log(error)
+        }
     }
 }

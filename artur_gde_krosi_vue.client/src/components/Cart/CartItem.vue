@@ -9,14 +9,14 @@
                 <p class="cart-item-size"> Размер: {{ itemData.size }}</p>
             </div>
         </div>
-        <button class="cart-item-remove-button" @click="removeItemFromCart(cartItem.shoppingСartId)">
+        <button class="cart-item-remove-button" @click="removeItem()">
             <font-awesome-icon :icon="['fas', 'xmark']" />
         </button>
     </div>
 </template>
 
 <script lang="ts">
-    import { mapActions } from 'vuex';
+    import { mapActions, mapGetters } from 'vuex';
     import { defineComponent } from 'vue';
     import axios from 'axios';
 
@@ -41,6 +41,7 @@
 
         methods: {
             ...mapActions(['removeItemFromCart']),
+            ...mapGetters(['isUserAuthorized']),
 
             async fetchItemData(this: any) {
                 try {
@@ -61,6 +62,14 @@
 
                 } catch (error) {
                     console.log(error);
+                }
+            },
+
+            removeItem(this: any) {
+                if (this.isUserAuthorized()) {
+                    this.removeItemFromCart(this.cartItem.shoppingСartId);
+                } else {
+                    this.removeItemFromCart(this.cartItem.variantId);
                 }
             }
         },

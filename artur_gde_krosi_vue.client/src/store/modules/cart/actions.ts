@@ -2,10 +2,16 @@
 import type { ActionTree } from 'vuex';
 import type { RootState } from '@/store/types';
 import type { UserCartState } from '@/store/modules/cart/types';
+import type { CartItemInterface } from '@/store/modules/cart/types';
 
 export const actions: ActionTree<UserCartState, RootState> = {
 
-    async fetchUserCart() {
+    loadLocalCartData() {
+        const cachedCart = localStorage.getItem('localUserCart');
+        if (cachedCart !== null) this.commit('setLocalCart', JSON.parse(cachedCart))
+    },
+
+    async fetchUserCart({ state }: { state: UserCartState }) {
         if (this.getters.isUserAuthorized) {
             try {
                 let authorizedUser = this.getters.getAuthorizedUser;
@@ -19,115 +25,132 @@ export const actions: ActionTree<UserCartState, RootState> = {
                 });
 
                 if (response.status === 200) {
-                    this.commit('setProductsInCart', response.data.shoppingCartList);
-                    this.commit('setTotalPrice', response.data.totalPrise);
+                    this.commit('setServerCartProducts', response.data.shoppingCartList);
+                    this.commit('setServerCartTotalPrice', response.data.totalPrise);
                 }
 
             } catch (error) {
-                console.log(error);
+                console.log(error)
             }
         } else {
-            console.log('Нужно сделать локальную корзину');
+            this.dispatch('getLocalTotalPrice');
         }
     },
 
     async addItemToCart({ state }: { state: UserCartState }, itemVariantID) {
-        if (this.getters.isUserAuthorized) {
-            try {
-                let authorizedUser = this.getters.getAuthorizedUser;
-                const response = await axios.post(
-                    'http://localhost:5263/api/ShoppingСart',
-                    '',
-                    {
-                        params: {
-                            'name': authorizedUser.userName.toString()
-                        },
-                        headers: {
-                            'accept': '*/*',
-                            'VariantId': itemVariantID.toString(),
-                            'Content-Type': 'application/x-www-form-urlencoded'
+        if (state.chosenProductId !== null && state.chosenVariantId !== null) {
+            if (this.getters.isUserAuthorized) {
+                try {
+                    let authorizedUser = this.getters.getAuthorizedUser;
+                    const response = await axios.post(
+                        'http://localhost:5263/api/ShoppingСart',
+                        '',
+                        {
+                            params: {
+                                'name': authorizedUser.userName.toString()
+                            },
+                            headers: {
+                                'accept': '*/*',
+                                'VariantId': itemVariantID.toString(),
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            }
                         }
-                    }
-                );
-                if (response.status === 200) this.dispatch('fetchUserCart');
+                    );
+                    if (response.status === 200) this.dispatch('fetchUserCart');
 
-            } catch (error: any) {
-                if (error.response.status === 400) {
-                    this.dispatch('increaseItemQuantity', itemVariantID);
-                } else {
-                    console.log(error);
+                } catch (error: any) {
+                    if (error.response.status === 400) {
+                        this.dispatch('increaseItemQuantity', itemVariantID);
+                    } else {
+                        console.log(error);
+                    }
                 }
+            } else {
+                const chosenProductId = this.getters.getChosenProductId;
+
+                const newItem: CartItemInterface = {
+                    shoppingСartId: '',
+                    quantity: 1,
+                    availability: true,
+                    variantId: itemVariantID,
+                    productId: chosenProductId
+                }
+
+                this.commit('addItemToLocalCart', newItem);
+                await this.dispatch('fetchUserCart');
+                localStorage.setItem('localUserCart', JSON.stringify(state.localCart));
             }
         } else {
-            console.log('Пользователь не авторизован, нужна локальная корзина')
+            console.log('Товара нет в наличии')
         }
     },
 
     async increaseItemQuantity({ state }: { state: UserCartState }, itemVariantID) {
-        try {
-            const currentCartItem = state.itemsInCart.find((item: any) => item.variantId === itemVariantID);
-            if (currentCartItem !== undefined) {
-                const response = await axios.put(
-                    'http://localhost:5263/api/ShoppingСart',
-                    '',
-                    {
-                        params: {
-                            'ShoppingСartId': currentCartItem.shoppingСartId.toString(),
-                            'quantity': (currentCartItem.quantity + 1).toString()
-                        },
-                        headers: {
-                            'accept': '*/*'
+        if (this.getters.isUserAuthorized) {
+            try {
+                const currentCartItem = state.serverCart.itemsInCart.find((item: any) => item.variantId === itemVariantID);
+                if (currentCartItem !== undefined) {
+                    const response = await axios.put(
+                        'http://localhost:5263/api/ShoppingСart',
+                        '',
+                        {
+                            params: {
+                                'ShoppingСartId': currentCartItem.shoppingСartId.toString(),
+                                'quantity': (currentCartItem.quantity + 1).toString()
+                            },
+                            headers: {
+                                'accept': '*/*'
+                            }
                         }
-                    }
-                );
-                if (response.status === 200) this.dispatch('fetchUserCart');
+                    );
+                    if (response.status === 200) this.dispatch('fetchUserCart');
+                }
+            } catch (error) {
+                console.log(error)
             }
-        } catch (error) {
-            console.log(error)
+        } else {
+            console.log('Пользователь не авторизован');
         }
     },
 
     async removeItemFromCart({ state }: { state: UserCartState }, cartItemID) {
-        try {
-            const response = await axios.delete('http://localhost:5263/api/ShoppingСart', {
-                params: {
-                    'ShoppingСartId': cartItemID.toString()
-                },
-                headers: {
-                    'accept': '*/*'
-                }
-            });
-            if (response.status === 200) this.dispatch('fetchUserCart');
-        } catch (error) {
-            console.log(error)
+        if (this.getters.isUserAuthorized) {
+            try {
+                const response = await axios.delete('http://localhost:5263/api/ShoppingСart', {
+                    params: {
+                        'ShoppingСartId': cartItemID.toString()
+                    },
+                    headers: {
+                        'accept': '*/*'
+                    }
+                });
+                if (response.status === 200) this.dispatch('fetchUserCart');
+            } catch (error) {
+                console.log(error)
+            }
+        } else {
+            const removeableItem = state.localCart.itemsInCart.find(item => item.variantId === cartItemID);
+
+            this.commit('removeItemFromCart', removeableItem);
+            await this.dispatch('fetchUserCart');
+            localStorage.setItem('localUserCart', JSON.stringify(state.localCart));
         }
     },
 
-    async fetchCartPrices({ state }: { state: UserCartState }, item: any) {
-        try {
-            const response = await axios.get('http://localhost:5263/api/Product/GetProduct', {
-                params: {
-                    'ProductId': item.productId
-                },
-                headers: {
-                    'accept': '*/*'
-                }
-            });
+    async getLocalTotalPrice({ state }: { state: UserCartState }) {
+        let prices: Array<any> = [];
 
-            let currentVariantPrice = (response.data.variants.find((variant: any) => variant.variantId === item.variantId).prise / 100) * item.quantity;
-
-            this.commit('addPrice', currentVariantPrice);
-        } catch (error) {
-            console.log(error)
+        for (const item of state.localCart.itemsInCart) {
+            const itemResponseData = await this.dispatch('fetchVariant', item.variantId);
+            const itemPrice = (itemResponseData.data.prise / 100) * item.quantity;
+            prices.push(itemPrice);
         }
-    },
 
-    gatherPrices({ state }: { state: UserCartState }) {
-        let items = this.getters.getCartItems;
-        this.commit('setPrices', [0])
+        const totalLocalPrice = prices.reduce((accumulator: any, currentValue: any) => {
+            let totalPrice = accumulator + currentValue;
+            return totalPrice;
+        }, 0)
 
-        items.forEach((item: any) => {
-            this.dispatch('fetchCartPrices', item);
-        });
-    },
+        this.commit('setLocalCartTotalPrice', totalLocalPrice);
+    }
 }

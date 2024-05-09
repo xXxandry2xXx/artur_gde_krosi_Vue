@@ -6,9 +6,18 @@ import { getters } from '@/store/modules/cart/getters';
 import { actions } from '@/store/modules/cart/actions';
 
 const state: UserCartState = {
-    itemsInCart: [],
+    serverCart: {
+        itemsInCart: [],
+        totalPrice: 0
+    },
+
+    localCart: {
+        itemsInCart: [],
+        totalPrice: 0
+    },
+
     chosenVariantId: '',
-    totalPrice: 0
+    chosenProductId: ''
 }
 
 const cart: Module<UserCartState, RootState> = {

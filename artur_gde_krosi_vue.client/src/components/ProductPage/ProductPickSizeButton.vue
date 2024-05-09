@@ -6,7 +6,7 @@
 
 <script lang="ts">
     import { defineComponent } from 'vue';
-    import { mapActions, mapMutations } from 'vuex';
+    import { mapMutations } from 'vuex';
 
     export default defineComponent({
 

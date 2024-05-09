@@ -4,15 +4,14 @@
             <ProductsImageSlider v-if="productImages.length > 0" :images="productImages" />
             <div class="product-page-info">
                 <div class="product-page-info-details">
-                    <h1 class="product-name" @click=" console.log(quantityInStock)">{{ productData.name }}</h1>
+                    <h1 class="product-name">{{ productData.name }}</h1>
                     <p class="product-page-detail">Бренд: <span class="product-page-detail-value">{{ productData.modelKrosovock && productData.modelKrosovock.brend && productData.modelKrosovock.brend.name }}</span></p>
                     <p class="product-page-detail">Модель: <span class="product-page-detail-value">{{ productData.modelKrosovock && productData.modelKrosovock.name }}</span></p>
                     <p class="product-page-detail">Наличие: <span class="product-page-detail-value is-in-stock">{{ productData.variants && isInStock }}</span></p>
-                    <div class="product-page-sizes" v-if="productData.variants && quantityInStock.length > 0">
+                    <div class="product-page-sizes" v-if="productData.variants && variantsInStock.length > 0">
                         <p class="product-page-detail">Размеры: </p>
                         <div class="product-page-sizes-list">
-                            <ProductPickSizeButton v-for="variant in quantityInStock"
-                                                   :productId="productData.productId"
+                            <ProductPickSizeButton v-for="variant in variantsInStock"
                                                    :currentVariant="variant"
                                                    :class="{'product-page-size-box-picked': variant.variantId === getChosenVariant()}" />
                         </div>
@@ -24,7 +23,7 @@
                         {{ productData.variants && productData.variants[0] && productData.variants[0].prise/100 }}
                         <span> руб.</span>
                     </p>
-                    <BorderedButton class="add-to-cart-button" @click="addToCart">
+                    <BorderedButton class="add-to-cart-button" :class="{'bordered-button-default-unavailable': variantsInStock !== undefined && variantsInStock.length === 0}" @click="addToCart">
                         <font-awesome-icon :icon="['fas', 'cart-shopping']" />
                         В корзину
                     </BorderedButton>
@@ -36,7 +35,7 @@
 
 <script lang="ts">
     import { defineComponent } from 'vue';
-    import { mapActions, mapGetters } from 'vuex';
+    import { mapActions, mapGetters, mapMutations } from 'vuex';
     import ProductPickSizeButton from '@/components/ProductPage/ProductPickSizeButton.vue';
     import ProductsImageSlider from '@/components/ProductPage/ProductImageSlider.vue';
 
@@ -58,6 +57,7 @@
         methods: {
             ...mapActions(['addItemToCart']),
             ...mapGetters(['getChosenVariant']),
+            ...mapMutations(['setCurrentChosenVariantId', 'setCurrentChosenProductId']),
 
             async addToCart(this: any) {
                 const currentSelectedVariantID = this.getChosenVariant();
@@ -69,8 +69,20 @@
             }
         },
 
+        watch: {
+            productData(this: any) {
+                if (this.variantsInStock.length > 0) {
+                    this.setCurrentChosenVariantId(this.variantsInStock[0].variantId);
+                    this.setCurrentChosenProductId(this.productData.productId);
+                } else {
+                    this.setCurrentChosenVariantId(null);
+                    this.setCurrentChosenProductId(null);
+                }
+            }
+        },
+
         computed: {
-            quantityInStock(this: any) {
+            variantsInStock(this: any) {
                 if (this.productData.variants) {
                     return this.productData.variants.reduce((total: Array<any>, variant: any) => {
                         if (variant.quantityInStock > 0) {
@@ -82,8 +94,8 @@
             },
 
             isInStock(this: any) {
-                if (this.quantityInStock.length > 0) {
-                    return 'В наличии (' + this.quantityInStock.length + ' ' + 'шт.)'
+                if (this.variantsInStock.length > 0) {
+                    return 'В наличии (' + this.variantsInStock.length + ' ' + 'шт.)'
                 } else {
                     return 'Нет в наличии'
                 }
