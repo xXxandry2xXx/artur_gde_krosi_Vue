@@ -6,11 +6,17 @@
             </router-link>
             <router-link :to="{ name: 'productsPage', params: { page: 1 } }">
                 <BorderedButton class="filters-apply-button" @click="$store.dispatch('clearFilters')">Очистить</BorderedButton>
-            </router-link>   
+            </router-link>
         </div>
 
+            <FiltersCurrentlySelected v-if="
+                  $store.state.productsCatalog.models.constructor === Array &&
+                  $store.state.productsCatalog.brands.constructor === Array &&
+                  $store.getters.selectedFiltersCached &&
+                  $store.state.productsCatalog.filteredProductsData.productList" />
+
         <div class="filters-list">
-            <div class="filter price-ranger-filter">
+            <div class="filter">
                 <div class="filter-opener">
                     <h2 class="filter-title">Цена</h2>
                 </div>
@@ -30,8 +36,9 @@
     import { defineComponent } from "vue";
     import PriceRanger from './PriceRanger.vue'
     import Filter from './Filter.vue';
+    import FiltersCurrentlySelected from './FiltersCurrentlySelected.vue'
 
     export default defineComponent({
-        components: { PriceRanger, Filter },
+        components: { PriceRanger, Filter, FiltersCurrentlySelected },
     })
 </script>

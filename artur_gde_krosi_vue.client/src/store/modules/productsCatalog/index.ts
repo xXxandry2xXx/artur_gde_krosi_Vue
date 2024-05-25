@@ -24,8 +24,8 @@ const state: ProductsCatalogState = {
         { value: 1, name: 'По алфавиту (Я-А)' },
         { value: 2, name: 'Сначала дешевле' },
         { value: 3, name: 'Сначала дороже' },
-        { value: 4, name: 'Сначала более популярные' },
-        { value: 5, name: 'Сначала менее популярные' }
+        { value: 4, name: 'Сначала менее популярные' },
+        { value: 5, name: 'Сначала более популярные' }
     ],
     productsData: {} as ProductsDataInterface,
     availablePrices: {} as AvailablePricesInterface,
@@ -45,3 +45,9 @@ const productsCatalog: Module<ProductsCatalogState, RootState> = {
 };
 
 export default productsCatalog;
+
+
+function Pizdec() {
+    let a = 'жопа'
+    return a;
+}

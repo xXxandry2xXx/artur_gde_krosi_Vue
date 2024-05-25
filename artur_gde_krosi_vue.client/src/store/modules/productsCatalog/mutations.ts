@@ -28,6 +28,26 @@ export const mutations: MutationTree<ProductsCatalogState> = {
         }
     },
 
+    removeFilter(state, value) {
+        let targetFiltersArray;
+
+        if (typeof value === 'number') {
+            targetFiltersArray = state.selectedFilters.checkedSizes;
+        } else if (typeof value === 'object' && 'brendId' in value) {
+            targetFiltersArray = state.selectedFilters.brandIDs;
+            value = value.brendId;
+        } else if (typeof value === 'object' && 'modelKrosovockId' in value) {
+            targetFiltersArray = state.selectedFilters.modelIDs;
+            value = value.modelKrosovockId;
+        }
+
+        if (targetFiltersArray) {
+            if (targetFiltersArray.includes(value)) {
+                targetFiltersArray = targetFiltersArray.splice(targetFiltersArray.indexOf(value), 1);
+            } 
+        }
+    },
+
     addStockFilter(state) {
         state.selectedFilters.inStock = !state.selectedFilters.inStock
     },

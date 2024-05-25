@@ -845,13 +845,13 @@ header {
     padding: 15px 20px;
 }
 
-    .product-page-additional-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 0 5%;
-        margin-top: 50px;
-    }
+.product-page-additional-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 5%;
+    margin-top: 50px;
+}
 
 .product-page-description,
 .product-page-characteristics {
@@ -1106,7 +1106,7 @@ header {
     background: #fff;
 }
 
-.clear-search-value {
+.clear-value {
     padding: 0 10px;
     font-size: 18px;
     color: #d2a805;
@@ -1114,7 +1114,7 @@ header {
     background: none;
 }
 
-    .clear-search-value:hover {
+    .clear-value:hover {
         cursor: pointer;
     }
 
@@ -1150,7 +1150,7 @@ header {
 .price-ranger-input-boxes {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
+    margin: 15px 0;
 }
 
 .price-ranger-separator {
@@ -1236,6 +1236,54 @@ header {
     border-radius: 10px;
     padding-bottom: 20px;
 }
+
+.filters-currently-selected {
+    margin-top: 15px;
+}
+
+.filters-currently-selected,
+.filters-currently-selected-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.filter-selected-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    padding: 3px 10px;
+    border: 1px solid var(--border-font-color);
+    border-radius: 10px;
+}
+
+    .filter-selected-box .clear-value {
+        font-size: 15px;
+        margin-left: 5px;
+        padding: 0;
+    }
+
+    .filter-selected-box:hover {
+        cursor: pointer;
+    }
+
+    .filter-selected-box p span {
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+.coat {
+    position: absolute;
+    border: none;
+    background: none;
+    width: 100%;
+    height: 100%;
+}
+
+    .coat:hover {
+        cursor: pointer;
+    }
 
 .filter-panel-butons {
     display: flex;
@@ -1380,7 +1428,7 @@ header {
 .sizes-filter .filter-items .filter-item-name:hover,
 .sizes-filter .filter-items .filter-item-checkbox:checked ~ .filter-item-name {
     color: var(--border-font-color);
-    background: rgb(241 221 83);
+    background: var(--featured-hover-color);
 }
 
 .sizes-filter .filter-items .filter-item-name:hover {
@@ -1745,7 +1793,7 @@ header {
 }
 
 .cart-item-img {
-    object-fit: contain; 
+    object-fit: contain;
     border-radius: 5px;
     width: 23%;
 }
@@ -1769,6 +1817,8 @@ header {
         color: #fff;
         background: var(--border-font-color);
     }
+
+
 
 footer {
     box-sizing: border-box;

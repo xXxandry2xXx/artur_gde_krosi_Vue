@@ -28,12 +28,12 @@
         },
         methods: {
             ...mapMutations(['addFilter']),
-            ...mapActions(['fetchModels']),
-            ...mapGetters(['selectedFiltersState']),
+            ...mapActions(['setFetchedModels']),
+            ...mapGetters(['selectedFiltersState', 'selectedFiltersCached']),
 
             handleFilterChosing(this: any) {
-                this.addFilter(this.item)
-                if (typeof this.item === 'object' && 'brendId' in this.item) this.fetchModels();
+                this.addFilter(this.item);
+                if (typeof this.item === 'object' && 'brendId' in this.item) this.setFetchedModels();
             }
         },
 

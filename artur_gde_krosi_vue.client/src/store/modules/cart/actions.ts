@@ -69,7 +69,7 @@ export const actions: ActionTree<UserCartState, RootState> = {
                 const chosenProductId = this.getters.getChosenProductId;
 
                 const newItem: CartItemInterface = {
-                    shoppingСartId: '',
+                    shoppingСartId: 'none',
                     quantity: 1,
                     availability: true,
                     variantId: itemVariantID,

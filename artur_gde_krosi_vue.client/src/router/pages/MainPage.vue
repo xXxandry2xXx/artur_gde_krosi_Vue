@@ -24,16 +24,18 @@
 
         methods: {
             ...mapGetters(['getProductsData']),
-            ...mapActions(['fetchProducts']),
+            ...mapActions(['fetchProducts', 'getFilteredData']),
             ...mapMutations(['setPreloaderVisibility']),
+
+            async getPopularProducts(this: any) {
+                this.setPreloaderVisibility(true);
+                await this.getFilteredData({ sortOrder: 5 }).then((fetchedPopularProducts: any) => this.popularProducts = fetchedPopularProducts.productList);
+                this.setPreloaderVisibility(false);
+            }
         },
 
         async beforeMount() {
-            this.setPreloaderVisibility(true);
-            await this.fetchProducts();
-            this.setPreloaderVisibility(false);
-
-            this.popularProducts = this.getProductsData().productList;
+            this.getPopularProducts();
         }
     })
 </script>

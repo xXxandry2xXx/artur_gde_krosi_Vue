@@ -8,8 +8,22 @@ export const getters: GetterTree<ProductsCatalogState, RootState> = {
         return state.productsData;
     },
 
+    getCatalogModels: state => {
+        return state.models;
+    },
+
+    getCatalogBrands: state => {
+        return state.brands;
+    },
+
     selectedFiltersState: state => {
         return state.selectedFilters;
+    },
+
+    selectedFiltersCached: state => {
+        let selectedFiltersCache = localStorage.getItem('selectedFilters');
+        if (selectedFiltersCache !== null) return JSON.parse(selectedFiltersCache);
+        return false;
     },
 
     currentSelectedFilters: state => {
@@ -21,7 +35,7 @@ export const getters: GetterTree<ProductsCatalogState, RootState> = {
         const availablePrices: AvailablePricesInterface = {};
 
         for (const price in state.availablePrices) {
-            availablePrices[price] = state.availablePrices[price]/100
+            availablePrices[price] = state.availablePrices[price] / 100
         }
 
         return availablePrices;
@@ -50,5 +64,9 @@ export const getters: GetterTree<ProductsCatalogState, RootState> = {
 
     getTotalPages: state => {
         return state.totalPages;
+    },
+
+    getFilteredProductsData: state => {
+        return state.filteredProductsData
     }
 }

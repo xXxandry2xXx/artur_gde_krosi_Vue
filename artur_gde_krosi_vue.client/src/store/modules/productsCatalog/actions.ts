@@ -42,7 +42,13 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
             this.commit('setCatalogPreloaderVisibility', false);
             this.commit('countPages');
         });
-        this.dispatch('fetchModels');
+        this.dispatch('setFetchedModels');
+    },
+
+    async setFetchedModels() {
+        let selectedBrands = this.getters.selectedFiltersState.brandIDs;
+        const fetchedModels = await this.dispatch('fetchModels', selectedBrands);
+        this.commit('setModels', fetchedModels);
     },
 
     async getFilteredData({ state }: { state: ProductsCatalogState }, selectedFilters: any) {
@@ -52,35 +58,35 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
             };
 
             if (selectedFilters.hasOwnProperty('priceMin')) {
-                headers['priseDown'] = encodeURIComponent(selectedFilters.priceMin.toString());
+                headers['priseDown'] = selectedFilters.priceMin.toString();
             }
 
             if (selectedFilters.hasOwnProperty('priceMax')) {
-                headers['priseUp'] = encodeURIComponent(selectedFilters.priceMax.toString());
+                headers['priseUp'] = selectedFilters.priceMax.toString();
             }
 
             if (selectedFilters.brandIDs) {
-                headers['brendsIds'] = encodeURIComponent(selectedFilters.brandIDs.join());
+                headers['brendsIds'] = selectedFilters.brandIDs.join();
             }
 
             if (selectedFilters.modelIDs) {
-                headers['modelKrosovocksIds'] = encodeURIComponent(selectedFilters.modelIDs.join());
+                headers['modelKrosovocksIds'] = selectedFilters.modelIDs.join();
             }
 
             if (selectedFilters.checkedSizes) {
-                headers['shoeSizesChecked'] = encodeURIComponent(selectedFilters.checkedSizes.join());
+                headers['shoeSizesChecked'] = selectedFilters.checkedSizes.join();
             }
 
             if (selectedFilters.hasOwnProperty('inStock')) {
-                headers['availability'] = encodeURIComponent(selectedFilters.inStock.toString());
+                headers['availability'] = selectedFilters.inStock.toString();
             }
 
             if (selectedFilters.searchValue) {
-                headers['PlaceholderContent'] = encodeURIComponent(selectedFilters.searchValue.toString());
+                headers['PlaceholderContent'] = selectedFilters.searchValue.toString();
             }
 
             if (selectedFilters.hasOwnProperty('sortOrder')) {
-                headers['sortOrder'] = encodeURIComponent(selectedFilters.sortOrder.toString());
+                headers['sortOrder'] = selectedFilters.sortOrder.toString();
             }
 
             headers['pageProducts'] = state.currentPage.toString();
@@ -108,24 +114,26 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
         }
     },
 
-    async fetchModels() {
-        let selectedFilters = this.getters.selectedFiltersState;
+    async fetchModels({ state }: { state: ProductsCatalogState }, brandsArray: Array<string>) {
+        let fetchedModels = [];
 
-        if (selectedFilters.brandIDs) {
+        if (brandsArray) {
             try {
-                const response = await axios.get('http://localhost:5263/api/Filter/ModelKrosovocks', { headers: { 'accept': '*/*', 'brendsIds': selectedFilters.brandIDs.join() } });
+                const response = await axios.get('http://localhost:5263/api/Filter/ModelKrosovocks', { headers: { 'accept': '*/*', 'brendsIds': brandsArray.join() } });
 
-                let fetchedModels = response.data.reduce((accumulator: ModelInterface[], currentValue: { name: string, modelKrosovoks: ModelInterface[] }) => {
-                    return accumulator.concat(currentValue.modelKrosovoks);
+                fetchedModels = response.data.reduce((modelsArray: ModelInterface[], currentBrand: { name: string, modelKrosovoks: ModelInterface[] }) => {
+                    return modelsArray.concat(currentBrand.modelKrosovoks);
                 }, []);
 
-                this.commit('setModels', fetchedModels);
+
             } catch (error) {
                 console.log(error);
             }
         } else {
             console.log('no fetched models found')
         }
+
+        return fetchedModels;
     },
 
     async fetchBrands() {
@@ -150,8 +158,8 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
         try {
             const response = await axios.get('http://localhost:5263/api/Filter/MinMaxPrise');
             this.commit('setPrices', response.data);
-            this.commit('setMinSelectedPrice', response.data.priseMin / 100);
-            this.commit('setMaxSelectedPrice', response.data.priseMax / 100);
+            if (this.getters.selectedFiltersState.priceMin == 0) this.commit('setMinSelectedPrice', response.data.priseMin / 100);
+            if (this.getters.selectedFiltersState.priceMax == 0) this.commit('setMaxSelectedPrice', response.data.priseMax / 100);
         } catch (error) {
             console.log(error);
         }

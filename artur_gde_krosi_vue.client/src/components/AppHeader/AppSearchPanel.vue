@@ -8,7 +8,7 @@
             <div class="search-input-wrapper">
                 <div class="search-input">
                     <DefaultInput v-model="searchQuery" :value="searchQuery" @input="addSearchValue" placeholder="Введите название или бренд..." />
-                    <button class="clear-search-value" v-show="showClearButton" @click="clearSearchValue">
+                    <button class="clear-value" v-show="showClearButton" @click="clearSearchValue">
                         <font-awesome-icon :icon="['fas', 'xmark']" />
                     </button>
                 </div>

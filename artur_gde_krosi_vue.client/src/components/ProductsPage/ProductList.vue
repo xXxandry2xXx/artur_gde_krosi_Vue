@@ -1,8 +1,8 @@
 ﻿<template>
     <div class="product-list-wrapper">
         <Preloader v-show="$store.state.productsCatalog.showCatalogPreloader" />
-        <div v-if="products.length > 0" class="product-list">
-            <Product v-for="product in products" :key="product.productId" :product="product"/>
+        <div v-if="getFilteredProductsData().productList.length > 0" class="product-list">
+            <Product v-for="product in getFilteredProductsData().productList" :key="product.productId" :product="product"/>
         </div>
         <div v-else class="nothing-found">
             <div class="nothing-found-content">
@@ -15,16 +15,15 @@
 
 <script lang="ts">
     import { defineComponent } from 'vue';
+    import { mapGetters } from 'vuex';
     import Product from './Product.vue';
     import type { ProductInterface } from '@/store/modules/productsCatalog/types';
 
     export default defineComponent({
         components: { Product },
-        props: {
-            products: {
-                type: Object as () => ProductInterface[],
-                required: true
-            }
+
+        methods: {
+            ...mapGetters(['getFilteredProductsData']),
         }
     })
 
