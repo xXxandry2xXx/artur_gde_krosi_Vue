@@ -20,10 +20,12 @@
             </div>
             <div class="authorization-personal-data">
                 <div class="authorization-popup-field-wrapper">
-                    <div class="authorization-popup-field">
+                    <div class="authorization-popup-field" :class="{'authorization-popup-field-incorrect': $store.state.authorization.isCorrectRegistration.regName.status === false }">
                         <span><font-awesome-icon :icon="['fas', 'user']" /></span>
-                        <DefaultInput placeholder="Имя" @input="setRegName" />
+                        <DefaultInput placeholder="Имя" @input="handleName" />
+                        <div class="required-field-indicator">*</div>
                     </div>
+                    <p class="authorization-popup-field-message">{{ $store.state.authorization.isCorrectRegistration.regName.message }}</p>
                 </div>
                 <div class="authorization-popup-field-wrapper">
                     <div class="authorization-popup-field">
@@ -103,12 +105,13 @@
                     'registerNewUser',
                     'validateUserName',
                     'validateEmail',
+                    'validateName',
                     'validatePassword',
                     'validatePasswordMatching',
                     'sendConfirmationEmail'
                 ]),
 
-            ...mapGetters(['registrationCorrectnessStatus', 'registrationStatus']),
+            ...mapGetters(['registrationCorrectnessStatus', 'registrationStatus', 'getRegistrationUserData']),
 
             async registerUser() {
                 this.validateFields();
@@ -125,6 +128,7 @@
             validateFields() {
                 this.validateUserName();
                 this.validateEmail();
+                this.validateName(this.getRegistrationUserData().name);
                 this.validatePassword();
                 this.validatePasswordMatching();
             },
@@ -132,6 +136,11 @@
             handleEmail(event: Event) {
                 this.setRegEmail(event);
                 this.validateEmail();
+            },
+
+            handleName(event: Event) {
+                this.setRegName(event);
+                this.validateName(this.getRegistrationUserData().name);
             },
 
             handleUserName(event: Event) {

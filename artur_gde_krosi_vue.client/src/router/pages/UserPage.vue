@@ -22,6 +22,10 @@
     import UserPageEdit from '@/components/UserPage/UserPageAccountEdit.vue';
 
     export default defineComponent({
-        components: { UserPageEdit, UserPageSidePanel }
+        components: { UserPageEdit, UserPageSidePanel },
+
+        mounted() {
+            console.log(this.$store.state.account)
+        }
     })
 </script>

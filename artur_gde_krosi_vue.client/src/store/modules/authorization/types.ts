@@ -11,6 +11,7 @@ export interface IsCorrectLogIn {
 export interface IsCorrectRegistration {
     regUsername: isCorrectStatus,
     regEmail: isCorrectStatus,
+    regName: isCorrectStatus,
     regPassword: isCorrectStatus,
     regPasswordConfirmation: isCorrectStatus,
 }

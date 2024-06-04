@@ -38,21 +38,30 @@ export const actions: ActionTree<UserAccountState, RootState> = {
 
     initEditableUserData(this: any) {
         let userData = this.getters.getAuthorizedUser;
-        this.commit('setNewUserName', userData.name);
-        this.commit('setNewUserSurname', userData.surname);
-        this.commit('setNewUserPatronymic', userData.patronymic);
-        this.commit('setUserNewsletterStatus', userData.sendingMail)
+        if (userData.name !== null) this.commit('setNewUserName', userData.name);
+        if (userData.surname !== null) this.commit('setNewUserSurname', userData.surname);
+        if (userData.patronymic !== null) this.commit('setNewUserPatronymic', userData.patronymic);
+        if (userData.sendingMail !== null) this.commit('setUserNewsletterStatus', userData.sendingMail)
     },
 
     confirmChanges(this: any) {
-        this.dispatch('saveUserDataChanges').then((response: any, error: any) => {
-            if (response.status === 200) {
-                this.dispatch('updateLocalUserData');
-                this.commit('setSuccesMessage', 'Изменения успешно сохранены');
-            } else {
-                this.commit('setSuccesMessage', 'Произошла ошибка при изменении данных профиля');
-                console.log(error);
-            }
-        });
+        let editableData = this.getters.getEditableUserData;
+        if (editableData.name.length > 0) {
+            this.dispatch('saveUserDataChanges').then((response: any, error: any) => {
+                if (response.status === 200) {
+                    this.dispatch('updateLocalUserData');
+                    this.commit('setSuccesStatus', true);
+                    this.commit('setSuccesMessage', 'Изменения успешно сохранены');
+                } else {
+                    this.commit('setSuccesStatus', false);
+                    this.commit('setSuccesMessage', 'Произошла ошибка при изменении данных профиля');
+                    console.log(error);
+                }
+            });
+        } else {
+            this.commit('setSuccesStatus', false);
+            this.commit('setSuccesMessage', 'Заполните обязательное поле (Имя)')
+        }
+        
     },
 }

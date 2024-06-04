@@ -13,8 +13,8 @@
             </div>
         </nav>
 
-        <ProductMainInfo :productData="productData" :productImages="productImages"/>
-        <ProductAdditionalInfo />
+        <ProductMainInfo v-if="Object.keys(productData).length > 0" :productData="productData" :productImages="productImages"/>
+        <ProductAdditionalInfo v-if="Object.keys(productData).length > 0" :productData="productData" />
         <ProductsSlider v-if="relatedProducts.length > 0" :sliderArray="relatedProducts" :sliderTitle="'ЕЩЕ ИЗ  ЭТОЙ КАТЕГОРИИ'" />
 
     </div>
@@ -42,7 +42,7 @@
         },
 
         methods: {
-            ...mapMutations(['setPreloaderVisibility']),
+            ...mapMutations(['setPreloaderVisibility', 'setProductCharacteristics']),
             ...mapActions(['fetchSizes', 'getFilteredData']),
 
             async fetchProduct(this: any) {
@@ -95,7 +95,8 @@
         async mounted() {
             this.setPreloaderVisibility(true);
             await this.productPageInit();
-            this.getRelatedProducts()
+            this.setProductCharacteristics(this.productData.characteristicProducts);
+            this.getRelatedProducts();
         },
     })
 </script>

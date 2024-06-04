@@ -46,6 +46,10 @@ const state: AuthorizationState = {
             status: null,
             message: ''
         },
+        regName: {
+            status: null,
+            message: ''
+        },
         regPassword: {
             status: null,
             message: ''
