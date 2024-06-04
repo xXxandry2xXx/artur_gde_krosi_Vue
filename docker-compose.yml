@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  artur_gde_krosi_vue.server:
+    image: ${DOCKER_REGISTRY-}arturgdekrosivueserver
+    ports:
+      - "6900"
+    build:
+      context: .
+      dockerfile: artur_gde_krosi_Vue.Server/Dockerfile
