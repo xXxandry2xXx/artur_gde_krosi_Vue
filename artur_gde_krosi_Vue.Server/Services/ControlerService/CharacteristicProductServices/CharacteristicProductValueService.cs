@@ -15,14 +15,15 @@ namespace artur_gde_krosi_Vue.Server.Services.ControlerService.CharacteristicPro
         {
             db = context;
         }
-        public async Task AddCharacteristicProductsValue(string value, string CharacteristicProductId)
+        public string AddCharacteristicProductsValue(string value, string CharacteristicProductId)
         {
             db.CharacteristicProductValues.Add(new CharacteristicProductValue
             {
                 Value = value,
                 CharacteristicProductId = CharacteristicProductId
             });
-            await db.SaveChangesAsync();
+            db.SaveChanges();
+            return db.CharacteristicProductValues.Where(x => x.Value == value && x.CharacteristicProductId == CharacteristicProductId).FirstOrDefault().CharacteristicProductValueId;
         }
         public async Task EditCharacteristicProductsValue(string CharacteristicProductValueId, string value)
         {

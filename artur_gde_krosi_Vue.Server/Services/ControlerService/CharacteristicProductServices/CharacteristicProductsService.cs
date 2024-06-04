@@ -1,5 +1,6 @@
 ﻿using artur_gde_krosi_Vue.Server.Models.BdModel;
 using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,14 +14,16 @@ namespace artur_gde_krosi_Vue.Server.Services.ControlerService.CharacteristicPro
         {
             this.db = db;
         }
-        public async Task AddCharacteristicProducts(string ProductId, string name)
+        public string AddCharacteristicProducts(string ProductId, string name)
         {
             db.CharacteristicProducts.Add(new CharacteristicProduct
             {
-                name = name,
+                name = name, 
                 ProductId = ProductId
             });
-            await db.SaveChangesAsync();
+             db.SaveChanges();
+            return db.CharacteristicProducts.Where(x => x.name == name && x.ProductId == ProductId).FirstOrDefault().CharacteristicProductId;
+
         }
         public async Task EditCharacteristicProducts(string CharacteristicProductId, string name)
         {

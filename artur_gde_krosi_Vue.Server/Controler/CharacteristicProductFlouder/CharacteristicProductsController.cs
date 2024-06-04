@@ -21,10 +21,10 @@ namespace artur_gde_krosi_Vue.Server.Controller.CharacteristicProductFolder
             _characteristicProductsService = characteristicProductsService;
         }
         [HttpPost]
-        public async Task<IActionResult> AddCharacteristicProducts(string ProductId, string name)
+        public string AddCharacteristicProducts(string ProductId, string name)
         {
-            await _characteristicProductsService.AddCharacteristicProducts(ProductId, name);
-            return Ok();
+            var rez = _characteristicProductsService.AddCharacteristicProducts(ProductId, name);
+            return rez;
         }
         [HttpPut]
         public async Task<IActionResult> EditCharacteristicProducts(string CharacteristicProductId, string name)
