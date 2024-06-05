@@ -66,6 +66,16 @@ export const actions: ActionTree<AuthorizationState, RootState> = {
         location.reload();
     },
 
+    validateName({ state }: { state: AuthorizationState }, validatableName) {
+        if (validatableName.length > 0) {
+            this.commit('setRegNameCorrectness', true);
+            this.commit('setRegNameMessage', '');
+        } else {
+            this.commit('setRegNameCorrectness', false);
+            this.commit('setRegNameMessage', 'Заполните обязательное поле');
+        }
+    },
+
     validateLogin({ state }: { state: AuthorizationState }) {
         let login = state.loginUserData.login;
         if (login === '') {

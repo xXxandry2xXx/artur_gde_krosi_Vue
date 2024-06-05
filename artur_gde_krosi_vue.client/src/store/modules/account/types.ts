@@ -7,5 +7,6 @@ export interface editableUserData {
 
 export interface UserAccountState {
     editableUserData: editableUserData,
+    isSucces: boolean,
     succesMessage: string
 }

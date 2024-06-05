@@ -1,0 +1,53 @@
+﻿<template>
+    <li>
+        <p>
+            <span>{{ characteristicName }}:</span><span>{{ characteristicValue }}</span>
+        </p>
+        <div>
+            <BorderedButton class="characteristic-interaction-button" @click="openCharActionPopup('add-char-value', characteristicData.characteristicProductId)">
+                <font-awesome-icon :icon="['fas', 'plus']" />
+            </BorderedButton>
+            <BorderedButton class="characteristic-interaction-button" @click="openCharActionPopup('edit-char', characteristicData.characteristicProductId)">
+                <font-awesome-icon :icon="['fas', 'pen-to-square']" />
+            </BorderedButton>
+            <BorderedButton class="characteristic-interaction-button" @click="openCharActionPopup('sure-to-remove-char', characteristicData.characteristicProductId)">
+                <font-awesome-icon :icon="['fas', 'trash-can']" />
+            </BorderedButton>
+        </div>
+    </li>
+</template>
+
+<script lang="ts">
+    import { defineComponent } from 'vue';
+    import { mapMutations } from 'vuex';
+
+    export default defineComponent({
+
+        props: ['characteristicData'],
+
+        methods: {
+            ...mapMutations(['setPopupVisibility', 'setPopupMode', 'setCurrentCharacteristicId']),
+
+            openCharActionPopup(this: any, popupMode: string, charId: string) {
+                this.setPopupVisibility(true);
+                this.setPopupMode(popupMode);
+                this.setCurrentCharacteristicId(charId);
+            },
+        },
+
+        computed: {
+            characteristicName(this: any) {
+                return this.characteristicData.name
+            },
+
+            characteristicValue(this: any) {
+                const characteristicValues = this.characteristicData.characteristicProductValues;
+                const handledValues = characteristicValues.reduce((valuesArray: any, currentValue: any) => {
+                    return valuesArray.concat(currentValue.value);
+                }, [])
+
+                return handledValues.join(', ')
+            }
+        }
+    })
+</script>

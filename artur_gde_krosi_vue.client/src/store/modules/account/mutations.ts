@@ -18,6 +18,10 @@ export const mutations: MutationTree<UserAccountState> = {
         state.editableUserData.sendingMail = value.toString();
     },
 
+    setSuccesStatus(state, status) {
+        state.isSucces = status;
+    },
+
     setSuccesMessage(state, message) {
         state.succesMessage = message;
     }

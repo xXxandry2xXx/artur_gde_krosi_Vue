@@ -13,6 +13,7 @@ const state: UserAccountState = {
         sendingMail: ''
     },
 
+    isSucces: false,
     succesMessage: ''
 }
 

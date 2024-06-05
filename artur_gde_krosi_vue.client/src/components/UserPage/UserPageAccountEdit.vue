@@ -2,7 +2,11 @@
     <div class="user-account-editing">
         <div class="user-account-editing-headings">
             <h1>Личные данные</h1>
-            <p v-show="$store.state.account.succesMessage != ''">{{ $store.state.account.succesMessage }}</p>
+            <p v-show="$store.state.account.succesMessage != ''"
+               class="user-account-editing-message"
+               :class="{'user-account-editing-message-incorrect': $store.state.account.isSucces === false }">
+                {{ $store.state.account.succesMessage }}
+            </p>
         </div>
         <div class="user-account-editing-all-fields">
             <div class="user-account-fields">

@@ -83,6 +83,14 @@ export const mutations: MutationTree<AuthorizationState> = {
         state.isCorrectRegistration.regEmail.message = message;
     },
 
+    setRegNameCorrectness(state, status) {
+        state.isCorrectRegistration.regName.status = status;
+    },
+
+    setRegNameMessage(state, message) {
+        state.isCorrectRegistration.regName.message = message;
+    },
+
     setRegPasswordCorrectness(state, isCorrect: boolean) {
         state.isCorrectRegistration.regPassword.status = isCorrect;
     },

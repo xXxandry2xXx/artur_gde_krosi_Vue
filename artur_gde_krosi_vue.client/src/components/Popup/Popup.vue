@@ -6,6 +6,10 @@
             <ChangeEmailConfirmation v-else-if="$store.state.popupMode === 'change-email'" />
             <ChangePasswordConfirmation v-else-if="$store.state.popupMode === 'change-password'" />
             <MailSuccesfulySended v-else-if="$store.state.popupMode === 'mail-succesfuly-sended'" />
+            <CharasteristicAddingForm v-else-if="$store.state.popupMode === 'add-new-char'"/>
+            <CharasteristicValueAddingForm v-else-if="$store.state.popupMode === 'add-char-value'" />
+            <CharasteristicEditingForm v-else-if="$store.state.popupMode === 'edit-char'" />
+            <CharacteristicRemoveConfirmation v-else-if="$store.state.popupMode === 'sure-to-remove-char'" />
         </div>
     </div>
 </template>
@@ -17,6 +21,10 @@
     import ChangeEmailConfirmation from '@/components/Popup/Confirmations/ChangeEmailConfirmation.vue';
     import ChangePasswordConfirmation from '@/components/Popup/Confirmations/ChangePasswordConfirmation.vue';
     import MailSuccesfulySended from '@/components/Popup/MailSuccesfulySended.vue';
+    import CharasteristicAddingForm from '@/components/Popup/Characteristics/CharasteristicAddingForm.vue';
+    import CharasteristicEditingForm from '@/components/Popup/Characteristics/CharacteristicEditingForm.vue';
+    import CharasteristicValueAddingForm from '@/components/Popup/Characteristics/CharacteristicValueAddingForm.vue';
+    import CharacteristicRemoveConfirmation from '@/components/Popup/Characteristics/CharacteristicRemoveConfirmation.vue';
 
     export default defineComponent({
 
@@ -24,7 +32,11 @@
             AuthorizationPopupContent,
             ChangeEmailConfirmation,
             ChangePasswordConfirmation,
-            MailSuccesfulySended
+            MailSuccesfulySended,
+            CharasteristicAddingForm,
+            CharasteristicEditingForm,
+            CharasteristicValueAddingForm,
+            CharacteristicRemoveConfirmation
         },
 
         methods: {

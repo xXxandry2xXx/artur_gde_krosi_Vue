@@ -5,6 +5,7 @@ import productsCatalog from '@/store/modules/productsCatalog/index';
 import authorization from '@/store/modules/authorization/index';
 import account from '@/store/modules/account/index';
 import cart from '@/store/modules/cart/index';
+import productCharacteristics from '@/store/modules/productCharacteristics/index';
 
 export default createStore<RootState>({
     state: {
@@ -54,6 +55,7 @@ export default createStore<RootState>({
         productsCatalog,
         authorization,
         account,
-        cart
+        cart,
+        productCharacteristics
     },
 })
