@@ -22,6 +22,7 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
                     }
                 }
             );
+            return response;
         } catch (error) {
             console.log(error);
         }
@@ -47,7 +48,6 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
                 }
             );
         } catch (error) {
-            ;
             console.log(error);
         }
 
@@ -57,12 +57,10 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
     async createNewChar({ state }: { state: ProductCharacteristicsState }, newChar) {
 
         if (newChar.name.length > 0 && newChar.value.length > 0) {
-            this.dispatch('addChar', newChar.name);
-            this.dispatch('addValueToChar', newChar.value);
-        } else if (newChar.name.length === 0) {
-            console.log('Заполните обязательное (название)');
-        } else if (newChar.value.length === 0) {
-            console.log('Заполните обязательное (значение)');
+            this.dispatch('addChar', newChar.name).then(response => {
+                let charValue = { value: newChar.value, targetCharId: response.data };
+                this.dispatch('addValueToChar', charValue);
+            });
         }
 
         this.dispatch('getCurrentProductCharList');
@@ -99,5 +97,20 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
         } catch (error) {
             console.log(error)
         }
+    },
+
+    saveCharacteristicChanges({ state }: { state: ProductCharacteristicsState }) {
+        const valuesArray = state.currentCharacteristicValues;
+
+        if (valuesArray.length > 0) {
+            valuesArray.forEach(async (value) => {
+                try {
+
+                } catch (error) {
+                    console.log(error);
+                }
+            })
+        }
+
     }
 }

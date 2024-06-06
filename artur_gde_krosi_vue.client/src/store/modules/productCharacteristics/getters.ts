@@ -18,5 +18,9 @@ export const getters: GetterTree<ProductCharacteristicsState, RootState> = {
 
     getCurrentProductCharacteristic: (state) => {
         return state.characteristicsList;
+    },
+
+    getCurrentCharacteristicValues: (state) => {
+        return state.currentCharacteristicValues;
     }
 }
