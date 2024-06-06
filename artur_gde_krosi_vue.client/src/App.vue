@@ -2,7 +2,7 @@
     <Preloader v-show="$store.state.showPreloader" />
 
     <transition name="fade">
-        <Popup v-show="$store.state.showPopup" />
+        <Popup v-if="$store.state.showPopup" />
     </transition>
 
     <AppHeader />

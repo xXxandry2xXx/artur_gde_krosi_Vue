@@ -4,12 +4,13 @@
             <h3>Новое значение характеристики</h3>
             <div class="characteristic-popup-field">
                 <span>Значение</span>
-                <DefaultInput placeholder="Значение характеристики" v-model="charNewValue.value" />
+                <DefaultInput placeholder="Значение характеристики" v-model="charNewValue.value" :value="charNewValue.value" @input="validateFields"/>
             </div>
+            <p class="characteristic-popup-error-message" :class="{'user-account-editing-message-incorrect': isFieldsFilled === false }" v-show="!isFieldsFilled">{{ errorMessage }}</p>
         </div>
         <div class="characteristic-popup-buttons">
             <BorderedButton @click="addNewValueToChar">Сохранить</BorderedButton>
-            <BorderedButton @click="setPopupVisibility(false)">Отмена</BorderedButton>
+            <BorderedButton @click="closePopup">Отмена</BorderedButton>
         </div>
     </div>
 </template>
@@ -25,23 +26,39 @@
                 charNewValue: {
                     targetCharId: '',
                     value: ''
-                }
+                },
+
+                isFieldsFilled: null,
+                errorMessage: ''
             }
         },
 
         methods: {
             ...mapMutations(['setPopupVisibility']),
             ...mapActions(['addValueToChar']),
-            ...mapGetters(['getCurrentCharacteristicId']),
+            ...mapGetters(['getCurrentCharacteristicId', 'validateFieldFullnes']),
 
-            addNewValueToChar(this: any) {
+            validateFields(this: any) {
                 if (this.charNewValue.value.length > 0) {
-                    this.addValueToChar(this.charNewValue);
-                    this.setPopupVisibility(false);
+                    this.isFieldsFilled = true;
+                    this.errorMessage = '';
                 } else {
-                    console.log('Заполните обязательное поле (Значение)')
+                    this.isFieldsFilled = false;
+                    this.errorMessage = 'Заполните обязательное поле';
                 }
             },
+
+            addNewValueToChar(this: any) {
+               this.validateFields()
+                if (this.isFieldsFilled) {
+                    this.addValueToChar(this.charNewValue);
+                    this.closePopup();
+                }
+            },
+
+            closePopup(this: any) {
+                this.setPopupVisibility(false)
+            }
         },
 
         mounted() {
