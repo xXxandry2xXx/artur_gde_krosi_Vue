@@ -29,7 +29,7 @@ namespace artur_gde_krosi_Vue.Server.Controller.CharacteristicProductFolder
         [HttpPut]
         public async Task<IActionResult> EditCharacteristicProductsValue(string CharacteristicProductValueId, string value)
         {
-            await _characteristicProductValueService.EditCharacteristicProductsValue(value, CharacteristicProductValueId);
+            await _characteristicProductValueService.EditCharacteristicProductsValue(CharacteristicProductValueId   , value);
             return Ok();
         }
         [HttpDelete]

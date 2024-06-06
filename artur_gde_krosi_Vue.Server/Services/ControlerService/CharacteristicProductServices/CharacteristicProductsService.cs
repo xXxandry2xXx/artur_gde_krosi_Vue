@@ -26,7 +26,7 @@ namespace artur_gde_krosi_Vue.Server.Services.ControlerService.CharacteristicPro
 
         }
         public async Task EditCharacteristicProducts(string CharacteristicProductId, string name)
-        {
+        { 
             CharacteristicProduct characteristic = db.CharacteristicProducts.Where(x => x.CharacteristicProductId == CharacteristicProductId).FirstOrDefault();
             if (characteristic == null) throw new ArgumentException("характеристика не найдена");
             characteristic.name = name;
