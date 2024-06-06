@@ -29,11 +29,7 @@ builder.Services.AddControllers();
 builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
-builder.WebHost.UseKestrel(options =>
-{
-    options.Limits.MaxRequestBodySize = null; // Без ограничения размера, или укажите нужный размер в байтах
 
-});
 
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -88,7 +84,7 @@ builder.Services.AddScoped<IPostImegesS3Service, PostImegesS3Service>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 
 IServiceCollection services = builder.Services;
- 
+
 services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
@@ -97,7 +93,7 @@ services.AddCors(options =>
                           .AllowAnyMethod());
 });
 
-// Add Quartz servicesт и
+// Add Quartz services
 services.AddHostedService<QuartzHostedService>();
 services.AddSingleton<IJobFactory, SingletonJobFactory>();
 services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();

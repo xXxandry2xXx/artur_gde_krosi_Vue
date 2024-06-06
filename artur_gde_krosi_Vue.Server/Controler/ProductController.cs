@@ -15,7 +15,6 @@ using Product = artur_gde_krosi_Vue.Server.Models.BdModel.Product;
 
 namespace artur_gde_krosi_Vue.Server.Controller;
 
-//[Authorize(Roles = "User")]
 [Route("api/[controller]/")]
 [ApiController]
 public class ProductController : ControllerBase
@@ -53,14 +52,12 @@ public class ProductController : ControllerBase
         List<AllProductSearchViews> product = _product.GetAllProductSearch();
         return Ok(product);
     }
-    //
-    //надо переделать
-    //
+
     [HttpGet]
     [Route("Variant")]
     public async Task<IActionResult> Variant([FromHeader] string VariantId)
     {
-        Variant? variant = db.Variants.Where(x=> x.VariantId == VariantId).FirstOrDefault();
+        Variant? variant = _product.GetVariant(VariantId);
         return Ok(variant);
     }
 
@@ -72,7 +69,7 @@ public class ProductController : ControllerBase
     {
         ProductListView productListView = _product.GetProductList(priseDown, priseUp, brendsIds, modelKrosovocksIds,
             shoeSizesChecked, availability, PlaceholderContent, sortOrder, pageProducts);
-        return Ok( productListView);
+        return Ok(productListView);
     }
 }
 

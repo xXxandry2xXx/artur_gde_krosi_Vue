@@ -957,6 +957,14 @@ header {
     font-size: 22px;
 }
 
+.characteristic-popup-incorrect input {
+    border: 1px solid red !important
+}
+
+.characteristic-popup-error-message {
+    text-align: center;
+}
+
 .characteristic-popup-buttons {
     display: flex;
     width: 100%;
@@ -981,12 +989,41 @@ header {
         font-size: 20px;
     }
 
-    .characteristic-popup-field input {
-        width: 65%;
-        border: 1px solid var(--additional-font-color-lighter);
-        padding: 10px;
-        font-size: 18px;
-    }
+.characteristic-popup-field input,
+.characteristic-popup-listed-char input {
+    width: 65%;
+    border: 1px solid var(--additional-font-color-lighter);
+    padding: 10px;
+    font-size: 18px;
+}
+
+.characteristic-popup-editing-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.characteristic-popup-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.characteristic-popup-listed-char {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 5px 0;
+}
+
+.characteristic-popup-listed-char h5 {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.characteristic-popup-listed-char input {
+    width: initial;
+}
 
 .products-main {
     display: flex;
@@ -1838,7 +1875,7 @@ header {
 }
 
     .cart-order-section p {
-        width: 90%;
+        width: 100%;
         font-size: 17px;
         padding-top: 15px;
         margin-bottom: 15px;

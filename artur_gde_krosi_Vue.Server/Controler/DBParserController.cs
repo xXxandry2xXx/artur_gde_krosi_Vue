@@ -10,11 +10,9 @@ using Quartz;
 using artur_gde_krosi_Vue.Server.Schedulers;
 using artur_gde_krosi_Vue.Server.Services.Parser;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace artur_gde_krosi_Vue.Server.Controller
 {
-    //[Authorize(Roles = "Manager")]
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]/")]
     [ApiController]
     public class DBParserController : ControllerBase

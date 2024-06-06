@@ -20,6 +20,7 @@ namespace artur_gde_krosi_Vue.Server.Controller.identity
             _accountService = accountService;
             _accountValidationChangeService = accountValidationChangeService;
         }
+
         [HttpGet("PreliminaryCheckEmeil")]
         public async Task<IActionResult> PreliminaryCheckEmeil(string email)
         {

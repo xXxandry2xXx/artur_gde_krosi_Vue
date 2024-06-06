@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace artur_gde_krosi_Vue.Server.Controller.CharacteristicProductFolder
 {
-    //[Authorize(Roles = "Manager")]
+    [Authorize(Roles = "Manager")]
     [Route("api/CharacteristicProductFolder/[controller]")]
     [ApiController]
     public class CharacteristicProductsController : ControllerBase

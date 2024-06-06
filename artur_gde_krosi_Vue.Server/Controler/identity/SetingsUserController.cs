@@ -1,5 +1,6 @@
 ﻿using artur_gde_krosi_Vue.Server.Models.UserModel;
 using artur_gde_krosi_Vue.Server.Services.Account;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NuGet.Common;
@@ -53,7 +54,6 @@ namespace artur_gde_krosi_Vue.Server.Controller.identity
             return Ok();
         }
 
-
         [HttpGet("GenerateTokenOnEmailChange")]
         public async Task<IActionResult> generateTokenOnEmailChange(string userName, string newEmail)
         {
@@ -67,13 +67,14 @@ namespace artur_gde_krosi_Vue.Server.Controller.identity
             return Ok();
         }
 
-
+        [Authorize(Roles = "User")]
         [HttpGet("UserSettings")]
         public async Task<IActionResult> getInfoUser(string email)
         {
             await _accountSettingsService.GetInfoUser(email);
             return Ok();
         }
+        [Authorize(Roles = "User")]
         [HttpPut("UserSettings")]
         public async Task<IActionResult> userSettings([FromForm] UserInfoModel userInfoModel, string userName)
         {

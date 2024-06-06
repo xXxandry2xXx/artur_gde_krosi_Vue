@@ -21,6 +21,7 @@ namespace artur_gde_krosi_Vue.Server.Controller.identity
             _accountValidationChangeService = accountValidationChangeService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("Role")]
         public async Task<IActionResult> addRole(string username, string role)
         {
@@ -28,6 +29,8 @@ namespace artur_gde_krosi_Vue.Server.Controller.identity
             if (rez.Succeeded) return Ok();
             else throw new ArgumentException(JsonConvert.SerializeObject(rez));
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpDelete("Role")]
         public async Task<IActionResult> deleteRole(string username, string role)
         {
@@ -35,6 +38,7 @@ namespace artur_gde_krosi_Vue.Server.Controller.identity
             if (rez.Succeeded) return Ok();
             else throw new ArgumentException(JsonConvert.SerializeObject(rez));
         }
+
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromForm] RegisterModel registerModel, [FromForm] UserInfoModel userInfoModel)
         {

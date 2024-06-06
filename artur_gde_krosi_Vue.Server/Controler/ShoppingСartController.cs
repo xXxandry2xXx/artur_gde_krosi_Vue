@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace artur_gde_krosi_Vue.Server.Controller
 {
-    //[Authorize(Roles = "User")]
+    [Authorize(Roles = "User")]
     [Route("api/[controller]")]
     [ApiController]
     public class ShoppingСartController : ControllerBase
@@ -31,23 +31,26 @@ namespace artur_gde_krosi_Vue.Server.Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetShoppingСarts(string name)
+        public async Task<IActionResult> GetShoppingСarts()
         {
+            string name = HttpContext.User.Identity.Name;
             var shoppingСarts = await _shoppingCartService.GetShoppingСarts(name);
             return Ok(shoppingСarts);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddShoppingСarts(string name, [FromHeader] string VariantId)
+        public async Task<IActionResult> AddShoppingСarts([FromHeader] string VariantId)
         {
+            string name = HttpContext.User.Identity.Name;
             await _shoppingCartService.AddShoppingСarts(name, VariantId);
             return Ok();
         }
 
         [Route("/api/[controller]/AddList")]
         [HttpPost]
-        public async Task<IActionResult> AddListShoppingСarts(string name, [FromForm] List<string> VariantId)
+        public async Task<IActionResult> AddListShoppingСarts([FromForm] List<string> VariantId)
         {
+            string name = HttpContext.User.Identity.Name;
             await _shoppingCartService.AddListShoppingСarts(name, VariantId);
             return Ok();
         }

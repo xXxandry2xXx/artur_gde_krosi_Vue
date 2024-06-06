@@ -32,6 +32,11 @@ public class ProductService
         db.Products.Where(x => x.ProductId == ProductId).ExecuteUpdateAsync(x => x.SetProperty(y => y.views, y => y.views + 1));
         return product;
     }
+    public Variant GetVariant( string VariantId)
+    {
+        Variant? variant = db.Variants.Where(x => x.VariantId == VariantId).FirstOrDefault();
+        return variant;
+    }
     public List<AllProductSearchViews> GetAllProductSearch()
     {
         string cacheKey = "AllProduct";

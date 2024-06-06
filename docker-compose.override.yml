@@ -4,8 +4,10 @@ services:
   artur_gde_krosi_vue.server:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=5000:80
+      - ASPNETCORE_HTTP_PORTS=5000
+      # - ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=6000
     ports:
-      - "5000:80"
+      - "5000"
+      - "5173"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro

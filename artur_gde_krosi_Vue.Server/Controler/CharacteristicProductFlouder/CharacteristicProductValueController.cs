@@ -1,12 +1,13 @@
 ﻿using artur_gde_krosi_Vue.Server.Models.BdModel;
 using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
 using artur_gde_krosi_Vue.Server.Services.ControlerService.CharacteristicProductServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace artur_gde_krosi_Vue.Server.Controller.CharacteristicProductFolder
 {
-    //[Authorize(Roles = "Manager")]
+    [Authorize(Roles = "Manager")]
     [Route("api/CharacteristicProductFolder/[controller]")]
     [ApiController]
     public class CharacteristicProductValueController : ControllerBase

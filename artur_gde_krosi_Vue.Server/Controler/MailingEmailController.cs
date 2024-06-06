@@ -1,6 +1,7 @@
-﻿using artur_gde_krosi_Vue.Server.Models.BdModel;
+﻿ using artur_gde_krosi_Vue.Server.Models.BdModel;
 using artur_gde_krosi_Vue.Server.Services.ControlerService;
 using artur_gde_krosi_Vue.Server.Services.EmailService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
@@ -10,7 +11,7 @@ using System.Security.Claims;
 
 namespace artur_gde_krosi_Vue.Server.Controler
 {
-    //[Authorize(Roles = "Manager")]
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class MailingEmailController : ControllerBase

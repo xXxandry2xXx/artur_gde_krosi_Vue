@@ -20,8 +20,7 @@ namespace artur_gde_krosi_Vue.Server.Services.ControlerService
         }
         public async Task<ShoppingCartView> GetShoppingСarts(string name)
         {
-            string username = name;/*HttpContext.User.Identity.Name;*/
-            var user = await _userManager.FindByNameAsync(username);
+            var user = await _userManager.FindByNameAsync(name);
             if (user == null) throw new ArgumentException("Данного пользователя не существует");
             ShoppingCartView shoppingCartView = new ShoppingCartView();
             shoppingCartView.shoppingCartList = db.ShoppingСarts.Include(x => x.Variant).Select(x => MapGetShoppingСarts(x,x.Variant.quantityInStock > x.quantity)).AsNoTracking().ToList();
@@ -35,8 +34,7 @@ namespace artur_gde_krosi_Vue.Server.Services.ControlerService
         }
         public async Task AddShoppingСarts(string name, string VariantId)
         {
-            string username = name;/*HttpContext.User.Identity.Name;*/
-            var user = await _userManager.FindByNameAsync(username);
+            var user = await _userManager.FindByNameAsync(name);
             if (user == null) throw new ArgumentException("Данного пользователя не существует");
             if (!db.ShoppingСarts.Any(x => x.UserId == user.Id && x.VariantId == VariantId))
             {
@@ -48,8 +46,7 @@ namespace artur_gde_krosi_Vue.Server.Services.ControlerService
         }
         public async Task AddListShoppingСarts(string name, List<string> VariantId)
         {
-            string username = name;/* HttpContext.User.Identity.Name;*/
-            var user = await _userManager.FindByNameAsync(username);
+            var user = await _userManager.FindByNameAsync(name);
             if (user == null) throw new ArgumentException("Данного пользователя не существует");
             bool error = false;
             foreach (var item in VariantId)
