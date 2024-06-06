@@ -3,5 +3,11 @@ export interface ProductCharacteristicsState {
     currentProductId: string,
     characteristicsList: Array<any>,
     currentCharacteristicId: string,
-    currentCharacteristicValues: Array<any>
+    currentCharacteristicName: string
+    currentCharacteristicValues: Array<EditableCharacteristicValue>
+}
+
+export interface EditableCharacteristicValue {
+    id: string,
+    value: string
 }
