@@ -15,7 +15,6 @@ using Product = artur_gde_krosi_Vue.Server.Models.BdModel.Product;
 
 namespace artur_gde_krosi_Vue.Server.Controller;
 
-[Authorize(Roles = "User")]
 [Route("api/[controller]/")]
 [ApiController]
 public class ProductController : ControllerBase
