@@ -30,7 +30,7 @@
 
 <script lang="ts">
     import { defineComponent } from 'vue';
-    import { mapMutations } from 'vuex';
+    import { mapMutations, mapGetters } from 'vuex';
     import ProductCharacteristic from '@/components/ProductPage/ProductCharacteristic.vue';
 
     export default defineComponent({
@@ -40,17 +40,35 @@
         props: ['productData'],
 
         methods: {
+            ...mapGetters(['getAuthorizedUserToken']),
             ...mapMutations(['setPopupVisibility', 'setPopupMode', 'setCurrentProductId']),
 
-            openNewCharPopup(this: any,  popupMode: string) {
+            openNewCharPopup(this: any, popupMode: string) {
                 this.setPopupVisibility(true);
                 this.setPopupMode(popupMode);
+            },
+
+            decodeToken(this: any) {
+
+            }
+        },
+
+        computed: {
+            isUserManager(this: any) {
+                const token = this.getAuthorizedUserToken();
+
+                const tokenParts = token.split('.');
+                const decodedPayload = atob(tokenParts[1]);
+
+                return decodedPayload;
             }
         },
 
         mounted() {
             const productId = this.productData.productId
             this.setCurrentProductId(productId);
+
+            console.log(this.isUserManager)
         }
     })
 </script>
