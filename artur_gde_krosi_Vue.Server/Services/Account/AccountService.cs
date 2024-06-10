@@ -108,12 +108,12 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
 
             List<Claim> claims = new List<Claim>
             {
-                new Claim("Email", user.Email),
-                new Claim("Name", user.UserName)
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.UserName)
             };
             foreach (var item in roles)
             {
-                claims.Add(new Claim("Role", item));
+                claims.Add(new Claim(ClaimTypes.Role, item));
             }
             SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JWT:key").Value));
             SigningCredentials sigincredetiols = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

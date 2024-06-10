@@ -10,62 +10,62 @@ using Newtonsoft.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace artur_gde_krosi_Vue.Server.Controller
+namespace artur_gde_krosi_Vue.Server.Controller;
+
+[Authorize(Roles = "User")]
+[Route("api/[controller]")]
+[ApiController]
+public class ShoppingСartController : ControllerBase
 {
-    [Authorize(Roles = "User")]
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ShoppingСartController : ControllerBase
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly ILogger<ShoppingСartController> _logger;
+    private readonly ApplicationIdentityContext db;
+    private readonly ShoppingCartService _shoppingCartService;
+
+    public ShoppingСartController(ILogger<ShoppingСartController> logger, ApplicationIdentityContext context, UserManager<ApplicationUser> userManager, ShoppingCartService shoppingCartService)
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ILogger<ShoppingСartController> _logger;
-        private readonly ApplicationIdentityContext db;
-        private readonly ShoppingCartService _shoppingCartService;
+        _logger = logger;
+        db = context;
+        _userManager = userManager;
+        _shoppingCartService = shoppingCartService;
+    }
 
-        public ShoppingСartController(ILogger<ShoppingСartController> logger, ApplicationIdentityContext context, UserManager<ApplicationUser> userManager, ShoppingCartService shoppingCartService)
-        {
-            _logger = logger;
-            db = context;
-            _userManager = userManager;
-            _shoppingCartService = shoppingCartService;
-        }
+    [HttpGet]
+    public async Task<IActionResult> GetShoppingСarts()
+    {
+        string name = HttpContext.User.Identity.Name;
+        var shoppingСarts = await _shoppingCartService.GetShoppingСarts(name);
+        return Ok(shoppingСarts);
+    }
 
-        [HttpGet]
-        public async Task<IActionResult> GetShoppingСarts()
-        {
-            string name = HttpContext.User.Identity.Name;
-            var shoppingСarts = await _shoppingCartService.GetShoppingСarts(name);
-            return Ok(shoppingСarts);
-        }
+    [HttpPost]
+    public async Task<IActionResult> AddShoppingСarts([FromHeader] string VariantId)
+    {
+        string name = HttpContext.User.Identity.Name;
+        await _shoppingCartService.AddShoppingСarts(name, VariantId);
+        return Ok();
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> AddShoppingСarts([FromHeader] string VariantId)
-        {
-            string name = HttpContext.User.Identity.Name;
-            await _shoppingCartService.AddShoppingСarts(name, VariantId);
-            return Ok();
-        }
+    [Route("/api/[controller]/AddList")]
+    [HttpPost]
+    public async Task<IActionResult> AddListShoppingСarts([FromForm] List<string> VariantId)
+    {
+        string name = HttpContext.User.Identity.Name;
+        await _shoppingCartService.AddListShoppingСarts(name, VariantId);
+        return Ok();
+    }
 
-        [Route("/api/[controller]/AddList")]
-        [HttpPost]
-        public async Task<IActionResult> AddListShoppingСarts([FromForm] List<string> VariantId)
-        {
-            string name = HttpContext.User.Identity.Name;
-            await _shoppingCartService.AddListShoppingСarts(name, VariantId);
-            return Ok();
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> EditShoppingСarts( string ShoppingСartId, int quantity)
-        {
-            int rezQuantity = await _shoppingCartService.EditShoppingСarts(ShoppingСartId, quantity);
-            return Ok(rezQuantity);
-        }
-        [HttpDelete]
-        public async Task<IActionResult> DeleteShoppingСarts(string ShoppingСartId)
-        {
-            await _shoppingCartService.DeleteShoppingСarts(ShoppingСartId);
-            return Ok();
-        }
+    [HttpPut]
+    public async Task<IActionResult> EditShoppingСarts(string ShoppingСartId, int quantity)
+    {
+        int rezQuantity = await _shoppingCartService.EditShoppingСarts(ShoppingСartId, quantity);
+        return Ok(rezQuantity);
+    }
+    [HttpDelete]
+    public async Task<IActionResult> DeleteShoppingСarts(string ShoppingСartId)
+    {
+        await _shoppingCartService.DeleteShoppingСarts(ShoppingСartId);
+        return Ok();
     }
 }
+

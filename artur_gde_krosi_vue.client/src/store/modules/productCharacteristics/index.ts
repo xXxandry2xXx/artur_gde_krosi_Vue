@@ -9,6 +9,7 @@ const state: ProductCharacteristicsState = {
     currentProductId: '',
     characteristicsList: [],
     currentCharacteristicId: '',
+    currentCharacteristicName: '',
     currentCharacteristicValues: [],
 }
 

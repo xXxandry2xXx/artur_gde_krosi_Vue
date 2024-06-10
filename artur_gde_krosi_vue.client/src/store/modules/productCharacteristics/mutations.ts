@@ -14,6 +14,10 @@ export const mutations: MutationTree<ProductCharacteristicsState> = {
         state.characteristicsList = chars;
     },
 
+    setNewCharacteristicName(state, name) {
+        state.currentCharacteristicName = name;
+    },
+
     addCurrentCharacteristicValue(state, newValue) {
         const valuesArray = state.currentCharacteristicValues;
         const existingValue = valuesArray.find((value) => value.id === newValue.id);

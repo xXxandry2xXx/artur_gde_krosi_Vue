@@ -99,18 +99,59 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
         }
     },
 
-    saveCharacteristicChanges({ state }: { state: ProductCharacteristicsState }) {
+    async confirmChangedCharacteristicName({ state }: { state: ProductCharacteristicsState }) {
+        const charName = state.currentCharacteristicName;
+        const charId = state.currentCharacteristicId;
+
+        try {
+            const response = await axios.put(
+                'http://localhost:5263/api/CharacteristicProductFolder/CharacteristicProducts',
+                '',
+                {
+                    params: {
+                        'CharacteristicProductId': charId,
+                        'name': charName
+                    },
+                    headers: {
+                        'accept': '*/*'
+                    }
+                }
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    confirmChangedCharacteristicValues({ state }: { state: ProductCharacteristicsState }) {
         const valuesArray = state.currentCharacteristicValues;
 
         if (valuesArray.length > 0) {
             valuesArray.forEach(async (value) => {
                 try {
-
+                    const response = await axios.put(
+                        'http://localhost:5263/api/CharacteristicProductFolder/CharacteristicProductValue',
+                        '',
+                        {
+                            params: {
+                                'CharacteristicProductValueId': value.id.toString(),
+                                'value': value.value.toString(),
+                            },
+                            headers: {
+                                'accept': '*/*'
+                            }
+                        }
+                    );
+                    if (response.status === 200) this.dispatch('getCurrentProductCharList')
                 } catch (error) {
                     console.log(error);
                 }
             })
         }
+    },
 
+    saveCharacteristicChanges() {
+        this.dispatch('confirmChangedCharacteristicName');
+        this.dispatch('confirmChangedCharacteristicValues');
+        this.dispatch('getCurrentProductCharList');
     }
 }

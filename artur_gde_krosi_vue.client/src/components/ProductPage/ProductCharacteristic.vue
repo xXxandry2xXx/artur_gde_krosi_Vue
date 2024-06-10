@@ -26,12 +26,13 @@
         props: ['characteristicData'],
 
         methods: {
-            ...mapMutations(['setPopupVisibility', 'setPopupMode', 'setCurrentCharacteristicId']),
+            ...mapMutations(['setPopupVisibility', 'setPopupMode', 'setCurrentCharacteristicId', 'setNewCharacteristicName']),
 
             openCharActionPopup(this: any, popupMode: string, charId: string) {
                 this.setPopupVisibility(true);
                 this.setPopupMode(popupMode);
                 this.setCurrentCharacteristicId(charId);
+                this.setNewCharacteristicName(this.characteristicName);
             },
         },
 

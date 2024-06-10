@@ -16,6 +16,10 @@ export const getters: GetterTree<ProductCharacteristicsState, RootState> = {
         return state.currentCharacteristicId;
     },
 
+    getCurrentCharacteristicName: (state) => {
+        return state.currentCharacteristicName;
+    },
+
     getCurrentProductCharacteristic: (state) => {
         return state.characteristicsList;
     },
