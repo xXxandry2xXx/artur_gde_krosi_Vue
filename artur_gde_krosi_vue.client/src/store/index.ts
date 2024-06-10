@@ -34,7 +34,7 @@ export default createStore<RootState>({
         },
 
         setUser(state, user) {
-            if(user !== undefined) state.authorizedUser = user;
+            if (user !== undefined) state.authorizedUser = user;
         }
     },
 
@@ -47,6 +47,12 @@ export default createStore<RootState>({
             let userData = localStorage.getItem('userData');
             if (userData !== null) {
                 return JSON.parse(userData);
+            }
+        },
+
+        getAuthorizedUserToken: () => {
+            if (localStorage.getItem('token') !== null) {
+                return localStorage.getItem('token');
             }
         }
     },
