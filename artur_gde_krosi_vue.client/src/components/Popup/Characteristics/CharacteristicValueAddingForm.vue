@@ -4,7 +4,7 @@
             <h3>Новое значение характеристики</h3>
             <div class="characteristic-popup-field">
                 <span>Значение</span>
-                <DefaultInput placeholder="Значение характеристики" v-model="charNewValue.value" :value="charNewValue.value" @input="validateFields"/>
+                <DefaultInput placeholder="Значение характеристики" v-model="charNewValue.value" :value="charNewValue.value"/>
             </div>
             <p class="characteristic-popup-error-message" :class="{'user-account-editing-message-incorrect': isFieldsFilled === false }" v-show="!isFieldsFilled">{{ errorMessage }}</p>
         </div>

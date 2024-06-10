@@ -5,12 +5,12 @@
             <div class="characteristic-popup-field">
                 <span>Название</span>
                 <DefaultInput placeholder="Название характеристики" v-model="newCharacteristic.name"
-                              :class="{'characteristic-popup-incorrect': isNameFilled === false }" @input="validateValues"/>
+                              :class="{'characteristic-popup-incorrect': isNameFilled === false }"/>
             </div>
             <div class="characteristic-popup-field">
                 <span>Значение</span>
                 <DefaultInput placeholder="Значение характеристики" v-model="newCharacteristic.value" 
-                              :class="{'characteristic-popup-incorrect': isValueFilled === false }" @input="validateValues"/>
+                              :class="{'characteristic-popup-incorrect': isValueFilled === false }"/>
             </div>
             <p class="characteristic-popup-error-message"
                :class="{'user-account-editing-message-incorrect': isValueFilled === false || isNameFilled === false }"
