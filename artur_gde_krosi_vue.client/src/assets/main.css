@@ -10,6 +10,7 @@
     }
 
     .appheader-top-bar {
+        display: none;
         height: fit-content;
     }
 
@@ -26,18 +27,31 @@
     }
 
     .appheader-navbar {
+        display: flex;
+        justify-content: center;
         padding: 0 15px;
     }
 
     .appheader-nav-buttons {
-        display: flex;
-        flex-direction: column;
+        display: none;
     }
 
     .nav-button {
         width: fit-content;
         font-size: 17px;
         margin: 0;
+    }
+
+    .autorization-buttons-pc {
+        display: none;
+    }
+
+    .autorization-button-mobile {
+        display: block;
+    }
+
+    .main-page-content-preview {
+        display: none;
     }
 
     .main-page-brands-list {
@@ -51,6 +65,14 @@
     .main-page-show-all-button {
         font-size: 25px;
         margin-top: 20px;
+    }
+
+    .products-slider-list-viewport {
+        width: 83%;
+    }
+
+    .products-slider-scroll-buttons {
+        display: none;
     }
 
     footer {

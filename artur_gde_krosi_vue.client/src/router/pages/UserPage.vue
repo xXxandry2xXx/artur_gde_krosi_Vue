@@ -23,9 +23,5 @@
 
     export default defineComponent({
         components: { UserPageEdit, UserPageSidePanel },
-
-        mounted() {
-            console.log(this.$store.state.account)
-        }
     })
 </script>
