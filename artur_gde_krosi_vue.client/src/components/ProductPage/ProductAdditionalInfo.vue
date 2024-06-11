@@ -3,7 +3,7 @@
         <div class="product-page-description product-page-section">
             <div class="product-page-header">
                 <h2>Описание</h2>
-                <BorderedButton class="characteristic-interaction-button">
+                <BorderedButton class="characteristic-interaction-button" v-if="isUserManager">
                     <font-awesome-icon :icon="['fas', 'plus']" /> Изменить описание
                 </BorderedButton>
             </div>
@@ -14,15 +14,15 @@
                 Purus in massa tempor nec feugiat nisl pretium. At risus viverra adipiscing at in tellus integer.
             </p>
         </div>
-        <div class="product-page-characteristics product-page-section">
+        <div class="product-page-characteristics product-page-section" v-if="productData.characteristicProducts.length > 0 || isUserManager">
             <div class="product-page-header">
                 <h2>Основные характеристики</h2>
-                <BorderedButton class="characteristic-interaction-button" @click="openNewCharPopup('add-new-char')">
+                <BorderedButton class="characteristic-interaction-button" @click="openNewCharPopup('add-new-char')"  v-if="isUserManager">
                     <font-awesome-icon :icon="['fas', 'plus']" /> Добавить новую характеристику
                 </BorderedButton>
             </div>
-            <ul v-if="productData.characteristicProducts.length > 0">
-                <ProductCharacteristic v-for="char in $store.state.productCharacteristics.characteristicsList" :characteristicData="char" />
+            <ul>
+                <ProductCharacteristic v-for="char in $store.state.productCharacteristics.characteristicsList" :characteristicData="char" :isManager="isUserManager"/>
             </ul>
         </div>
     </div>
@@ -57,10 +57,12 @@
             isUserManager(this: any) {
                 const token = this.getAuthorizedUserToken();
 
-                const tokenParts = token.split('.');
-                const decodedPayload = atob(tokenParts[1]);
+                if (token) {
+                    const tokenParts = token.split('.');
+                    const decodedPayload = JSON.parse(atob(tokenParts[1]));
 
-                return decodedPayload;
+                    return decodedPayload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] === "Manager";
+                }
             }
         },
 
@@ -68,7 +70,7 @@
             const productId = this.productData.productId
             this.setCurrentProductId(productId);
 
-            console.log(this.isUserManager)
+            console.log(this.isUserManager);
         }
     })
 </script>

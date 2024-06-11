@@ -15,6 +15,7 @@
 <style>
     .bordered-button-default {
         background: none;
+        border-radius: 5px;
         border: 1px solid var(--border-font-color);
         color: var(--border-font-color);
         transition: 0.2s;

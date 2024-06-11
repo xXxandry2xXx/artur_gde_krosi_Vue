@@ -22,9 +22,14 @@
     </div>
 
     <div class="autorization-buttons" v-else>
-        <button class="autorization-button" @click="openAuthorizationPopup('authorization', 'log-in')">Вход</button>
-        <span>или</span>
-        <button class="autorization-button" @click="openAuthorizationPopup('authorization', 'registration')">Регистрация</button>
+        <div class="autorization-buttons-pc">
+            <button class="autorization-button" @click="openAuthorizationPopup('authorization', 'log-in')">Вход</button>
+            <span>или</span>
+            <button class="autorization-button" @click="openAuthorizationPopup('authorization', 'registration')">Регистрация</button>
+        </div>
+        <button class="autorization-button-mobile">
+            <font-awesome-icon :icon="['fas', 'right-to-bracket']" />
+        </button>
     </div>
 </template>
 
