@@ -19,6 +19,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    background: #fff;
 }
 
 * {
@@ -155,6 +156,7 @@ header {
 
 .authoriization-parameters {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
 }
@@ -998,13 +1000,13 @@ header {
         font-size: 20px;
     }
 
-.characteristic-popup-field input,
-.characteristic-popup-listed-char input {
-    width: 65%;
-    border: 1px solid var(--additional-font-color-lighter);
-    padding: 10px;
-    font-size: 18px;
-}
+    .characteristic-popup-field input,
+    .characteristic-popup-listed-char input {
+        width: 65%;
+        border: 1px solid var(--additional-font-color-lighter);
+        padding: 10px;
+        font-size: 18px;
+    }
 
 .characteristic-popup-editing-form {
     display: flex;
@@ -1024,15 +1026,15 @@ header {
     margin: 5px 0;
 }
 
-.characteristic-popup-listed-char h5 {
-    font-size: 18px;
-    font-weight: 500;
-    margin-bottom: 5px;
-}
+    .characteristic-popup-listed-char h5 {
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
 
-.characteristic-popup-listed-char input {
-    width: initial;
-}
+    .characteristic-popup-listed-char input {
+        width: initial;
+    }
 
 .catalog-page-main-content {
     padding: 0 10px;
@@ -1186,6 +1188,7 @@ header {
     padding: 13px 20px;
     background: rgb(255, 255, 255);
     border: 2px solid transparent;
+    border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 5px 1px;
     transition: 0.2s;
     text-decoration: none;
@@ -1216,13 +1219,7 @@ header {
     }
 
 .sorting-and-filters {
-    background: #fff;
-    padding: 20px 15px;
-    border-radius: 10px;
-    box-shadow: 4px 4px 7px 1px rgb(0, 0, 0, 20%);
     display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .title {
@@ -2082,4 +2079,30 @@ footer {
 .search-hints::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background: var(--border-font-color);
+}
+
+/*Анимки*/
+
+.fade-enter-to,
+.fade-leave-from {
+    opacity: 1;
+    transition: opacity 0.2s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.slide-enter-to,
+.slide-leave-from {
+    transform: translateX(0);
+    transition: transform 0.2s;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+    transform: translateX(-100%);
+    transition: transform 0.2s;
 }

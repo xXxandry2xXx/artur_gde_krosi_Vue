@@ -14,16 +14,14 @@ export const actions: ActionTree<UserCartState, RootState> = {
     async fetchUserCart({ state }: { state: UserCartState }) {
         if (this.getters.isUserAuthorized) {
             try {
-                let authorizedUser = this.getters.getAuthorizedUser;
+                const token = this.getters.getAuthorizedUserToken.slice(1, -1); 
                 const response = await axios.get('http://localhost:5263/api/ShoppingСart', {
-                    params: {
-                        'name': authorizedUser.userName.toString()
-                    },
+                    maxBodyLength: Infinity,
                     headers: {
-                        'accept': '*/*'
+                        'accept': '*/*',
+                        'Authorization': 'Bearer ' + token
                     }
                 });
-
                 if (response.status === 200) {
                     this.commit('setServerCartProducts', response.data.shoppingCartList);
                     this.commit('setServerCartTotalPrice', response.data.totalPrise);
@@ -41,16 +39,14 @@ export const actions: ActionTree<UserCartState, RootState> = {
         if (state.chosenProductId !== null && state.chosenVariantId !== null) {
             if (this.getters.isUserAuthorized) {
                 try {
-                    let authorizedUser = this.getters.getAuthorizedUser;
+                    const token = this.getters.getAuthorizedUserToken.slice(1, -1); 
                     const response = await axios.post(
                         'http://localhost:5263/api/ShoppingСart',
                         '',
                         {
-                            params: {
-                                'name': authorizedUser.userName.toString()
-                            },
                             headers: {
                                 'accept': '*/*',
+                                'Authorization': 'Bearer ' + token,
                                 'VariantId': itemVariantID.toString(),
                                 'Content-Type': 'application/x-www-form-urlencoded'
                             }
@@ -88,6 +84,7 @@ export const actions: ActionTree<UserCartState, RootState> = {
     async increaseItemQuantity({ state }: { state: UserCartState }, itemVariantID) {
         if (this.getters.isUserAuthorized) {
             try {
+                const token = this.getters.getAuthorizedUserToken.slice(1, -1); 
                 const currentCartItem = state.serverCart.itemsInCart.find((item: any) => item.variantId === itemVariantID);
                 if (currentCartItem !== undefined) {
                     const response = await axios.put(
@@ -99,7 +96,8 @@ export const actions: ActionTree<UserCartState, RootState> = {
                                 'quantity': (currentCartItem.quantity + 1).toString()
                             },
                             headers: {
-                                'accept': '*/*'
+                                'accept': '*/*',
+                                'Authorization': 'Bearer ' + token
                             }
                         }
                     );
@@ -116,12 +114,14 @@ export const actions: ActionTree<UserCartState, RootState> = {
     async removeItemFromCart({ state }: { state: UserCartState }, cartItemID) {
         if (this.getters.isUserAuthorized) {
             try {
+                const token = this.getters.getAuthorizedUserToken.slice(1, -1); 
                 const response = await axios.delete('http://localhost:5263/api/ShoppingСart', {
                     params: {
                         'ShoppingСartId': cartItemID.toString()
                     },
                     headers: {
-                        'accept': '*/*'
+                        'accept': '*/*',
+                        'Authorization': 'Bearer ' + token
                     }
                 });
                 if (response.status === 200) this.dispatch('fetchUserCart');

@@ -68,6 +68,7 @@ export interface AvailablePricesInterface {
 
 export interface ProductsCatalogState {
     showCatalogPreloader: boolean,
+    showFiltersPanel: boolean,
     selectedFilters: SelectedFiltersInterface,
     sortingOptions: Array<Object>,
     productsData: ProductsDataInterface,

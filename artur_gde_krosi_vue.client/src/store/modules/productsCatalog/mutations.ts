@@ -6,6 +6,10 @@ export const mutations: MutationTree<ProductsCatalogState> = {
         state.showCatalogPreloader = value;
     },
 
+    setFiltersPanelVisibility(state, value) {
+        state.showFiltersPanel = value;
+    },
+
     addFilter(state, value) {
         let targetFiltersArray;
 

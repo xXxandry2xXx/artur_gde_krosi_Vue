@@ -32,6 +32,7 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
 
     async addValueToChar({ state }: { state: ProductCharacteristicsState }, charValue) {
         try {
+            const token = this.getters.getAuthorizedUserToken.slice(1, -1);
             const response = await axios.post(
                 'http://localhost:5263/api/CharacteristicProductFolder/CharacteristicProductValue',
                 '',
@@ -43,6 +44,7 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
 
                     headers: {
                         'accept': '*/*',
+                        'Authorization': 'Bearer ' + token,
                         'content-type': 'application/x-www-form-urlencoded'
                     }
                 }
@@ -58,8 +60,12 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
 
         if (newChar.name.length > 0 && newChar.value.length > 0) {
             this.dispatch('addChar', newChar.name).then(response => {
-                let charValue = { value: newChar.value, targetCharId: response.data };
-                this.dispatch('addValueToChar', charValue);
+                if (response) {
+                    let charValue = { value: newChar.value, targetCharId: response.data };
+                    this.dispatch('addValueToChar', charValue);
+                } else {
+                    console.log('access denied')
+                }
             });
         }
 
@@ -68,12 +74,14 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
 
     async removeChar({ state }: { state: ProductCharacteristicsState }, charId) {
         try {
+            const token = this.getters.getAuthorizedUserToken.slice(1, -1);
             const response = await axios.delete('http://localhost:5263/api/CharacteristicProductFolder/CharacteristicProducts', {
                 params: {
                     'CharacteristicProductId': charId
                 },
                 headers: {
-                    'accept': '*/*'
+                    'accept': '*/*',
+                    'Authorization': 'Bearer ' + token,
                 }
             });
         } catch (error) {
@@ -104,6 +112,7 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
         const charId = state.currentCharacteristicId;
 
         try {
+            const token = this.getters.getAuthorizedUserToken.slice(1, -1);
             const response = await axios.put(
                 'http://localhost:5263/api/CharacteristicProductFolder/CharacteristicProducts',
                 '',
@@ -113,7 +122,8 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
                         'name': charName
                     },
                     headers: {
-                        'accept': '*/*'
+                        'accept': '*/*',
+                        'Authorization': 'Bearer ' + token,
                     }
                 }
             );
@@ -128,6 +138,7 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
         if (valuesArray.length > 0) {
             valuesArray.forEach(async (value) => {
                 try {
+                    const token = this.getters.getAuthorizedUserToken.slice(1, -1);
                     const response = await axios.put(
                         'http://localhost:5263/api/CharacteristicProductFolder/CharacteristicProductValue',
                         '',
@@ -137,7 +148,8 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
                                 'value': value.value.toString(),
                             },
                             headers: {
-                                'accept': '*/*'
+                                'accept': '*/*',
+                                'Authorization': 'Bearer ' + token,
                             }
                         }
                     );

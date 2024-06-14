@@ -10,7 +10,9 @@
         </nav>
 
         <div class="products-main">
-            <FiltersPanel />
+            <transition name="slide">
+                <FiltersPanel v-show="isFiltersPanelShown()" />
+            </transition>
             <div class="products-content">
                 <SearchAndSort :sortingOptions="$store.state.productsCatalog.sortingOptions" />
                 <ProductList v-if="$store.state.productsCatalog.filteredProductsData.productList" />
@@ -31,14 +33,16 @@
     import SearchAndSort from '@/components/ProductsPage/SearchAndSort.vue';
 
     export default defineComponent({
+
         components: { ProductList, FiltersPanel, SearchAndSort, PaginationPages },
 
         methods: {
-            ...mapMutations(['setCurrentPage']),
+            ...mapMutations(['setCurrentPage', 'setFiltersPanelVisibility']),
             ...mapActions(['fetchProducts', 'fetchBrands', 'fetchSizes', 'changePage', 'loadAppliedFilters', 'fetchPrices']),
-            ...mapGetters(['getCurrentPage', 'getTotalPages']),
+            ...mapGetters(['getCurrentPage', 'getTotalPages', 'isMobile', 'isFiltersPanelShown']),
 
             initProductsPage(this: any) {
+                this.setFiltersPanelVisibility(!this.isMobile());
                 this.fetchProducts();
                 this.fetchBrands();
                 this.fetchSizes();

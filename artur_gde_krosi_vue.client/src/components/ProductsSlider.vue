@@ -41,7 +41,6 @@
         data() {
             return {
                 slidedProducts: [],
-                viewportProductAmount: 3,
                 currentOffset: 0,
                 productWidth: 0,
                 productsListGap: 0,
@@ -101,6 +100,14 @@
                 let totalWidth = (this.getProductWidth * this.slidedProducts.length) + (this.getProductsListGap * this.viewportProductAmount);
                 if (this.slidedProducts.length % this.viewportProductAmount < 2) totalWidth -= this.getProductWidth;
                 return totalWidth;
+            },
+
+            viewportProductAmount(this: any) {
+                if (window.innerWidth <= 425) {
+                    return 1
+                } else {
+                    return 3
+                };
             }
         },
 
