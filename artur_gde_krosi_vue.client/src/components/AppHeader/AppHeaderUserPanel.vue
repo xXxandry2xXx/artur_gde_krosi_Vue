@@ -27,7 +27,7 @@
             <span>или</span>
             <button class="autorization-button" @click="openAuthorizationPopup('authorization', 'registration')">Регистрация</button>
         </div>
-        <button class="autorization-button-mobile">
+        <button class="autorization-button-mobile" @click="openAuthorizationPopup('authorization', 'log-in')">
             <font-awesome-icon :icon="['fas', 'right-to-bracket']" />
         </button>
     </div>

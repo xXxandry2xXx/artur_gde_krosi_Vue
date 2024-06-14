@@ -9,6 +9,8 @@
         max-width: 425px;
     }
 
+    /*Шапка*/
+
     .appheader-top-bar {
         display: none;
         height: fit-content;
@@ -50,6 +52,12 @@
         display: block;
     }
 
+    .app-subheader {
+        padding: 10px;
+    }
+
+    /*Главная*/
+
     .main-page-content-preview {
         display: none;
     }
@@ -75,6 +83,48 @@
         display: none;
     }
 
+    /*Каталог*/
+
+    .top-bar {
+        margin: 20px 0;
+    }
+
+    .bread-crumbs, .bread-crumb {
+        font-size: 16px;
+    }
+
+    .products-main {
+        flex-direction: column;
+    }
+
+    .filter-panel {
+        height: 100vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        top: 0;
+        left: 0;
+        position: fixed;
+        width: initial;
+        z-index: 101;
+        padding: 20px 10px;
+        border-radius: 0;
+    }
+
+    .products-content {
+        width: initial;
+    }
+
+    .search-and-sort {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sort-dropdown {
+        width: 100%;
+        padding: 10px 5px;
+    }
+
+    /*Футер*/
     footer {
         margin-top: 0;
     }
@@ -108,4 +158,16 @@
         padding: 10px 20px;
         justify-content: center;
     }
+}
+
+/*Попапы*/
+
+.popup-content {
+    width: 400px;
+    padding: 25px;
+}
+
+.authoriization-parameters {
+    font-size: 17px;
+    margin-bottom: 15px;
 }

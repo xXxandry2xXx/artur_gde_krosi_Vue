@@ -288,8 +288,7 @@ header {
     }
 
 .authorization-popup-button {
-    width: 50%;
-    width: fit-content;
+    width: 100%;
     align-self: center;
     padding: 10px 20px;
     font-size: 21px;
@@ -313,7 +312,6 @@ header {
         }
 
 .authorization-newsletter-checkbox {
-    margin-top: 15px;
     margin-bottom: 10px;
 }
 
@@ -1036,6 +1034,10 @@ header {
     width: initial;
 }
 
+.catalog-page-main-content {
+    padding: 0 10px;
+}
+
 .products-main {
     display: flex;
     justify-content: space-around;
@@ -1231,6 +1233,7 @@ header {
 
 .search-and-sort {
     display: flex;
+    flex-direction: row-reverse;
     justify-content: space-between;
     border-radius: 10px;
     margin-bottom: 20px;
@@ -1973,7 +1976,7 @@ header {
 
 footer {
     box-sizing: border-box;
-    position: absolute;
+    /*position: absolute;*/
     top: 100%;
     left: 0;
     background: #000;

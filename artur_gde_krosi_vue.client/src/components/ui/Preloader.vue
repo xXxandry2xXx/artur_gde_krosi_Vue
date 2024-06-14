@@ -25,7 +25,7 @@ import { defineComponent } from "vue";
         width: 100%;
         height: 100%;
         position: absolute;
-        background: rgb(255,255,255, 0.8);
+        background: rgb(255,255,255, 1);
         z-index: 100;
     }
 
@@ -35,7 +35,7 @@ import { defineComponent } from "vue";
         align-items: center;
         position: fixed;
         top: 40%;
-        right: 35%;
+        right: 33%;
         left: 25%;
     }
 
@@ -77,6 +77,12 @@ import { defineComponent } from "vue";
 
         100% {
             transform: rotate(360deg);
+        }
+    }
+
+    @media (max-width: 425px) {
+        .preloader {
+            right: 55%;
         }
     }
 </style>

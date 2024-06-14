@@ -1,14 +1,13 @@
 ﻿<template>
     <div class="search-and-sort">
-
+        <SortDropdownMenu class="sort-dropdown" :options="sortingOptions" />
         <div class="filter-item-container">
             <label class="filter-item">
                 <input class="filter-item-checkbox" type="checkbox" @change="toggleStockFilter" :checked="isChecked">
                 <span class="filter-item-checkbox-fake"></span>
-                <span class="filter-item-name">В наличии</span>
+                <span class="filter-item-name">Кроссовки есть в наличии</span>
             </label>
         </div>
-        <SortDropdownMenu class="sort-dropdown" :options="sortingOptions" />
     </div>
 </template>
 

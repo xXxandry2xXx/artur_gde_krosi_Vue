@@ -1,22 +1,24 @@
 ﻿<template>
-    <nav class="top-bar">
-        <span class="bread-crumb" @click="$router.push('/')">На главную</span>
-        <div class="bread-crumbs">
-            <span class="bread-crumb" @click="$router.push('/')">Главная</span>
-            /
-            <span class="bread-crumb bread-crumb-current">Все кроссовки</span>
-        </div>
-    </nav>
+    <div class="catalog-page-main-content">
+        <nav class="top-bar">
+            <span class="bread-crumb" @click="$router.push('/')">На главную</span>
+            <div class="bread-crumbs">
+                <span class="bread-crumb" @click="$router.push('/')">Главная</span>
+                /
+                <span class="bread-crumb bread-crumb-current">Все кроссовки</span>
+            </div>
+        </nav>
 
-    <div class="products-main">
-        <FiltersPanel />
-        <div class="products-content">
-            <SearchAndSort :sortingOptions="$store.state.productsCatalog.sortingOptions" />
-            <ProductList v-if="$store.state.productsCatalog.filteredProductsData.productList"/>
+        <div class="products-main">
+            <FiltersPanel />
+            <div class="products-content">
+                <SearchAndSort :sortingOptions="$store.state.productsCatalog.sortingOptions" />
+                <ProductList v-if="$store.state.productsCatalog.filteredProductsData.productList" />
+            </div>
         </div>
+
+        <PaginationPages v-show="getTotalPages() > 0" />
     </div>
-
-    <PaginationPages v-show="getTotalPages() > 0" />
 </template>
 
 <script lang="ts">
