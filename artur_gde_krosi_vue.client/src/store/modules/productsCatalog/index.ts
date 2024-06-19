@@ -8,7 +8,7 @@ import { actions } from '@/store/modules/productsCatalog/actions';
 
 const state: ProductsCatalogState = {
     showCatalogPreloader: false,
-    showFiltersPanel: true,
+    showFiltersPanel: false,
 
     selectedFilters: {
         priceMin: 0,

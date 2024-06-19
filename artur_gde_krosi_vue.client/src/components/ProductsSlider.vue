@@ -1,7 +1,7 @@
 ﻿<template>
     <div class="products-slider">
         <h1>{{ sliderTitle }}</h1>
-        <div class="products-slider-list-viewport">
+        <div class="products-slider-list-viewport" @touchstart="removeScrollInterval" @touchend="setScrollInterval" v-touch:swipe.left="swipeScrollLeft" v-touch:swipe.right="swipeScrollRight">
             <div class="products-slider-list" ref="productsSlider" @mouseenter="removeScrollInterval" @mouseleave="setScrollInterval">
                 <div class="product" style="display: none" ref="sliderCard"></div>
                 <Product v-for="(product, index) in slidedProducts" :product="product" />
@@ -11,7 +11,7 @@
             <button class="products-slider-scroll-button" @click="scrollProducts('left')" @mouseenter="removeScrollInterval" @mouseleave="setScrollInterval">
                 <font-awesome-icon :icon="['fas', 'chevron-left']" />
             </button>
-            <button class="products-slider-scroll-button" @click="scrollProducts('right')" @mouseenter="removeScrollInterval" @mouseleave="setScrollInterval">
+            <button class="products-slider-scroll-button" @click="" @mouseenter="removeScrollInterval" @mouseleave="setScrollInterval">
                 <font-awesome-icon :icon="['fas', 'chevron-right']" />
             </button>
         </div>
@@ -63,7 +63,7 @@
 
                 if (this.$refs.productsSlider) {
                     if (this.sliderArray.length > this.viewportProductAmount) this.$refs.productsSlider.style.transform = 'translateX(' + this.currentOffset + 'px)';
-                } 
+                }
             },
 
             setScrollInterval(this: any) {
@@ -72,6 +72,13 @@
 
             removeScrollInterval(this: any) {
                 clearInterval(this.scrollIntervalId);
+            },
+
+            swipeScrollLeft(this: any) {
+                this.scrollProducts('right');
+            },
+            swipeScrollRight(this: any) {
+                this.scrollProducts('left');
             },
         },
 
@@ -105,10 +112,12 @@
             viewportProductAmount(this: any) {
                 if (window.innerWidth <= 425) {
                     return 1
+                } else if (window.innerWidth <= 768) {
+                    return 2
                 } else {
                     return 3
                 };
-            }
+            },
         },
 
         mounted() {

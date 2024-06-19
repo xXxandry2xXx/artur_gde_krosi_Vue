@@ -39,14 +39,21 @@
         methods: {
             ...mapMutations(['setCurrentPage', 'setFiltersPanelVisibility']),
             ...mapActions(['fetchProducts', 'fetchBrands', 'fetchSizes', 'changePage', 'loadAppliedFilters', 'fetchPrices']),
-            ...mapGetters(['getCurrentPage', 'getTotalPages', 'isMobile', 'isFiltersPanelShown']),
+            ...mapGetters(['getCurrentPage', 'getTotalPages', 'isMobile', 'isTablet', 'isFiltersPanelShown']),
 
             initProductsPage(this: any) {
-                this.setFiltersPanelVisibility(!this.isMobile());
+                this.setFiltersPanelVisibility(this.isFiltersPanelInitiallyToggled);
                 this.fetchProducts();
                 this.fetchBrands();
                 this.fetchSizes();
                 this.changePage(Number(this.$route.params.page));
+            }
+        },
+
+        computed: {
+            isFiltersPanelInitiallyToggled(this: any) {
+                if (!this.isMobile() && !this.isTablet()) return true;
+                return false;
             }
         },
 

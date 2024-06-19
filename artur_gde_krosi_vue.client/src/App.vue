@@ -5,6 +5,10 @@
         <Popup v-if="$store.state.showPopup" />
     </transition>
 
+    <transition name="fade" v-show="isTablet() && isFiltersPanelShown()" @click="setFiltersPanelVisibility(false)">
+        <div class="filter-panel-background"></div>
+    </transition>
+
     <AppHeader />
 
     <main class="main-content">
@@ -28,8 +32,8 @@
 
         methods: {
             ...mapActions(['fetchUserCart']),
-            ...mapMutations(['setUser']),
-            ...mapGetters(['getAuthorizedUser']),
+            ...mapMutations(['setUser', 'setFiltersPanelVisibility']),
+            ...mapGetters(['getAuthorizedUser', 'isTablet', 'isFiltersPanelShown']),
 
             setCurrentUser() {
                 let user = this.getAuthorizedUser();

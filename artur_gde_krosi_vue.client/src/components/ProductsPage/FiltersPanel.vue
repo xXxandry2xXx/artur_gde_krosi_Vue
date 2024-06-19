@@ -7,7 +7,7 @@
             <router-link :to="{ name: 'productsPage', params: { page: 1 } }">
                 <BorderedButton class="filters-apply-button" @click="clearSelectedFilters">Очистить</BorderedButton>
             </router-link>
-            <BorderedButton class="filters-apply-button" v-if="isMobile()" @click="setFiltersPanelVisibility(false)">
+            <BorderedButton class="filters-apply-button" v-if="isMobile() || this.isTablet()" @click="setFiltersPanelVisibility(false)">
                 <font-awesome-icon :icon="['fas', 'xmark']" />
             </BorderedButton>
         </div>
@@ -47,11 +47,11 @@
 
         methods: {
             ...mapMutations(['setFiltersPanelVisibility']),
-            ...mapGetters(['isMobile']),
+            ...mapGetters(['isMobile', 'isTablet']),
             ...mapActions(['applyFilters', 'clearFilters']),
 
             closeFilterPanelIfMobile(this: any) {
-                if (this.isMobile) this.setFiltersPanelVisibility(false);
+                if (this.isMobile() || this.isTablet()) this.setFiltersPanelVisibility(false);
             },
 
             applySelectedFilters() {

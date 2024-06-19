@@ -10,6 +10,7 @@
     "cors": "^2.8.5",
     "vue-router": "^4.2.5",
     "vue-slider-component": "^4.1.0-beta.7",
+    "vue3-touch-events": "^4.1.8",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

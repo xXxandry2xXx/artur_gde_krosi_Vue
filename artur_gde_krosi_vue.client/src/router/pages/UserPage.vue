@@ -11,7 +11,7 @@
         <div class="user-account-content">
             <UserPageSidePanel />
             <UserPageEdit />
-            <div style="width: 20%;"></div>
+            <div class="user-account-dummy-div" style="width: 20%;"></div>
         </div>
     </div>
 </template>

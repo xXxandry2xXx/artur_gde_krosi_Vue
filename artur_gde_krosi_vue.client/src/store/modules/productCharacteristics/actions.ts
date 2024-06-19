@@ -8,6 +8,7 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
         let productId = this.getters.getCurrentProductId;
 
         try {
+            const token = this.getters.getAuthorizedUserToken.slice(1, -1);
             const response = await axios.post(
                 'http://localhost:5263/api/CharacteristicProductFolder/CharacteristicProducts',
                 '',
@@ -18,7 +19,8 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
                     },
                     headers: {
                         'accept': '*/*',
-                        'content-type': 'application/x-www-form-urlencoded'
+                        'content-type': 'application/x-www-form-urlencoded',
+                        'Authorization': 'Bearer ' + token,
                     }
                 }
             );

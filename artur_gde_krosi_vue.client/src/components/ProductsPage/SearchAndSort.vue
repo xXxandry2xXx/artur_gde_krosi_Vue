@@ -2,7 +2,7 @@
     <div class="search-and-sort">
         <div class="sorting-and-filters">
             <SortDropdownMenu class="sort-dropdown" :options="sortingOptions" />
-            <BorderedButton class="filters-panel-opener" @click="setFiltersPanelVisibility(true)" v-if="isMobile()">Фильтры</BorderedButton>
+            <BorderedButton class="filters-panel-opener" @click="setFiltersPanelVisibility(true)" v-if="isMobile() || isTablet()">Фильтры</BorderedButton>
         </div>
         <div class="filter-item-container">
             <label class="filter-item">
@@ -33,7 +33,7 @@
         methods: {
             ...mapMutations(['setSelectedSearchValue', 'addStockFilter', 'setFiltersPanelVisibility']),
             ...mapActions(['applyFilters']),
-            ...mapGetters(['selectedFiltersState', 'currentSelectedFilters', 'isMobile']),
+            ...mapGetters(['selectedFiltersState', 'currentSelectedFilters', 'isMobile', 'isTablet']),
 
             toggleStockFilter() {
                 this.addStockFilter();

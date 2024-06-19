@@ -73,9 +73,4 @@ export const getters: GetterTree<ProductsCatalogState, RootState> = {
     getFilteredProductsData: state => {
         return state.filteredProductsData
     },
-
-    isMobile(this: any) {
-        if (window.innerWidth <= 425) return true;
-        return false;
-    }
 }
