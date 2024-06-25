@@ -2,14 +2,17 @@
     <aside class="filter-panel">
         <div class="filter-panel-butons">
             <router-link :to="{ name: 'productsPage', params: { page: 1 } }">
-                <BorderedButton class="filters-apply-button" @click="$store.dispatch('applyFilters')">Применить</BorderedButton>
+                <BorderedButton class="filters-apply-button" @click="applySelectedFilters">Применить</BorderedButton>
             </router-link>
             <router-link :to="{ name: 'productsPage', params: { page: 1 } }">
-                <BorderedButton class="filters-apply-button" @click="$store.dispatch('clearFilters')">Очистить</BorderedButton>
+                <BorderedButton class="filters-apply-button" @click="clearSelectedFilters">Очистить</BorderedButton>
             </router-link>
+            <BorderedButton class="filters-apply-button" v-if="isMobile() || this.isTablet()" @click="setFiltersPanelVisibility(false)">
+                <font-awesome-icon :icon="['fas', 'xmark']" />
+            </BorderedButton>
         </div>
 
-            <FiltersCurrentlySelected v-if="
+        <FiltersCurrentlySelected v-if="
                   $store.state.productsCatalog.models.constructor === Array &&
                   $store.state.productsCatalog.brands.constructor === Array &&
                   $store.getters.selectedFiltersCached &&
@@ -34,11 +37,33 @@
 
 <script lang="ts">
     import { defineComponent } from "vue";
+    import { mapMutations, mapGetters, mapActions } from 'vuex';
     import PriceRanger from './PriceRanger.vue'
     import Filter from './Filter.vue';
     import FiltersCurrentlySelected from './FiltersCurrentlySelected.vue'
 
     export default defineComponent({
         components: { PriceRanger, Filter, FiltersCurrentlySelected },
+
+        methods: {
+            ...mapMutations(['setFiltersPanelVisibility']),
+            ...mapGetters(['isMobile', 'isTablet']),
+            ...mapActions(['applyFilters', 'clearFilters']),
+
+            closeFilterPanelIfMobile(this: any) {
+                if (this.isMobile() || this.isTablet()) this.setFiltersPanelVisibility(false);
+            },
+
+            applySelectedFilters() {
+                this.closeFilterPanelIfMobile();
+                this.applyFilters();
+            },
+
+            clearSelectedFilters() {
+                this.closeFilterPanelIfMobile();
+                this.clearFilters();
+            }
+        }
     })
 </script>
+ 

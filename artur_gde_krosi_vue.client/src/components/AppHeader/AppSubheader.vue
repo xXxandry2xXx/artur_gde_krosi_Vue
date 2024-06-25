@@ -18,17 +18,3 @@
         components: { AppSearchPanel, AppHeaderUserPanel, Cart },
     })
 </script>
-
-<style>
-    .fade-enter-to,
-    .fade-leave-from {
-        opacity: 1;
-        transition: opacity 0.2s;
-    }
-
-    .fade-enter-from,
-    .fade-leave-to {
-        opacity: 0;
-        transition: opacity 0.2s;
-    }
-</style>

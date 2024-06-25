@@ -54,6 +54,21 @@ export default createStore<RootState>({
             if (localStorage.getItem('token') !== null) {
                 return localStorage.getItem('token');
             }
+        },
+
+        isMobile: () => {
+            if (window.innerWidth <= 425) return true;
+            return false;
+        },
+
+        isTablet: () => {
+            if (window.innerWidth <= 768) return true;
+            return false;
+        },
+
+        isTwoK: () => {
+            if (window.innerWidth <= 2560) return true;
+            return false;
         }
     },
 

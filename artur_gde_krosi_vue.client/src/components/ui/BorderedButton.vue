@@ -36,4 +36,11 @@
             cursor: not-allowed;
             background: var(--additional-font-color-lighter);
         }
+
+    @media (width: 2560px) {
+
+        .bordered-button-default {
+            border: 3px solid var(--border-font-color);
+        }
+    }
 </style>

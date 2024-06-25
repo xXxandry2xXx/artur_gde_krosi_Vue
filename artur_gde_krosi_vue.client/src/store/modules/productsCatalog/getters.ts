@@ -4,6 +4,10 @@ import type { ProductsCatalogState } from '@/store/modules/productsCatalog/types
 import type { AvailablePricesInterface } from '@/store/modules/productsCatalog/types';
 
 export const getters: GetterTree<ProductsCatalogState, RootState> = {
+    isFiltersPanelShown: state => {
+        return state.showFiltersPanel;
+    },
+
     getProductsData: state => {
         return state.productsData;
     },
@@ -68,5 +72,5 @@ export const getters: GetterTree<ProductsCatalogState, RootState> = {
 
     getFilteredProductsData: state => {
         return state.filteredProductsData
-    }
+    },
 }

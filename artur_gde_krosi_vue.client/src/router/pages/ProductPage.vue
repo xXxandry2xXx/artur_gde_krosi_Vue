@@ -82,7 +82,7 @@
 
             changedProductId(this: any) {
                 return this.productId = this.$route.params.productId;
-            }
+            },
         },
 
         watch: {

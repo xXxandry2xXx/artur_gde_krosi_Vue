@@ -8,6 +8,7 @@ import { actions } from '@/store/modules/productsCatalog/actions';
 
 const state: ProductsCatalogState = {
     showCatalogPreloader: false,
+    showFiltersPanel: false,
 
     selectedFilters: {
         priceMin: 0,
@@ -15,7 +16,7 @@ const state: ProductsCatalogState = {
         brandIDs: [],
         modelIDs: [],
         checkedSizes: [],
-        inStock: false,
+        inStock: true,
         searchValue: '',
         sortOrder: '0',
     },

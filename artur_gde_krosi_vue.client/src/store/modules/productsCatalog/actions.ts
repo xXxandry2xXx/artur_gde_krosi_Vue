@@ -18,7 +18,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
             brandIDs: [],
             modelIDs: [],
             checkedSizes: [],
-            inStock: false,
+            inStock: true,
             searchValue: '',
             sortOrder: '0',
         }

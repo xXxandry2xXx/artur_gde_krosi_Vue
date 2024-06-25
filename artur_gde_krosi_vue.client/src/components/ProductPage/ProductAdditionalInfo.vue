@@ -60,8 +60,9 @@
                 if (token) {
                     const tokenParts = token.split('.');
                     const decodedPayload = JSON.parse(atob(tokenParts[1]));
+                    const currentUserRole = decodedPayload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
 
-                    return decodedPayload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] === "Manager";
+                    return currentUserRole === "Manager";
                 }
             }
         },
@@ -69,8 +70,6 @@
         mounted() {
             const productId = this.productData.productId
             this.setCurrentProductId(productId);
-
-            console.log(this.isUserManager);
         }
     })
 </script>

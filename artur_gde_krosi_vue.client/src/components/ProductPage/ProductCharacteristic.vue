@@ -3,7 +3,7 @@
         <p>
             <span>{{ characteristicName }}:</span><span>{{ characteristicValue }}</span>
         </p>
-        <div v-if="isManager">
+        <div class="characteristic-interaction-buttons" v-if="isManager">
             <BorderedButton class="characteristic-interaction-button" @click="openCharActionPopup('add-char-value', characteristicData.characteristicProductId)">
                 <font-awesome-icon :icon="['fas', 'plus']" />
             </BorderedButton>

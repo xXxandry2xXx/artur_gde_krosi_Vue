@@ -63,4 +63,20 @@
         user-select: none;
     }
 
+    @media (width: 2560px) {
+        .default-checkbox-fake {
+            min-width: 60px;
+            min-height: 60px;
+            border: 3px solid var(--border-font-color);
+        }
+
+            .default-checkbox-fake::after {
+                border-right: 10px solid rgb(185 147 0);
+                border-bottom: 10px solid rgb(185 147 0);
+                right: 14px;
+                bottom: 11px;
+                width: 18px;
+                height: 36px;
+            }
+    }
 </style>

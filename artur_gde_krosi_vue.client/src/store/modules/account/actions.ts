@@ -10,13 +10,15 @@ export const actions: ActionTree<UserAccountState, RootState> = {
         const data = this.getters.gatherUserFormData;
 
         try {
+            const token = this.getters.getAuthorizedUserToken.slice(1, -1);
             const response = await axios.put(
                 'http://localhost:5263/api/identity/SetingsUser/UserSettings',
                 data,
                 {
-                    params: {
-                        'userName': username.toString()
-                    },
+                    headers: {
+                        'accept': '*/*',
+                        'Authorization': 'Bearer ' + token,
+                    }
                 }
             );
 
