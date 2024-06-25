@@ -6,3 +6,35 @@ services:
     build:
       context: .
       dockerfile: artur_gde_krosi_Vue.Server/Dockerfile
+    
+  # my-app:
+  #   container_name: my-app
+  #   build:
+  #     context: .
+  #     dockerfile: artur_gde_krosi_Vue.client/Dockerfile
+  #   volumes:
+  #     - './:/app'
+  #     - '/app/node_modules'
+  #  # command: npm run dev
+  #   ports:
+  #     - '8081:5172'
+
+  mssql:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - SA_PASSWORD=1234
+      - ACCEPT_EULA=Y
+    ports:
+      - "5434:1433"
+
+# volumes:
+#   sqlsystem:
+#   sqldata:
+#   sqllog:
+#   sqlbackup:
+  
+# networks:
+#   compose_network:

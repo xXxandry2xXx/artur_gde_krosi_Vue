@@ -8,6 +8,5 @@ services:
       # - ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=6000
     ports:
       - "5000"
-      - "5173"
-    volumes:
+    volumes:  
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
