@@ -29,6 +29,13 @@ namespace artur_gde_krosi_Vue.Server.Controller.identity
             if (rez.Succeeded) return Ok();
             else throw new ArgumentException(JsonConvert.SerializeObject(rez));
         }
+        [HttpPost("RoleAdmin")]
+        public async Task<IActionResult> addAdmin(string username, string kode)
+        {
+            var rez = await _accountService.AddAdminAsync(username, kode);
+            if (rez.Succeeded) return Ok();
+            else throw new ArgumentException(JsonConvert.SerializeObject(rez));
+        }
 
         [Authorize(Roles = "Admin")]
         [HttpDelete("Role")]

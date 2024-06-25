@@ -26,7 +26,7 @@
 
             async sendMessageForPasswordChanging(email: any) {
                 try {
-                    const response = await axios.get('http://localhost:5263/api/identity/SetingsUser/GenerateTokenOnPasswordReset', {
+                    const response = await axios.get('http://192.144.14.63/api/identity/SetingsUser/GenerateTokenOnPasswordReset', {
                         params: {
                             'email': email
                         },

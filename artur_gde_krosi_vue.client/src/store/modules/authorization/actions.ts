@@ -8,7 +8,7 @@ export const actions: ActionTree<AuthorizationState, RootState> = {
     async registerNewUser() {
         const form = this.getters.getRegistrationFormData;
         try {
-            const response = await axios.post('http://localhost:5263/api/identity/Authorize/Register', form, { headers: { 'accept': '*/*', 'Content-Type': 'multipart/form-data' } });
+            const response = await axios.post('http://192.144.14.63/api/identity/Authorize/Register', form, { headers: { 'accept': '*/*', 'Content-Type': 'multipart/form-data' } });
             if (response.status === 200) {
                 this.commit('setRegistrationStatus', true);
                 this.commit('setRegistrationStatusMessage', '');
@@ -23,7 +23,7 @@ export const actions: ActionTree<AuthorizationState, RootState> = {
     async sendConfirmationEmail() {
         let email = this.getters.getRegistrationUserData.email;
         try {
-            const response = await axios.get('http://localhost:5263/api/identity/SetingsUser/GenerateTokenOnRegEmail', {
+            const response = await axios.get('http://192.144.14.63/api/identity/SetingsUser/GenerateTokenOnRegEmail', {
                 params: {
                     'email': email
                 },
@@ -40,7 +40,7 @@ export const actions: ActionTree<AuthorizationState, RootState> = {
     async logInToAccount() {
         let loginUserData = this.getters.getLogInUserData;
         try {
-            const response = await axios.get('http://localhost:5263/api/identity/Authorize/Login', {
+            const response = await axios.get('http://192.144.14.63/api/identity/Authorize/Login', {
                 params: {
                     'usernameOrEmail': loginUserData.login,
                     'password': loginUserData.password

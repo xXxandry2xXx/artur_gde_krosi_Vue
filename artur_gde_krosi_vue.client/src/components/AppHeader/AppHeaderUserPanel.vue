@@ -1,6 +1,11 @@
 ﻿<template>
     <div class="authorized-user-panel" v-if="isUserAuthorized()">
-        <p @mouseenter="showUserPanel" @mouseleave="hideUserPanel" ref="userPanelButton">{{ $store.state.authorizedUser.userName }}</p>
+        <p @mouseenter="showUserPanel"
+           @mouseleave="hideUserPanel"
+           @click="toggleUserPanelMobile"
+           ref="userPanelButton">
+            {{ $store.state.authorizedUser.userName }}
+        </p>
 
         <transition name="fade">
             <div class="user-dropdown" @mouseenter="showUserPanel" @mouseleave="hideUserPanel" v-show="isUserPanelVisible" ref="userPanel">
@@ -27,7 +32,7 @@
             <span>или</span>
             <button class="autorization-button" @click="openAuthorizationPopup('authorization', 'registration')">Регистрация</button>
         </div>
-        <button class="autorization-button-mobile">
+        <button class="autorization-button-mobile" @click="openAuthorizationPopup('authorization', 'log-in')">
             <font-awesome-icon :icon="['fas', 'right-to-bracket']" />
         </button>
     </div>
@@ -49,7 +54,7 @@
         methods: {
             ...mapActions(['logout']),
             ...mapMutations(['setPopupVisibility', 'setPopupMode', 'setAuthorizationPopupMode']),
-            ...mapGetters(['isUserAuthorized']),
+            ...mapGetters(['isUserAuthorized', 'isMobile', 'isTablet']),
 
             openAuthorizationPopup(popupMode: string, authorizationMode: string) {
                 this.setPopupVisibility(true);
@@ -62,14 +67,20 @@
                 this.$router.push(link);
             },
 
+            toggleUserPanelMobile(this: any) {
+                if (this.isMobile() || this.isTablet()) this.isUserPanelVisible = !this.isUserPanelVisible;
+            },
+
             showUserPanel(this: any, event: Event) {
-                let target = event.target;
-                if (target === this.$refs.userPanel || target === this.$refs.userPanelButton) this.clearUserPanelTimeout(this.userPanelTimeout);
-                this.isUserPanelVisible = true;
+                if (!this.isMobile() && !this.isTablet()) {
+                    let target = event.target;
+                    if (target === this.$refs.userPanel || target === this.$refs.userPanelButton) this.clearUserPanelTimeout(this.userPanelTimeout);
+                    this.isUserPanelVisible = true;
+                }
             },
 
             hideUserPanel() {
-                this.setUserPanelTimeout();
+                if (!this.isMobile() && !this.isTablet()) this.setUserPanelTimeout();
             },
 
             setUserPanelTimeout(this: any) {

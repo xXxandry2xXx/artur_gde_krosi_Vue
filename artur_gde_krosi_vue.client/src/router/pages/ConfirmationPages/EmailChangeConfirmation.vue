@@ -29,7 +29,7 @@
             async confirmNewEmail(this: any) {
                 try {
                     const response = await axios.put(
-                        'http://localhost:5263/api/identity/SetingsUser/RegEmeil',
+                        'http://192.144.14.63/api/identity/SetingsUser/RegEmeil',
                         '',
                         {
                             params: {

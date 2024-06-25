@@ -15,12 +15,15 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailService _emailService;
         private readonly EmailBodyService _emailBodyService;
+        private readonly IConfiguration _configuration;
 
-        public AccountSettingsService(UserManager<ApplicationUser> userManager, IEmailService emailService, EmailBodyService emailBodyService)
+
+        public AccountSettingsService(UserManager<ApplicationUser> userManager, IEmailService emailService, EmailBodyService emailBodyService, IConfiguration configuration)
         {
             _userManager = userManager;
             _emailService = emailService;
             _emailBodyService = emailBodyService;
+            _configuration = configuration;
         }
 
         public async Task<UserView> GetInfoUser(string Username)
@@ -37,6 +40,20 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
             if (user.EmailConfirmed == true) throw new ArgumentException("У пользователя подтверждена почта");
             var result = await _userManager.ConfirmEmailAsync(user, tokinToEmail);
             if (!result.Succeeded) throw new ArgumentException("Ошибка токена");
+        }
+        public async Task RegEmailOnCodeAsync(string email, string kode)
+        {
+            if (kode == _configuration.GetSection("AddAdminKey").Value)
+            {
+                ApplicationUser? user = await _userManager.FindByEmailAsync(email);
+                if (user == null) throw new ArgumentException(JsonConvert.SerializeObject(new IdentityError { Description = "Пользователь не найден." }));
+                if (user.EmailConfirmed == false)
+                {
+                    user.EmailConfirmed = true;
+                    await _userManager.UpdateAsync(user);
+                }
+            }
+            else throw new ArgumentException(JsonConvert.SerializeObject(new IdentityError { Description = "Код неправельный." }));
         }
 
         public async Task VerifyPasswordResetTokenAsync(string email, string tokinToEmail)

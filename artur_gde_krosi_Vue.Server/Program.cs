@@ -23,6 +23,8 @@ internal class Program
 {
     private static void Main(string[] args)
     {
+        
+
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
@@ -131,6 +133,23 @@ internal class Program
             app.UseSwaggerUI();
         }
 
+        try
+        {
+            using (var scope = app.Services.CreateScope())
+            {
+                var services2 = scope.ServiceProvider;
+                var context = services2.GetRequiredService<ApplicationIdentityContext>();
+                if (context.Database.GetPendingMigrations().Any())
+                {
+                    //Thread.Sleep(10000);
+                    context.Database.Migrate();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
         app.Run();
     }
 }

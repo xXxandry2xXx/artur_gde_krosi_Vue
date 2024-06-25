@@ -22,7 +22,7 @@ export default defineConfig({
     server: {
         proxy: {
             devServer: {
-                target: 'http://localhost:5263/',
+                target: 'http://192.144.14.63/',
                 secure: false
             }
         },

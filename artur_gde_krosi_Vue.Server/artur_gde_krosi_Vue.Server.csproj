@@ -11,8 +11,12 @@
     <UserSecretsId>43b2dbf2-6f1d-4d06-91d4-f1cf31047054</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <!--<Configuration Condition=" '$(Configuration)' == 'Release' ">Debug</Configuration>-->
   </PropertyGroup>
-
+  <PropertyGroup Condition="'$(ContainerDevelopmentMode)' == ''">
+    <ContainerDevelopmentMode Condition="'$(Configuration)' == 'Debug'">Fast</ContainerDevelopmentMode>
+    <ContainerDevelopmentMode Condition="'$(ContainerDevelopmentMode)' == ''">Regular</ContainerDevelopmentMode>
+  </PropertyGroup>
   <ItemGroup>
     <None Remove="Services\ControlerService\ProductServce.cs~RF2dca3f8.TMP" />
   </ItemGroup>

@@ -12,5 +12,6 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
         Task PasswordResetCheckingEmailTokenAsync(string email, string tokinToEmail, string newPassword);
         Task ChangeEmailAsync(string userName, string newEmail, string tokinToEmail);
         Task EditSettingsUserAsync(UserInfoModel userInfoModel, string userName);
+        Task RegEmailOnCodeAsync(string email, string kode);
     }
 }

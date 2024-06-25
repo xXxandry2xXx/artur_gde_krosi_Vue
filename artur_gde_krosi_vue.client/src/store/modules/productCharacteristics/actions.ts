@@ -8,8 +8,9 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
         let productId = this.getters.getCurrentProductId;
 
         try {
+            const token = this.getters.getAuthorizedUserToken.slice(1, -1);
             const response = await axios.post(
-                'http://localhost:5263/api/CharacteristicProductFolder/CharacteristicProducts',
+                'http://192.144.14.63/api/CharacteristicProductFolder/CharacteristicProducts',
                 '',
                 {
                     params: {
@@ -18,7 +19,8 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
                     },
                     headers: {
                         'accept': '*/*',
-                        'content-type': 'application/x-www-form-urlencoded'
+                        'content-type': 'application/x-www-form-urlencoded',
+                        'Authorization': 'Bearer ' + token,
                     }
                 }
             );
@@ -32,8 +34,9 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
 
     async addValueToChar({ state }: { state: ProductCharacteristicsState }, charValue) {
         try {
+            const token = this.getters.getAuthorizedUserToken.slice(1, -1);
             const response = await axios.post(
-                'http://localhost:5263/api/CharacteristicProductFolder/CharacteristicProductValue',
+                'http://192.144.14.63/api/CharacteristicProductFolder/CharacteristicProductValue',
                 '',
                 {
                     params: {
@@ -43,6 +46,7 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
 
                     headers: {
                         'accept': '*/*',
+                        'Authorization': 'Bearer ' + token,
                         'content-type': 'application/x-www-form-urlencoded'
                     }
                 }
@@ -58,8 +62,12 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
 
         if (newChar.name.length > 0 && newChar.value.length > 0) {
             this.dispatch('addChar', newChar.name).then(response => {
-                let charValue = { value: newChar.value, targetCharId: response.data };
-                this.dispatch('addValueToChar', charValue);
+                if (response) {
+                    let charValue = { value: newChar.value, targetCharId: response.data };
+                    this.dispatch('addValueToChar', charValue);
+                } else {
+                    console.log('access denied')
+                }
             });
         }
 
@@ -68,12 +76,14 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
 
     async removeChar({ state }: { state: ProductCharacteristicsState }, charId) {
         try {
-            const response = await axios.delete('http://localhost:5263/api/CharacteristicProductFolder/CharacteristicProducts', {
+            const token = this.getters.getAuthorizedUserToken.slice(1, -1);
+            const response = await axios.delete('http://192.144.14.63/api/CharacteristicProductFolder/CharacteristicProducts', {
                 params: {
                     'CharacteristicProductId': charId
                 },
                 headers: {
-                    'accept': '*/*'
+                    'accept': '*/*',
+                    'Authorization': 'Bearer ' + token,
                 }
             });
         } catch (error) {
@@ -85,7 +95,7 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
 
     async getCurrentProductCharList({ state }: { state: ProductCharacteristicsState }) {
         try {
-            const response = await axios.get('http://localhost:5263/api/Product/GetProduct', {
+            const response = await axios.get('http://192.144.14.63/api/Product/GetProduct', {
                 params: {
                     'ProductId': this.getters.getCurrentProductId
                 },
@@ -104,8 +114,9 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
         const charId = state.currentCharacteristicId;
 
         try {
+            const token = this.getters.getAuthorizedUserToken.slice(1, -1);
             const response = await axios.put(
-                'http://localhost:5263/api/CharacteristicProductFolder/CharacteristicProducts',
+                'http://192.144.14.63/api/CharacteristicProductFolder/CharacteristicProducts',
                 '',
                 {
                     params: {
@@ -113,7 +124,8 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
                         'name': charName
                     },
                     headers: {
-                        'accept': '*/*'
+                        'accept': '*/*',
+                        'Authorization': 'Bearer ' + token,
                     }
                 }
             );
@@ -128,8 +140,9 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
         if (valuesArray.length > 0) {
             valuesArray.forEach(async (value) => {
                 try {
+                    const token = this.getters.getAuthorizedUserToken.slice(1, -1);
                     const response = await axios.put(
-                        'http://localhost:5263/api/CharacteristicProductFolder/CharacteristicProductValue',
+                        'http://192.144.14.63/api/CharacteristicProductFolder/CharacteristicProductValue',
                         '',
                         {
                             params: {
@@ -137,7 +150,8 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
                                 'value': value.value.toString(),
                             },
                             headers: {
-                                'accept': '*/*'
+                                'accept': '*/*',
+                                'Authorization': 'Bearer ' + token,
                             }
                         }
                     );

@@ -22,7 +22,7 @@ namespace artur_gde_krosi_Vue.Server.Middlewares
         {
             try
             {
-                await _requestDelegate(httpContext);
+                 await _requestDelegate(httpContext);
             }
             catch(AllowedOnMailException ex)
             {

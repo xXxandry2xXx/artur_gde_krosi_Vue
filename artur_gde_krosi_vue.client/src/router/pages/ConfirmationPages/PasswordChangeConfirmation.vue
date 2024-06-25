@@ -71,7 +71,7 @@
             async checkTokenCorrectness(this: any) {
                 try {
                     const response = await axios.put(
-                        'http://localhost:5263/api/identity/SetingsUser/VerifyPasswordResetTokenAsync',
+                        'http://192.144.14.63/api/identity/SetingsUser/VerifyPasswordResetTokenAsync',
                         '',
                         {
                             params: {
@@ -92,7 +92,7 @@
             async confirmNewPassword(this: any) {
                 try {
                     const response = await axios.put(
-                        'http://localhost:5263/api/identity/SetingsUser/PasswordReset',
+                        'http://192.144.14.63/api/identity/SetingsUser/PasswordReset',
                         '',
                         {
                             params: {

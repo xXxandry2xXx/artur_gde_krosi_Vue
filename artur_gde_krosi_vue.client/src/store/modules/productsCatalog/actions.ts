@@ -18,7 +18,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
             brandIDs: [],
             modelIDs: [],
             checkedSizes: [],
-            inStock: false,
+            inStock: true,
             searchValue: '',
             sortOrder: '0',
         }
@@ -91,7 +91,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
 
             headers['pageProducts'] = state.currentPage.toString();
 
-            const response = await axios.get('http://localhost:5263/api/Product/GetProductList', {
+            const response = await axios.get('http://192.144.14.63/api/Product/GetProductList', {
                 headers: headers
             });
 
@@ -104,7 +104,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
     async fetchProducts() {
         this.commit('setPreloaderVisibility', true);
         try {
-            const response = await axios.get('http://localhost:5263/api/Product/GetProductList');
+            const response = await axios.get('http://192.144.14.63/api/Product/GetProductList');
             if (response.status === 200) {
                 this.commit('setProducts', response.data);
                 this.commit('setPreloaderVisibility', false);
@@ -119,7 +119,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
 
         if (brandsArray) {
             try {
-                const response = await axios.get('http://localhost:5263/api/Filter/ModelKrosovocks', { headers: { 'accept': '*/*', 'brendsIds': brandsArray.join() } });
+                const response = await axios.get('http://192.144.14.63/api/Filter/ModelKrosovocks', { headers: { 'accept': '*/*', 'brendsIds': brandsArray.join() } });
 
                 fetchedModels = response.data.reduce((modelsArray: ModelInterface[], currentBrand: { name: string, modelKrosovoks: ModelInterface[] }) => {
                     return modelsArray.concat(currentBrand.modelKrosovoks);
@@ -138,7 +138,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
 
     async fetchBrands() {
         try {
-            const response = await axios.get('http://localhost:5263/api/Filter/Brends');
+            const response = await axios.get('http://192.144.14.63/api/Filter/Brends');
             this.commit('setBrands', response.data);
         } catch (error) {
             console.log(error);
@@ -147,7 +147,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
 
     async fetchSizes() {
         try {
-            const response = await axios.get('http://localhost:5263/api/Filter/ShoeSizes');
+            const response = await axios.get('http://192.144.14.63/api/Filter/ShoeSizes');
             this.commit('setSizes', response.data);
         } catch (error) {
             console.log(error);
@@ -156,7 +156,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
 
     async fetchPrices() {
         try {
-            const response = await axios.get('http://localhost:5263/api/Filter/MinMaxPrise');
+            const response = await axios.get('http://192.144.14.63/api/Filter/MinMaxPrise');
             this.commit('setPrices', response.data);
             if (this.getters.selectedFiltersState.priceMin == 0) this.commit('setMinSelectedPrice', response.data.priseMin / 100);
             if (this.getters.selectedFiltersState.priceMax == 0) this.commit('setMaxSelectedPrice', response.data.priseMax / 100);
@@ -167,7 +167,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
 
     async fetchProduct(state, productId) {
         try {
-            const response = await axios.get('http://localhost:5263/api/Product/GetProduct', { params: { 'ProductId': productId }, headers: { 'accept': '*/*' } });
+            const response = await axios.get('http://192.144.14.63/api/Product/GetProduct', { params: { 'ProductId': productId }, headers: { 'accept': '*/*' } });
             console.log(response.data)
             return response;
         } catch (error) {
@@ -177,7 +177,7 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
 
     async fetchVariant(state, variantId) {
         try {
-            const response = await axios.get('http://localhost:5263/api/Product/Variant', {
+            const response = await axios.get('http://192.144.14.63/api/Product/Variant', {
                 headers: {
                     'accept': '*/*',
                     'VariantId': variantId

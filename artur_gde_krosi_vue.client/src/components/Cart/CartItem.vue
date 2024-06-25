@@ -46,7 +46,7 @@
             async fetchItemData(this: any) {
                 try {
                     const response = await axios.get(
-                        'http://localhost:5263/api/Product/GetProduct',
+                        'http://192.144.14.63/api/Product/GetProduct',
                         {
                             params: { 'ProductId': this.cartItem.productId },
                             headers: { 'accept': '*/*' }

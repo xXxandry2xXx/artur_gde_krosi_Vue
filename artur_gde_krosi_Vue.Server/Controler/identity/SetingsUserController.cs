@@ -1,6 +1,7 @@
 ﻿using artur_gde_krosi_Vue.Server.Models.UserModel;
 using artur_gde_krosi_Vue.Server.Services.Account;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NuGet.Common;
@@ -34,7 +35,13 @@ namespace artur_gde_krosi_Vue.Server.Controller.identity
             await _accountSettingsService.RegEmailCheckingEmailTokenAsync(email, token);
             return Ok();
         }
-
+        [HttpPut("RegEmeilOnCode")]
+        public async Task<IActionResult> regEmeilOnCode(string email, string code)
+        {
+            await _accountSettingsService.RegEmailOnCodeAsync(email,code);
+            return Ok();
+        }
+         
         [HttpGet("GenerateTokenOnPasswordReset")]
         public async Task<IActionResult> generateTokenOnPasswordReset(string email)
         {

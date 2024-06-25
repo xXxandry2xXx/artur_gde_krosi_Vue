@@ -63,10 +63,10 @@
             <p class="authorization-common-message" v-if="$store.state.authorization.succesfulyRegistered.message !== ''">
                 {{ $store.state.authorization.succesfulyRegistered.message }}
             </p>
-            <CheckboxItem class="authorization-newsletter-checkbox" :checked="$store.state.authorization.registrationUserData.emailNewsletter" @change="setEmailNewsletter()">
-                Отправлять мне уведомления об акциях и скидках
-            </CheckboxItem>
         </div>
+        <CheckboxItem class="authorization-newsletter-checkbox" :checked="$store.state.authorization.registrationUserData.emailNewsletter" @change="setEmailNewsletter()">
+            Отправлять мне уведомления об акциях и скидках
+        </CheckboxItem>
         <BorderedButton class="authorization-popup-button" @click="registerUser">Зарегистрироваться</BorderedButton>
         <p class="authorization-alternative">Уже есть аккаунт? <span @click="setAuthorizationPopupMode('log-in')">Войдите!</span></p>
     </div>

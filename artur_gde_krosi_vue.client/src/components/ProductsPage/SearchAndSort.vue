@@ -1,14 +1,16 @@
 ﻿<template>
     <div class="search-and-sort">
-
+        <div class="sorting-and-filters">
+            <SortDropdownMenu class="sort-dropdown" :options="sortingOptions" />
+            <BorderedButton class="filters-panel-opener" @click="setFiltersPanelVisibility(true)" v-if="isMobile() || isTablet()">Фильтры</BorderedButton>
+        </div>
         <div class="filter-item-container">
             <label class="filter-item">
                 <input class="filter-item-checkbox" type="checkbox" @change="toggleStockFilter" :checked="isChecked">
                 <span class="filter-item-checkbox-fake"></span>
-                <span class="filter-item-name">В наличии</span>
+                <span class="filter-item-name">Кроссовки есть в наличии</span>
             </label>
         </div>
-        <SortDropdownMenu class="sort-dropdown" :options="sortingOptions" />
     </div>
 </template>
 
@@ -29,9 +31,9 @@
         },
 
         methods: {
-            ...mapMutations(['setSelectedSearchValue', 'addStockFilter']),
+            ...mapMutations(['setSelectedSearchValue', 'addStockFilter', 'setFiltersPanelVisibility']),
             ...mapActions(['applyFilters']),
-            ...mapGetters(['selectedFiltersState', 'currentSelectedFilters']),
+            ...mapGetters(['selectedFiltersState', 'currentSelectedFilters', 'isMobile', 'isTablet']),
 
             toggleStockFilter() {
                 this.addStockFilter();

@@ -1,0 +1,1 @@
+export const apiLink = 'http://192.144.14.63/api';

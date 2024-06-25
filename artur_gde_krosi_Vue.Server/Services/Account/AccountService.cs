@@ -91,6 +91,17 @@ namespace artur_gde_krosi_Vue.Server.Services.Account
             }
             throw new ArgumentException(JsonConvert.SerializeObject(new IdentityError { Description = "Пользователь не найден." }));
         }
+        public async Task<IdentityResult> AddAdminAsync(string username, string kode)
+        {
+            if (kode == _configuration.GetSection("AddAdminKey").Value)
+            {
+                ApplicationUser? user = await _userManager.FindByNameAsync(username);
+                if (user == null) throw new ArgumentException(JsonConvert.SerializeObject(new IdentityError { Description = "Пользователь не найден." }));
+                IdentityResult rez = await _userManager.AddToRoleAsync(user, "Admin");
+                return rez;
+            }
+            else throw new ArgumentException(JsonConvert.SerializeObject(new IdentityError { Description = "Код неправельный." }));
+        }
         public async Task<IdentityResult> DeleteRoleAsync(string username, string role)
         {
             var user = await _userManager.FindByNameAsync(username);

@@ -47,7 +47,7 @@
 
             async fetchProduct(this: any) {
                 try {
-                    const response = await axios.get('http://localhost:5263/api/Product/GetProduct', { params: { 'ProductId': this.productId }, headers: { 'accept': '*/*' } });
+                    const response = await axios.get('http://192.144.14.63/api/Product/GetProduct', { params: { 'ProductId': this.productId }, headers: { 'accept': '*/*' } });
                     this.productData = response.data;
                     this.productImages = this.productData.images.reverse()
                     this.currentImgIndex = this.productImages[0].index;
@@ -82,7 +82,7 @@
 
             changedProductId(this: any) {
                 return this.productId = this.$route.params.productId;
-            }
+            },
         },
 
         watch: {

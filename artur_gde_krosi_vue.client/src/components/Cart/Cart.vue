@@ -1,18 +1,23 @@
 ﻿<template>
     <div class="app-subheader-cart-content" :key="currentCart.itemsInCart.length">
-        <button class="cart-button" @mouseenter="showCartPanel" @mouseleave="hideCartPanel" ref="cartPanelButton">
+        <button class="cart-button" 
+                @mouseenter="showCartPanel"
+                @mouseleave="hideCartPanel"
+                ref="cartPanelButton"
+                @click="toggleCartMobile">
             <span class="cart-capacity" v-show="currentTotalProductQuantity > 0">{{ currentTotalProductQuantity }}</span>
             <span class="app-subheader-button"><font-awesome-icon :icon="['fas', 'cart-shopping']" /></span>
         </button>
-        <transition name="fade">
+        <transition :name="isMobile() || this.isTablet() ? 'slide' : 'fade'">
             <div class="cart-wrapper" ref="cartPanel" v-show="isCartPanelVisible" @mouseenter="showCartPanel" @mouseleave="hideCartPanel">
                 <div class="cart-items">
-                    <CartItem v-if="currentCart.itemsInCart.length > 0" v-for="item in currentCart.itemsInCart" :cartItem="item" />
+                    <CartItem v-if="currentCart.itemsInCart.length > 0" v-for="item in currentCart.itemsInCart" :cartItem="item" @click="toggleCartMobile"/>
                     <p v-else class="cart-is-empty-text">Корзина пуста.</p>
                 </div>
-                <div class="cart-order-section" v-if="currentCart.itemsInCart.length > 0">
-                    <p>В корзине {{ currentTotalProductQuantity }} {{ declension }} на сумму {{ currentTotalCartPrice }}₽</p>
-                    <BorderedButton>Оформить заказ</BorderedButton>
+                <div class="cart-order-section">
+                    <p v-if="currentCart.itemsInCart.length > 0">В корзине {{ currentTotalProductQuantity }} {{ declension }} на сумму {{ currentTotalCartPrice }}₽</p>
+                    <BorderedButton v-if="currentCart.itemsInCart.length > 0">Оформить заказ</BorderedButton>
+                    <BorderedButton v-if="isMobile() || this.isTablet()" @click="toggleCartMobile">Закрыть</BorderedButton>
                 </div>
             </div>
         </transition>
@@ -45,16 +50,24 @@
                 'getServerCartTotalQuantity',
                 'getServerCartTotalPrice',
                 'isUserAuthorized',
+                'isMobile',
+                'isTablet'
             ]),
 
+            toggleCartMobile(this: any) {
+                if (this.isMobile() || this.isTablet()) this.isCartPanelVisible = !this.isCartPanelVisible;
+            },
+
             showCartPanel(this: any, event: Event) {
-                let target = event.target;
-                if (target === this.$refs.cartPanel || target === this.$refs.cartPanelButton) this.clearCartPanelTimeout(this.cartPanelTimeout);
-                this.isCartPanelVisible = true;
+                if (!this.isMobile() && !this.isTablet()) {
+                    let target = event.target;
+                    if (target === this.$refs.cartPanel || target === this.$refs.cartPanelButton) this.clearCartPanelTimeout(this.cartPanelTimeout);
+                    this.isCartPanelVisible = true;
+                }
             },
 
             hideCartPanel() {
-                this.setCartPanelTimeout();
+                if (!this.isMobile() && !this.isTablet()) this.setCartPanelTimeout();
             },
 
             setCartPanelTimeout(this: any) {
