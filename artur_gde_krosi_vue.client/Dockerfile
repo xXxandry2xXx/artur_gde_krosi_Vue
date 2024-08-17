@@ -1,29 +1,29 @@
-FROM node:18
+# Используем официальный образ Node.js 20 в качестве базового
+FROM node:20 AS build
 
-# Установка зависимостей
+# Устанавливаем рабочую директорию внутри контейнера
 WORKDIR /app
-COPY package*.json .
-RUN npm install vite@3.2.2
-RUN npm install @fortawesome/fontawesome-svg-core@1.x  --force  --legacy-peer-deps
-RUN npm install @fortawesome/vue-fontawesome --force  --legacy -peer-deps
-RUN npm install @fortawesome/free-solid-svg-icons --force  --legacy-peer-deps
-RUN npm install @fortawesome/free-brands-svg-icons --force  --legacy-peer-deps
-RUN npm install vuex --force  --legacy-peer-deps
-RUN npm install vue-router --force  --legacy-peer-deps
-RUN npm install axios --force  --legacy-peer-deps
-RUN npm install vue3-touch-events --force  --legacy-peer-deps
 
-RUN npm install --save-dev --ignore-scripts esbuild --force  --legacy-peer-deps
-RUN npm install typescript@5.3.3 --force  --legacy-peer-deps
+# Копируем файлы package.json и package-lock.json (если есть) в контейнер
+COPY package*.json ./
 
-#RUN npm i vite-plugin-mkcert -D --force  --legacy-peer-deps
-#
-# Копирование кода приложения
-COPY . . 
+# Устанавливаем зависимости проекта
+RUN npm install -g patch-package
+RUN npm install vue3-touch-events
+RUN npm install
 
-## Настройка переменных окружения
-#ENV NODE_ENV=production
-EXPOSE 4173
+# Копируем остальные файлы проекта в контейнер
+COPY . .
 
-# Запуск приложения
-CMD ["npm", "run", "preview"]
+# Выполняем сборку проекта
+RUN npm run build-only
+
+FROM nginx:1.16.0-alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
+# Запускаем Nginx
+CMD ["nginx", "-g", "daemon off;"]
