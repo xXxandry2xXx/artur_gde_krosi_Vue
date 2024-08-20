@@ -43,7 +43,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
                     ServiceURL = "https://s3.yandexcloud.net"
                 };
 
-                using (var client = new AmazonS3Client("YCAJE48UBzauWHZirRHnF-WGB", "YCP8Jh2UT_grJjhcADcciAW0BUA_GW86OuxDr53d", configsS3)) // Укажите соответствующий регион
+                using (var client = new AmazonS3Client(configuration.GetSection("S3_Bucket:id_token").Value, configuration.GetSection("S3_Bucket:token").Value, configsS3)) // Укажите соответствующий регион
                 {
                     var request = new PutObjectRequest
                     {
