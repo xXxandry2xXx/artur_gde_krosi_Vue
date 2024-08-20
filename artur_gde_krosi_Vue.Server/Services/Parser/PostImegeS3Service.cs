@@ -26,7 +26,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
                 client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip");
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + configuration.GetSection("MySkladApi:key").Value);
                 HttpResponseMessage response = await client.GetAsync(itemImg.meta.downloadHref);
-
+                  
                 if (response.IsSuccessStatusCode)
                 {
                     imageBytes = await response.Content.ReadAsByteArrayAsync();
@@ -42,8 +42,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
                 {
                     ServiceURL = "https://s3.yandexcloud.net"
                 };
-
-                using (var client = new AmazonS3Client(configuration.GetSection("S3_Bucket:id_token").Value, configuration.GetSection("S3_Bucket:token").Value, configsS3)) // Укажите соответствующий регион
+                using (var client = new AmazonS3Client(configuration.GetSection("S3Bucket:idToken").Value, configuration.GetSection("S3Bucket:token").Value, configsS3)) // Укажите соответствующий регион
                 {
                     var request = new PutObjectRequest
                     {
