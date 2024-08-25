@@ -18,14 +18,15 @@ services:
 
   artur_gde_krosi_vue.server:
     container_name: artur_gde_krosi_vue.server
-    image: server:latest
+    # image: andreybp/server:les
     build:
       context: artur_gde_krosi_Vue.Server/
     depends_on:
       - mssql
 
   my-app:
-    image: nginx:latest
+    # image: andreybp/my-app:les
+    container_name: my-app
     build: artur_gde_krosi_vue.client/
     ports:
       - "80:80"
