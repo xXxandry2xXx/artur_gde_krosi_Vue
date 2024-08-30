@@ -1,29 +1,29 @@
 ﻿<template>
     <div class="app-subheader-search-content">
-        <button class="app-subheader-button"
+        <div class="app-subheader-button"
                 @mouseenter="showSearchPanel"
                 @mouseleave="hideSearchPanel"
                 @click="toggleSearchPanel"
                 ref="searchPanelButton">
             <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
-        </button>
+        </div>
 
         <transition :name="isMobile() || this.isTablet() ? 'slide' : 'fade'">
             <div class="app-search-panel" ref="searchPanel" @mouseenter="showSearchPanel" @mouseleave="hideSearchPanel" v-show="isSearchPanelVisible">
                 <div class="search-input-wrapper">
                     <div class="search-input">
                         <DefaultInput v-model="searchQuery" :value="searchQuery" @input="addSearchValue" placeholder="Введите название или бренд..." />
-                        <button class="clear-value" v-show="showClearButton" @click="clearSearchValue">
+                        <div class="clear-value" v-show="showClearButton" @click="clearSearchValue">
                             <font-awesome-icon :icon="['fas', 'xmark']" />
-                        </button>
+                        </div>
                     </div>
                     <BorderedButton class="search-button" @click="advancedSearch">Найти</BorderedButton>
-                    <BorderedButton class="close-search-panel-button" @click="toggleSearchPanel" v-if="isMobile() || this.isTablet()">
-                    <font-awesome-icon :icon="['fas', 'xmark']" />
-                    </BorderedButton>
+                    <div class="close-search-panel-button" @click="toggleSearchPanel" v-if="isMobile() || this.isTablet()">
+                        <font-awesome-icon :icon="['fas', 'xmark']" />
+                    </div>
                 </div>
                 <div class="search-hints" v-show="searchQuery != '' && sortedHints.length > 0">
-                    <div class="search-hint" v-for="hint in sortedHints" @click="moveToProductPage(hint.productId)">
+                    <div class="search-hint" v-for="hint in sortedHints" @click="handleHintClick(hint.productId)">
                         <img :src="hint.herfImage" alt="product-image" />
                         <p>{{ hint.name }}</p>
                     </div>
@@ -36,6 +36,7 @@
 
 <script lang="ts">
     import { defineComponent } from 'vue';
+    import apiUrl from '@/helper'
     import { mapMutations, mapActions, mapGetters } from 'vuex';
     import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
     import axios from 'axios';
@@ -71,15 +72,16 @@
 
             async fetchAllProducts(this: any) {
                 try {
-                    const response = await axios.get('http://192.144.14.63/api/Product/GetAllProductSearch');
+                    const response = await axios.get(apiUrl + '/Product/GetAllProductSearch');
                     this.allProducts = response.data;
                 } catch (error) {
                     console.log(error)
                 }
             },
 
-            moveToProductPage(this: any, hintId: string) {
-                this.$router.push(`/products/productId=${hintId}`)
+            handleHintClick(this: any, hintId: string) {
+                this.$router.push(`/products/productId=${hintId}`);
+                this.setSelectedSearchValue('')
                 this.toggleSearchPanel();
             },
 

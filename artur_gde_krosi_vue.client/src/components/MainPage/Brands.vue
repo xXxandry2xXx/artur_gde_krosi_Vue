@@ -1,6 +1,6 @@
 ﻿<template>
     <div class="main-page-brands">
-        <h1>БРЕНДЫ PISISI</h1>
+        <h1>БРЕНДЫ</h1>
         <div class="main-page-brands-list">
             <router-link :to="{ name: 'productsPage', params: { page: 1 }}" v-for="brand in brands" @click="loadFiltersWithCurrentBrand(brand)">
                 <Brand :brand="brand" />

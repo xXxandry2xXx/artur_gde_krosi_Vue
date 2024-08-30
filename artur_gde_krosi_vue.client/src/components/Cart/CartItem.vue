@@ -9,13 +9,14 @@
                 <p class="cart-item-size"> Размер: {{ itemData.size }}</p>
             </div>
         </div>
-        <button class="cart-item-remove-button" @click="removeItem()">
+        <div class="cart-item-remove-button" @click="removeItem()">
             <font-awesome-icon :icon="['fas', 'xmark']" />
-        </button>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
+    import apiUrl from '@/helper'
     import { mapActions, mapGetters } from 'vuex';
     import { defineComponent } from 'vue';
     import axios from 'axios';
@@ -46,7 +47,7 @@
             async fetchItemData(this: any) {
                 try {
                     const response = await axios.get(
-                        'http://192.144.14.63/api/Product/GetProduct',
+                        apiUrl + '/Product/GetProduct',
                         {
                             params: { 'ProductId': this.cartItem.productId },
                             headers: { 'accept': '*/*' }

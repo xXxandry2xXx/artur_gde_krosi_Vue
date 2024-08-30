@@ -27,7 +27,7 @@
 
             async fetchSuggestedProducts(this: any) {
                 await this.fetchProducts();
-                this.suggestedProducts = this.getProductsData().products;
+                this.suggestedProducts = this.getProductsData().productList;
             }
         },
 

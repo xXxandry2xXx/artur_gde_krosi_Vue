@@ -1,4 +1,5 @@
 ﻿import axios from 'axios';
+import apiUrl from '@/helper'
 import type { ActionTree } from 'vuex';
 import type { RootState } from '@/store/types';
 import type { UserAccountState } from '@/store/modules/account/types';
@@ -12,7 +13,7 @@ export const actions: ActionTree<UserAccountState, RootState> = {
         try {
             const token = this.getters.getAuthorizedUserToken.slice(1, -1);
             const response = await axios.put(
-                'http://192.144.14.63/api/identity/SetingsUser/UserSettings',
+                apiUrl + '/identity/SetingsUser/UserSettings',
                 data,
                 {
                     headers: {
@@ -50,19 +51,18 @@ export const actions: ActionTree<UserAccountState, RootState> = {
         let editableData = this.getters.getEditableUserData;
         if (editableData.name.length > 0) {
             this.dispatch('saveUserDataChanges').then((response: any, error: any) => {
-                if (response.status === 200) {
+                if (response && response.status === 200) {
                     this.dispatch('updateLocalUserData');
                     this.commit('setSuccesStatus', true);
                     this.commit('setSuccesMessage', 'Изменения успешно сохранены');
                 } else {
                     this.commit('setSuccesStatus', false);
                     this.commit('setSuccesMessage', 'Произошла ошибка при изменении данных профиля');
-                    console.log(error);
                 }
             });
         } else {
             this.commit('setSuccesStatus', false);
-            this.commit('setSuccesMessage', 'Заполните обязательное поле (Имя)')
+            this.commit('setSuccesMessage', 'Имя должно быть заполнено')
         }
         
     },

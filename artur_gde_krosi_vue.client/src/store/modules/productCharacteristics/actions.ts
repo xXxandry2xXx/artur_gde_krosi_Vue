@@ -1,4 +1,5 @@
 ﻿import axios from 'axios';
+import apiUrl from '@/helper'
 import type { ActionTree } from 'vuex';
 import type { RootState } from '@/store/types';
 import type { ProductCharacteristicsState } from '@/store/modules/productCharacteristics/types';
@@ -10,7 +11,7 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
         try {
             const token = this.getters.getAuthorizedUserToken.slice(1, -1);
             const response = await axios.post(
-                'http://192.144.14.63/api/CharacteristicProductFolder/CharacteristicProducts',
+                apiUrl + '/CharacteristicProductFolder/CharacteristicProducts',
                 '',
                 {
                     params: {
@@ -36,7 +37,7 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
         try {
             const token = this.getters.getAuthorizedUserToken.slice(1, -1);
             const response = await axios.post(
-                'http://192.144.14.63/api/CharacteristicProductFolder/CharacteristicProductValue',
+                apiUrl + '/CharacteristicProductFolder/CharacteristicProductValue',
                 '',
                 {
                     params: {
@@ -77,7 +78,7 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
     async removeChar({ state }: { state: ProductCharacteristicsState }, charId) {
         try {
             const token = this.getters.getAuthorizedUserToken.slice(1, -1);
-            const response = await axios.delete('http://192.144.14.63/api/CharacteristicProductFolder/CharacteristicProducts', {
+            const response = await axios.delete(apiUrl + '/CharacteristicProductFolder/CharacteristicProducts', {
                 params: {
                     'CharacteristicProductId': charId
                 },
@@ -95,7 +96,7 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
 
     async getCurrentProductCharList({ state }: { state: ProductCharacteristicsState }) {
         try {
-            const response = await axios.get('http://192.144.14.63/api/Product/GetProduct', {
+            const response = await axios.get(apiUrl + '/Product/GetProduct', {
                 params: {
                     'ProductId': this.getters.getCurrentProductId
                 },
@@ -116,7 +117,7 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
         try {
             const token = this.getters.getAuthorizedUserToken.slice(1, -1);
             const response = await axios.put(
-                'http://192.144.14.63/api/CharacteristicProductFolder/CharacteristicProducts',
+                apiUrl + '/CharacteristicProductFolder/CharacteristicProducts',
                 '',
                 {
                     params: {
@@ -142,7 +143,7 @@ export const actions: ActionTree<ProductCharacteristicsState, RootState> = {
                 try {
                     const token = this.getters.getAuthorizedUserToken.slice(1, -1);
                     const response = await axios.put(
-                        'http://192.144.14.63/api/CharacteristicProductFolder/CharacteristicProductValue',
+                        apiUrl + '/CharacteristicProductFolder/CharacteristicProductValue',
                         '',
                         {
                             params: {

@@ -120,10 +120,6 @@
                 return handledFilterData;
             },
 
-            isDefaultPrice(this: any) {
-                
-            },
-
             isShown(this: any) {
                 if (this.selectedFilterData.name === 'priceMin' || this.selectedFilterData.name === 'priceMax') {
                     let minPrice = this.availablePrices().priseMin

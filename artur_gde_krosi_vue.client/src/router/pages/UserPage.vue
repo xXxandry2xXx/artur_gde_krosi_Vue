@@ -1,6 +1,6 @@
 ﻿<template>
     <nav class="top-bar">
-        <span class="bread-crumb" @click="$router.go(-1)">Назад</span>
+        <p class="bread-crumb" @click="$router.go(-1)"><span class="bread-crumb-back-arrow"><font-awesome-icon :icon="['fas', 'arrow-left-long']" /></span> Назад</p>
         <div class="bread-crumbs">
             <span class="bread-crumb" @click="$router.push('/')">Главная</span>
             /

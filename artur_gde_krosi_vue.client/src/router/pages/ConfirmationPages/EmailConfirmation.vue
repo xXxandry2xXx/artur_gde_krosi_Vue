@@ -12,6 +12,7 @@
 </template>
 <script lang="ts">
     import axios from 'axios';
+    import apiUrl from '@/helper'
     import { defineComponent } from 'vue';
 
     export default defineComponent({
@@ -27,7 +28,7 @@
             async confirmEmail(this: any) {
                 try {
                     const response = await axios.put(
-                        'http://192.144.14.63/api/identity/SetingsUser/RegEmeil',
+                        apiUrl + '/identity/SetingsUser/RegEmeil',
                         '',
                         {
                             params: {

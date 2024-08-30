@@ -1,6 +1,6 @@
 ﻿<template>
     <div class="products-slider">
-        <h1>{{ sliderTitle }}</h1>
+        <h1 v-if="sliderTitle">{{ sliderTitle }}</h1>
         <div class="products-slider-list-viewport" @touchstart="removeScrollInterval" @touchend="setScrollInterval" v-touch:swipe.left="swipeScrollLeft" v-touch:swipe.right="swipeScrollRight">
             <div class="products-slider-list" ref="productsSlider" @mouseenter="removeScrollInterval" @mouseleave="setScrollInterval">
                 <div class="product" style="display: none" ref="sliderCard"></div>
@@ -8,12 +8,12 @@
             </div>
         </div>
         <div class="products-slider-scroll-buttons" v-if="sliderArray.length > viewportProductAmount">
-            <button class="products-slider-scroll-button" @click="scrollProducts('left')" @mouseenter="removeScrollInterval" @mouseleave="setScrollInterval">
+            <div class="products-slider-scroll-button" @click="scrollProducts('left')" @mouseenter="removeScrollInterval" @mouseleave="setScrollInterval">
                 <font-awesome-icon :icon="['fas', 'chevron-left']" />
-            </button>
-            <button class="products-slider-scroll-button" @click="" @mouseenter="removeScrollInterval" @mouseleave="setScrollInterval">
+            </div>
+            <div class="products-slider-scroll-button" @click="scrollProducts('right')" @mouseenter="removeScrollInterval" @mouseleave="setScrollInterval">
                 <font-awesome-icon :icon="['fas', 'chevron-right']" />
-            </button>
+            </div>
         </div>
     </div>
 </template>
@@ -34,8 +34,12 @@
             },
             sliderTitle: {
                 type: String,
-                required: true
-            }
+                required: false
+            },
+            definedViewportProductAmount: {
+                type: Number,
+                required: false
+            },
         },
 
         data() {
@@ -51,14 +55,21 @@
         methods: {
             scrollProducts(this: any, direction: string) {
                 if (direction === 'right') {
-                    this.currentOffset >= -this.countTotalSrollWidth && (this.currentOffset - this.countScrollOffset) >= -this.countTotalSrollWidth
-                        ? this.currentOffset -= this.countScrollOffset
-                        : this.currentOffset = 0;
-
+                    if(this.currentOffset >= -this.countTotalSrollWidth && (this.currentOffset - this.countScrollOffset) >= -this.countTotalSrollWidth) {
+                        this.currentOffset -= this.countScrollOffset
+                    } else {
+                        this.currentOffset = 0;
+                    }
                 } else if (direction === 'left') {
-                    this.currentOffset <= 0 && (this.currentOffset + this.countScrollOffset) <= 0
-                        ? this.currentOffset += this.countScrollOffset
-                        : this.currentOffset = -this.countTotalSrollWidth;
+                    if(this.currentOffset <= 0 && (this.currentOffset + this.countScrollOffset) <= 0) {
+                        this.currentOffset += this.countScrollOffset
+                    } else {
+                        if(this.viewportProductAmount > 1) {
+                            this.currentOffset = -(this.countTotalSrollWidth);
+                        } else {
+                            this.currentOffset = -(this.countTotalSrollWidth + this.productsListGap * 2);
+                        }
+                    }
                 }
 
                 if (this.$refs.productsSlider) {
@@ -77,6 +88,7 @@
             swipeScrollLeft(this: any) {
                 this.scrollProducts('right');
             },
+
             swipeScrollRight(this: any) {
                 this.scrollProducts('left');
             },
@@ -110,13 +122,17 @@
             },
 
             viewportProductAmount(this: any) {
-                if (window.innerWidth <= 425) {
-                    return 1
-                } else if (window.innerWidth <= 768) {
-                    return 2
+                if (!this.definedViewportProductAmount) {
+                    if (window.innerWidth <= 425) {
+                        return 1
+                    } else if (window.innerWidth <= 768) {
+                        return 2
+                    } else {
+                        return 3
+                    };
                 } else {
-                    return 3
-                };
+                    return this.definedViewportProductAmount;
+                }
             },
         },
 

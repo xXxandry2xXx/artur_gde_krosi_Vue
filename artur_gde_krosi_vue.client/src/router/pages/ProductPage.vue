@@ -1,12 +1,12 @@
 ﻿<template>
     <div class="product-page" :key="changedProductId">
         <nav class="top-bar">
-            <span class="bread-crumb" @click="$router.go(-1)">Назад</span>
+            <p class="bread-crumb" @click="$router.go(-1)"><span class="bread-crumb-back-arrow"><font-awesome-icon :icon="['fas', 'arrow-left-long']" /></span> Назад</p>
             <div class="bread-crumbs">
                 <span class="bread-crumb" @click="$router.push('/')">Главная</span>
                 /
                 <router-link :to="{ name: 'productsPage', params: { page: 1 } }" class="bread-crumb">
-                    <span>Все кроссовки</span>
+                    <span>Каталог</span>
                 </router-link>
                 /
                 <span class="bread-crumb bread-crumb-current">{{ productData.name }}</span>
@@ -27,6 +27,7 @@
     import ProductsSlider from '@/components/ProductsSlider.vue';
     import ProductMainInfo from '@/components/ProductPage/ProductMainInfo.vue';
     import ProductAdditionalInfo from '@/components/ProductPage/ProductAdditionalInfo.vue';
+    import apiUrl from '@/helper'
     import axios from 'axios';
 
     export default defineComponent({
@@ -47,7 +48,7 @@
 
             async fetchProduct(this: any) {
                 try {
-                    const response = await axios.get('http://192.144.14.63/api/Product/GetProduct', { params: { 'ProductId': this.productId }, headers: { 'accept': '*/*' } });
+                    const response = await axios.get(apiUrl + '/Product/GetProduct', { params: { 'ProductId': this.productId }, headers: { 'accept': '*/*' } });
                     this.productData = response.data;
                     this.productImages = this.productData.images.reverse()
                     this.currentImgIndex = this.productImages[0].index;

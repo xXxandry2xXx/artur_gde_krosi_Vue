@@ -8,6 +8,7 @@
 
 <script lang="ts">
     import axios from 'axios';
+    import apiUrl from '@/helper'
     import { defineComponent } from 'vue';
     import { mapMutations, mapGetters } from 'vuex';
 
@@ -26,7 +27,7 @@
 
             async sendMessageForPasswordChanging(email: any) {
                 try {
-                    const response = await axios.get('http://192.144.14.63/api/identity/SetingsUser/GenerateTokenOnPasswordReset', {
+                    const response = await axios.get(apiUrl + '/identity/SetingsUser/GenerateTokenOnPasswordReset', {
                         params: {
                             'email': email
                         },

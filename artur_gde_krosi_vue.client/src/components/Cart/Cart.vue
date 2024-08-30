@@ -1,13 +1,13 @@
 ﻿<template>
     <div class="app-subheader-cart-content" :key="currentCart.itemsInCart.length">
-        <button class="cart-button" 
+        <div class="cart-button" 
                 @mouseenter="showCartPanel"
                 @mouseleave="hideCartPanel"
                 ref="cartPanelButton"
                 @click="toggleCartMobile">
             <span class="cart-capacity" v-show="currentTotalProductQuantity > 0">{{ currentTotalProductQuantity }}</span>
             <span class="app-subheader-button"><font-awesome-icon :icon="['fas', 'cart-shopping']" /></span>
-        </button>
+        </div>
         <transition :name="isMobile() || this.isTablet() ? 'slide' : 'fade'">
             <div class="cart-wrapper" ref="cartPanel" v-show="isCartPanelVisible" @mouseenter="showCartPanel" @mouseleave="hideCartPanel">
                 <div class="cart-items">
@@ -15,8 +15,8 @@
                     <p v-else class="cart-is-empty-text">Корзина пуста.</p>
                 </div>
                 <div class="cart-order-section">
-                    <p v-if="currentCart.itemsInCart.length > 0">В корзине {{ currentTotalProductQuantity }} {{ declension }} на сумму {{ currentTotalCartPrice }}₽</p>
-                    <BorderedButton v-if="currentCart.itemsInCart.length > 0">Оформить заказ</BorderedButton>
+                    <p v-if="currentCart.itemsInCart.length > 0">В корзине {{ currentTotalProductQuantity }} {{ declension }} на сумму {{ $store.state.cart.localCart.totalPrice }}₽</p>
+                    <BorderedButton v-if="currentCart.itemsInCart.length > 0" @click="openInfoPopup">Оформить заказ</BorderedButton>
                     <BorderedButton v-if="isMobile() || this.isTablet()" @click="toggleCartMobile">Закрыть</BorderedButton>
                 </div>
             </div>
@@ -26,7 +26,7 @@
 
 <script lang="ts">
     import { defineComponent } from 'vue';
-    import { mapGetters, mapActions } from 'vuex';
+    import { mapGetters, mapActions, mapMutations} from 'vuex';
     import CartItem from '@/components/Cart/CartItem.vue';
 
     export default defineComponent({
@@ -41,7 +41,13 @@
         components: { CartItem },
 
         methods: {
-            ...mapActions(['gatherPrices', 'fetchCartPrices', 'loadLocalCartData']),
+            ...mapActions([
+                'gatherPrices', 
+                'fetchCartPrices', 
+                'loadLocalCartData', 
+                'fetchUserCart', 
+                'getLocalTotalPrice'
+            ]),
             ...mapGetters([
                 'getServerCart',
                 'getLocalCart',
@@ -53,6 +59,7 @@
                 'isMobile',
                 'isTablet'
             ]),
+            ...mapMutations(['setPopupVisibility', 'setPopupMode']),
 
             toggleCartMobile(this: any) {
                 if (this.isMobile() || this.isTablet()) this.isCartPanelVisible = !this.isCartPanelVisible;
@@ -88,6 +95,11 @@
                     this.currentTotalProductQuantity = this.getLocalCartTotalQuantity();
                     this.currentTotalCartPrice = this.getLocalCartTotalPrice();
                 }
+            },
+
+            openInfoPopup() {
+                this.setPopupMode('why-disabled');
+                this.setPopupVisibility(true);
             }
         },
 
@@ -132,6 +144,7 @@
         },
 
         mounted() {
+            this.fetchUserCart();
             this.loadLocalCartData();
         }
     })

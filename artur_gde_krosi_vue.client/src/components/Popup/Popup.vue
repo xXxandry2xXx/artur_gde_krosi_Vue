@@ -10,6 +10,7 @@
             <CharasteristicValueAddingForm v-else-if="$store.state.popupMode === 'add-char-value'" />
             <CharasteristicEditingForm v-else-if="$store.state.popupMode === 'edit-char'" />
             <CharacteristicRemoveConfirmation v-else-if="$store.state.popupMode === 'sure-to-remove-char'" />
+            <WhyItIsDisabled v-else-if="$store.state.popupMode === 'why-disabled'" />
         </div>
     </div>
 </template>
@@ -25,6 +26,7 @@
     import CharasteristicEditingForm from '@/components/Popup/Characteristics/CharacteristicEditingForm.vue';
     import CharasteristicValueAddingForm from '@/components/Popup/Characteristics/CharacteristicValueAddingForm.vue';
     import CharacteristicRemoveConfirmation from '@/components/Popup/Characteristics/CharacteristicRemoveConfirmation.vue';
+    import WhyItIsDisabled from '@/components/Popup/WhyItIsDisabled.vue';
 
     export default defineComponent({
 
@@ -36,7 +38,8 @@
             CharasteristicAddingForm,
             CharasteristicEditingForm,
             CharasteristicValueAddingForm,
-            CharacteristicRemoveConfirmation
+            CharacteristicRemoveConfirmation,
+            WhyItIsDisabled
         },
 
         methods: {

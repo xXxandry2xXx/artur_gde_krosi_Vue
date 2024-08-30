@@ -37,6 +37,7 @@ export const mutations: MutationTree<UserCartState> = {
     },
 
     removeItemFromCart(state, item) {
-        state.localCart.itemsInCart.splice(item, 1);
+        let itemIndex = state.localCart.itemsInCart.indexOf(item)
+        state.localCart.itemsInCart.splice(itemIndex, 1);
     },
 }

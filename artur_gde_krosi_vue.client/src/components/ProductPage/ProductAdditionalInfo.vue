@@ -2,7 +2,7 @@
     <div class="product-page-additional-content">
         <div class="product-page-description product-page-section">
             <div class="product-page-header">
-                <h2>Описание</h2>
+                <h2>ОПИСАНИЕ</h2>
                 <BorderedButton class="characteristic-interaction-button" v-if="isUserManager">
                     <font-awesome-icon :icon="['fas', 'plus']" /> Изменить описание
                 </BorderedButton>

@@ -1,1 +1,2 @@
-export const apiLink = 'http://192.144.14.63/api';
+const apiUrl = 'http://localhost:5263/api';
+export default apiUrl;

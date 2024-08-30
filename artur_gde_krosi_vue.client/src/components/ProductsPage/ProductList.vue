@@ -6,8 +6,13 @@
         </div>
         <div v-else class="nothing-found">
             <div class="nothing-found-content">
-                <span><font-awesome-icon :icon="['fas', 'face-frown']" /></span>
-                <p>У Артура нет таких кроссовок</p>
+                <span class="nothing-found-icon">
+                    <font-awesome-icon :icon="['fas', 'ban']" />
+                </span>
+                <div>
+                <span>Ничего не найдено.</span>
+                <p>Попробуйте изменить фильтры или ввести другой поисковой запрос.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -17,7 +22,6 @@
     import { defineComponent } from 'vue';
     import { mapGetters } from 'vuex';
     import Product from './Product.vue';
-    import type { ProductInterface } from '@/store/modules/productsCatalog/types';
 
     export default defineComponent({
         components: { Product },
