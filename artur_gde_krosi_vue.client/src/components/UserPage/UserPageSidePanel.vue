@@ -8,7 +8,7 @@
             </div>
             <div class="user-account-button">
                 <font-awesome-icon :icon="['fas', 'box']" />
-                <span class="user-account-button-text">Заказы</span>
+                <span class="user-account-button-text" @click="openPopup">Заказы</span>
             </div>
             <div class="user-account-button logout-button" @click="logout()">
                 <span><font-awesome-icon :icon="['fas', 'right-from-bracket']" /></span>
@@ -20,12 +20,18 @@
 
 <script lang="ts">
     import { defineComponent } from 'vue';
-    import { mapActions } from 'vuex';
+    import { mapActions, mapMutations } from 'vuex';
 
 
     export default defineComponent({
         methods: {
             ...mapActions(['logout']),
+            ...mapMutations(['setPopupVisibility', 'setPopupMode']),
+
+            openPopup(this: any) {
+                this.setPopupVisibility(true);
+                this.setPopupMode('why-disabled');
+            }
         },
     })
 </script>

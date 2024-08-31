@@ -1,6 +1,11 @@
 <template>
     <div class="product-page-images">
-        <div class="product-current-image-wrapper" ref="currentImageWrapper" @mousemove="zoomCurrentImage" @mouseleave="nullifyImageCondition" >
+        <div class="product-current-image-wrapper" ref="currentImageWrapper" 
+             @mousemove="zoomCurrentImage" 
+             @mouseleave="nullifyImageCondition" 
+             v-touch:swipe.left="swipeLeft" 
+             v-touch:swipe.right="swipeRight"
+             >
             <img class="product-current-image" :src="currentImageSrc" ref="currentProductImage" />
         </div>
         <div class="product-all-images">
@@ -52,6 +57,22 @@
 
             nullifyImageCondition(this: any) {
                 this.$refs.currentProductImage.style.transform = null;
+            },
+
+            swipeLeft(this: any) {
+                if (this.currentImgIndex == this.images.length - 1) {
+                    this.currentImgIndex = 0;
+                } else {
+                    this.currentImgIndex += 1;
+                }
+            },
+
+            swipeRight(this: any) {
+                if (this.currentImgIndex == 0) {
+                    this.currentImgIndex = this.images.length - 1;
+                } else {
+                    this.currentImgIndex -= 1;
+                }
             }
         },
 

@@ -7,7 +7,7 @@
                     <h1 class="product-name">{{ productData.name }}</h1>
                     <p class="product-page-detail">Бренд: <span class="product-page-detail-value">{{ productData.modelKrosovock && productData.modelKrosovock.brend && productData.modelKrosovock.brend.name }}</span></p>
                     <p class="product-page-detail">Модель: <span class="product-page-detail-value">{{ productData.modelKrosovock && productData.modelKrosovock.name }}</span></p>
-                    <p class="product-page-detail">Наличие: <span class="product-page-detail-value is-in-stock">{{ productData.variants && isInStock }}</span></p>
+                    <p class="product-page-detail">Наличие: <span class="product-page-detail-value is-in-stock">{{ productData.variants && isInStockText }}</span></p>
                     <div class="product-page-sizes" v-if="productData.variants && variantsInStock.length > 0">
                         <p class="product-page-detail">Размеры: </p>
                         <div class="product-page-sizes-list">
@@ -19,14 +19,10 @@
                 </div>
 
                 <div class="product-price-and-cart">
-                    <p class="product-page-price">
+                    <CartButton v-if="isInStock" :class="{'cart-button-default-unavailable': !isInStock}" @click="addToCart">
                         {{ productData.variants && productData.variants[0] && productData.variants[0].prise/100 }}
-                        <span> руб.</span>
-                    </p>
-                    <BorderedButton class="add-to-cart-button" :class="{'bordered-button-default-unavailable': variantsInStock !== undefined && variantsInStock.length === 0}" @click="addToCart">
-                        <font-awesome-icon :icon="['fas', 'cart-shopping']" />
-                        В корзину
-                    </BorderedButton>
+                    </CartButton>
+                    <BorderedButton class="product-page-price-unavailable bordered-button-default-unavailable" v-else>Нет в наличии</BorderedButton>
                 </div>
             </div>
         </div>
@@ -93,13 +89,24 @@
                 }
             },
 
-            isInStock(this: any) {
+            isInStockText(this: any) {
                 if (this.variantsInStock.length > 0) {
-                    return 'В наличии (' + this.variantsInStock.length + ' ' + 'шт.)'
+                    if (this.variantsInStock.length > 10) {
+                        return 'В наличии';
+                    }
+                    return 'В наличии (' + this.variantsInStock.length + ' ' + 'шт.)';
                 } else {
                     return 'Нет в наличии'
                 }
             },
+
+            isInStock(this: any) {
+                if (this.variantsInStock && this.variantsInStock.length > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         },
     })
 </script>

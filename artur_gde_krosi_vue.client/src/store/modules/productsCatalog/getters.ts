@@ -1,4 +1,4 @@
-import type { GetterTree } from 'vuex';
+﻿import type { GetterTree } from 'vuex';
 import type { RootState } from '@/store/types';
 import type { ProductsCatalogState } from '@/store/modules/productsCatalog/types';
 import type { AvailablePricesInterface } from '@/store/modules/productsCatalog/types';

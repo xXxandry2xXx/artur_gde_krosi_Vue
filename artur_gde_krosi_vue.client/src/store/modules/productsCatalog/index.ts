@@ -46,9 +46,3 @@ const productsCatalog: Module<ProductsCatalogState, RootState> = {
 };
 
 export default productsCatalog;
-
-
-function Pizdec() {
-    let a = 'жопа'
-    return a;
-}

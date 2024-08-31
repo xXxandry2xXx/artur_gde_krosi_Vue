@@ -1,9 +1,13 @@
 ﻿<template>
-    <div class="authorized-user-panel" v-if="isUserAuthorized()">
-        <p @mouseenter="showUserPanel"
-           @mouseleave="hideUserPanel"
-           @click="toggleUserPanelMobile"
-           ref="userPanelButton">
+    <div class="authorized-user-panel" v-if="isUserAuthorized()"
+         @mouseenter="showUserPanel"
+         @mouseleave="hideUserPanel"
+         @click="toggleUserPanelMobile"
+         ref="userPanelButton">
+        <span class="user-icon">
+            <font-awesome-icon :icon="['fas', 'user']" />
+        </span>
+        <p>
             {{ $store.state.authorizedUser.userName }}
         </p>
 
@@ -13,7 +17,7 @@
                     <font-awesome-icon :icon="['fas', 'user']" />
                     <span class="user-account-button-text">Личные данные</span>
                 </div>
-                <div class="user-account-button" @click="moveToTheLink('/')">
+                <div class="user-account-button" @click="openInfoPopup">
                     <font-awesome-icon :icon="['fas', 'box']" />
                     <span class="user-account-button-text">Заказы</span>
                 </div>
@@ -32,9 +36,9 @@
             <span>или</span>
             <button class="autorization-button" @click="openAuthorizationPopup('authorization', 'registration')">Регистрация</button>
         </div>
-        <button class="autorization-button-mobile" @click="openAuthorizationPopup('authorization', 'log-in')">
+        <div class="autorization-button-mobile" @click="openAuthorizationPopup('authorization', 'log-in')">
             <font-awesome-icon :icon="['fas', 'right-to-bracket']" />
-        </button>
+        </div>
     </div>
 </template>
 
@@ -89,6 +93,11 @@
 
             clearUserPanelTimeout(this: any) {
                 this.userPanelTimeout = clearTimeout(this.userPanelTimeout);
+            },
+
+            openInfoPopup(this: any) {
+                this.setPopupVisibility(true);
+                this.setPopupMode('why-disabled');
             }
         },
 

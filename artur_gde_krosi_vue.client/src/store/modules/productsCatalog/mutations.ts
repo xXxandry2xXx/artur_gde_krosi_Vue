@@ -101,7 +101,7 @@ export const mutations: MutationTree<ProductsCatalogState> = {
     },
 
     setSelectedModelIds(state, targetModelIDs) {
-        state.selectedFilters.brandIDs = targetModelIDs;
+        state.selectedFilters.modelIDs = targetModelIDs;
     },
 
     setSelectedSizes(state, sizes) {

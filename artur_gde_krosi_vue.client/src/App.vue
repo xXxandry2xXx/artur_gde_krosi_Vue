@@ -31,7 +31,7 @@
         components: { AppHeader, AppFooter, Popup },
 
         methods: {
-            ...mapActions(['fetchUserCart']),
+            ...mapActions(['fetchUserCart', 'getLocalTotalPrice', 'fetchProducts']),
             ...mapMutations(['setUser', 'setFiltersPanelVisibility']),
             ...mapGetters(['getAuthorizedUser', 'isTablet', 'isFiltersPanelShown']),
 
@@ -39,15 +39,11 @@
                 let user = this.getAuthorizedUser();
                 this.setUser(user);
             },
-
-            checkIfUserExists() {
-
-            }
         },
 
         beforeMount() {
             this.setCurrentUser();
-            this.fetchUserCart();
+            this.fetchProducts();
         }
     })
 </script>

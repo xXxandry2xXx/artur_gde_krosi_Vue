@@ -5,7 +5,7 @@
             <div class="bread-crumbs">
                 <span class="bread-crumb" @click="$router.push('/')">Главная</span>
                 /
-                <span class="bread-crumb bread-crumb-current">Все кроссовки</span>
+                <span class="bread-crumb bread-crumb-current">Каталог</span>
             </div>
         </nav>
 

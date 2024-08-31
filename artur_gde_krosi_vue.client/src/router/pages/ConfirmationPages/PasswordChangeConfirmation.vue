@@ -41,6 +41,7 @@
     </div>
 </template>
 <script lang="ts">
+    import apiUrl from '@/helper'
     import axios from 'axios';
     import { defineComponent } from 'vue';
 
@@ -71,7 +72,7 @@
             async checkTokenCorrectness(this: any) {
                 try {
                     const response = await axios.put(
-                        'http://192.144.14.63/api/identity/SetingsUser/VerifyPasswordResetTokenAsync',
+                        apiUrl + '/identity/SetingsUser/VerifyPasswordResetTokenAsync',
                         '',
                         {
                             params: {
@@ -92,7 +93,7 @@
             async confirmNewPassword(this: any) {
                 try {
                     const response = await axios.put(
-                        'http://192.144.14.63/api/identity/SetingsUser/PasswordReset',
+                        apiUrl + '/identity/SetingsUser/PasswordReset',
                         '',
                         {
                             params: {

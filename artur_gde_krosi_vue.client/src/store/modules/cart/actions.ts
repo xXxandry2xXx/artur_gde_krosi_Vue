@@ -1,4 +1,5 @@
 ﻿import axios from 'axios';
+import apiUrl from '@/helper'
 import type { ActionTree } from 'vuex';
 import type { RootState } from '@/store/types';
 import type { UserCartState } from '@/store/modules/cart/types';
@@ -8,14 +9,15 @@ export const actions: ActionTree<UserCartState, RootState> = {
 
     loadLocalCartData() {
         const cachedCart = localStorage.getItem('localUserCart');
-        if (cachedCart !== null) this.commit('setLocalCart', JSON.parse(cachedCart))
+        if (cachedCart !== null) this.commit('setLocalCart', JSON.parse(cachedCart));
+        this.dispatch('getLocalTotalPrice');
     },
 
     async fetchUserCart({ state }: { state: UserCartState }) {
         if (this.getters.isUserAuthorized) {
             try {
                 const token = this.getters.getAuthorizedUserToken.slice(1, -1); 
-                const response = await axios.get('http://192.144.14.63/api/ShoppingСart', {
+                const response = await axios.get(apiUrl + '/ShoppingСart', {
                     maxBodyLength: Infinity,
                     headers: {
                         'accept': '*/*',
@@ -41,7 +43,7 @@ export const actions: ActionTree<UserCartState, RootState> = {
                 try {
                     const token = this.getters.getAuthorizedUserToken.slice(1, -1); 
                     const response = await axios.post(
-                        'http://192.144.14.63/api/ShoppingСart',
+                        apiUrl + '/ShoppingСart',
                         '',
                         {
                             headers: {
@@ -88,7 +90,7 @@ export const actions: ActionTree<UserCartState, RootState> = {
                 const currentCartItem = state.serverCart.itemsInCart.find((item: any) => item.variantId === itemVariantID);
                 if (currentCartItem !== undefined) {
                     const response = await axios.put(
-                        'http://192.144.14.63/api/ShoppingСart',
+                        apiUrl + '/ShoppingСart',
                         '',
                         {
                             params: {
@@ -115,7 +117,7 @@ export const actions: ActionTree<UserCartState, RootState> = {
         if (this.getters.isUserAuthorized) {
             try {
                 const token = this.getters.getAuthorizedUserToken.slice(1, -1); 
-                const response = await axios.delete('http://192.144.14.63/api/ShoppingСart', {
+                const response = await axios.delete(apiUrl + '/ShoppingСart', {
                     params: {
                         'ShoppingСartId': cartItemID.toString()
                     },
