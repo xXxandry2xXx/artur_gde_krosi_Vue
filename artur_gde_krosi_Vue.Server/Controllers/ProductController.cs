@@ -63,7 +63,7 @@ public class ProductController : ControllerBase
 
     [Route("GetProductList")]
     [HttpGet]
-    public async Task<IActionResult> GetProductsList([FromHeader] int priseDown = 0, [FromHeader] int priseUp = 0, [FromHeader] List<string> brendsIds = null, [FromHeader] List<string> modelKrosovocksIds = null,
+    public async Task<IActionResult> GetProductsList([FromHeader] int priseDown = -1, [FromHeader] int priseUp = -1, [FromHeader] List<string> brendsIds = null, [FromHeader] List<string> modelKrosovocksIds = null,
         [FromHeader] List<double> shoeSizesChecked = null, [FromHeader] bool availability = false,
         [FromHeader] string PlaceholderContent = null, [FromHeader] SortState sortOrder = SortState.NameAsc, [FromHeader] int pageProducts = 1)
     {

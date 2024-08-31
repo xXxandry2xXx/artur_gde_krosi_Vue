@@ -66,7 +66,7 @@ public class ProductService
             .Include(x => x.Images.Where(x => x.Index == 0)).AsNoTracking();
 
         //фильтрация по диапазону цен
-        if (priseUp != 0 && priseDown != 0 && priseDown <= priseUp)
+        if (priseUp != -1 && priseDown != -1 && priseDown <= priseUp)
             products = products.Where(x => priseDown * 100 <= x.Variants[0].prise && priseUp * 100 >= x.Variants[0].prise);
         //фильтрация по Размеру и наличию 
         if (shoeSizesChecked != null && shoeSizesChecked.Count != 0)
