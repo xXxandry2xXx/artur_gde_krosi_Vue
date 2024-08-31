@@ -47,7 +47,11 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
     async setFetchedModels() {
         let selectedBrands = this.getters.selectedFiltersState.brandIDs;
         const fetchedModels = await this.dispatch('fetchModels', selectedBrands);
-        this.commit('setModels', fetchedModels);
+
+        let settedModels = fetchedModels.reduce((modelsArray: ModelInterface[], currentBrand: { name: string, modelKrosovoks: ModelInterface[] }) => {
+            return modelsArray.concat(currentBrand.modelKrosovoks);
+        }, []);
+        this.commit('setModels', settedModels);
     },
 
     async getFilteredData({ state }: { state: ProductsCatalogState }, selectedFilters: any) {
@@ -114,23 +118,17 @@ export const actions: ActionTree<ProductsCatalogState, RootState> = {
     },
 
     async fetchModels({ state }: { state: ProductsCatalogState }, brandsArray: Array<string>) {
-        let fetchedModels = [];
+        let fetchedModels: any = {};
 
         if (brandsArray) {
             try {
                 const response = await axios.get(apiUrl + '/Filter/ModelKrosovocks', { headers: { 'accept': '*/*', 'brendsIds': brandsArray.join() } });
-
-                fetchedModels = response.data.reduce((modelsArray: ModelInterface[], currentBrand: { name: string, modelKrosovoks: ModelInterface[] }) => {
-                    return modelsArray.concat(currentBrand.modelKrosovoks);
-                }, []);
-
+                fetchedModels = response.data;
 
             } catch (error) {
                 console.log(error);
             }
-        } else {
-            console.log('no fetched models found')
-        }
+        } 
 
         return fetchedModels;
     },

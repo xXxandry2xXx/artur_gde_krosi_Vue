@@ -30,7 +30,11 @@
 
             <Filter :filter="$store.state.productsCatalog.brands" :filterName="'Бренды'" />
 
-            <Filter v-show="$store.state.productsCatalog.models.length > 0" :filter="$store.state.productsCatalog.models" :filterName="'Модели'" />
+            <Filter :filterName="'Модели'">
+                <div class="models-of-brands-list">
+                    <FilterModelsOfBrandSection v-for="brand in $store.state.productsCatalog.brands" :brand="brand" />
+                </div>
+            </Filter>
 
             <Filter class="sizes-filter" :filter="$store.state.productsCatalog.sizes" :filterName="'Размеры'" />
         </div>
@@ -42,15 +46,17 @@
     import { mapMutations, mapGetters, mapActions } from 'vuex';
     import PriceRanger from './PriceRanger.vue'
     import Filter from './Filter.vue';
-    import FiltersCurrentlySelected from './FiltersCurrentlySelected.vue'
+    import FiltersCurrentlySelected from './FiltersCurrentlySelected.vue';
+    import FilterModelsOfBrandSection from '@/components/ProductsPage/FilterModelsOfBrandSection.vue';
 
     export default defineComponent({
-        components: { PriceRanger, Filter, FiltersCurrentlySelected },
+
+        components: { PriceRanger, Filter, FiltersCurrentlySelected, FilterModelsOfBrandSection },
 
         methods: {
             ...mapMutations(['setFiltersPanelVisibility']),
-            ...mapGetters(['isMobile', 'isTablet']),
-            ...mapActions(['applyFilters', 'clearFilters']),
+            ...mapGetters(['isMobile', 'isTablet', 'selectedFiltersState']),
+            ...mapActions(['applyFilters', 'clearFilters', 'getBrands']),
 
             closeFilterPanelIfMobile(this: any) {
                 if (this.isMobile() || this.isTablet()) this.setFiltersPanelVisibility(false);
