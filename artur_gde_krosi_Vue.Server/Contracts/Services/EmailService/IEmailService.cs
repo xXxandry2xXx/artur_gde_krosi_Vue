@@ -1,4 +1,4 @@
-﻿namespace artur_gde_krosi_Vue.Server.Services.EmailService
+﻿namespace artur_gde_krosi_Vue.Server.Contracts.Services.EmailService
 {
     public interface IEmailService
     {

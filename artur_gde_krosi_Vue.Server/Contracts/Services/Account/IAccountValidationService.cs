@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace artur_gde_krosi_Vue.Server.Services.Account
+namespace artur_gde_krosi_Vue.Server.Contracts.Services.Account
 {
     public interface IAccountValidationService
     {

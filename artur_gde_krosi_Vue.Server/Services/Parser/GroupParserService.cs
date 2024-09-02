@@ -1,4 +1,5 @@
-﻿using artur_gde_krosi_Vue.Server.Models.BdModel;
+﻿using artur_gde_krosi_Vue.Server.Contracts.Services.Parser;
+using artur_gde_krosi_Vue.Server.Models.BdModel;
 using artur_gde_krosi_Vue.Server.Models.moyskladApi;
 using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
 using Microsoft.EntityFrameworkCore;
@@ -9,16 +10,16 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
     public class GroupParserService : IGroupParserService
     {
 
-        public async  Task<List<Brend>> BrendsPars(ApplicationIdentityContext _db, GroupApi groupApi)
+        public async  Task<List<Brend>> BrendsPars(ApplicationIdentityContext db, GroupApi groupApi)
         {
-            List<Brend> brends = _db.Brends.AsNoTracking().ToList();
+            List<Brend> brends = db.Brends.AsNoTracking().ToList();
             foreach (var item in groupApi.root.rows)
             {
                 if (item.productFolder == null)
                 {
                     if (!brends.Any(x => x.BrendId == item.id))
                     {
-                        _db.Brends.Add(new Brend()
+                        db.Brends.Add(new Brend()
                         {
                             BrendId = item.id,
                             name = item.name
@@ -34,7 +35,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
                         Brend brend = brends.Find(x => x.BrendId == item.id);
                         if (brend.name != item.name)
                         {
-                            _db.Brends.Update(new Brend()
+                            db.Brends.Update(new Brend()
                             {
                                 BrendId = item.id,
                                 name = item.name
@@ -47,7 +48,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
             {
                 if (!groupApi.root.rows.Any(x => x.id == brends[i].BrendId))
                 {
-                    _db.Brends.Where(x=>x.BrendId == brends[i].BrendId).ExecuteDelete();
+                    db.Brends.Where(x=>x.BrendId == brends[i].BrendId).ExecuteDelete();
                     brends.RemoveAt(i);
                 }
             }
@@ -55,16 +56,16 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
             return brends;
         }
 
-        public async Task<List<ModelKrosovock>> ModelKrosovoksPars(ApplicationIdentityContext _db, GroupApi groupApi , List<Brend> brends)
+        public async Task<List<ModelKrosovock>> ModelKrosovoksPars(ApplicationIdentityContext db, GroupApi groupApi , List<Brend> brends)
         {
-            List<ModelKrosovock> modelKrosovoks = _db.ModelKrosovocks.AsNoTracking().ToList();
+            List<ModelKrosovock> modelKrosovoks = db.ModelKrosovocks.AsNoTracking().ToList();
             foreach (var item in groupApi.root.rows)
             {
                 if (item.productFolder != null && brends.Any(x => x.BrendId == item.productFolder.id))
                 {
                     if (!modelKrosovoks.Any(x => x.ModelKrosovockId == item.id))
                     {
-                        _db.ModelKrosovocks.Add(new ModelKrosovock()
+                        db.ModelKrosovocks.Add(new ModelKrosovock()
                         {
                             ModelKrosovockId = item.id,
                             name = item.name,
@@ -81,7 +82,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
                         if (modelKrosovock.name != item.name
                             || modelKrosovock.BrendID != item.productFolder.id)
                         {
-                            _db.ModelKrosovocks.Update(new ModelKrosovock()
+                            db.ModelKrosovocks.Update(new ModelKrosovock()
                             {
                                 ModelKrosovockId = item.id,
                                 name = item.name,
@@ -95,7 +96,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
             {
                 if (!groupApi.root.rows.Any(x => x.id == modelKrosovoks[i].ModelKrosovockId))
                 {
-                    _db.ModelKrosovocks.Where(x => x.ModelKrosovockId == modelKrosovoks[i].ModelKrosovockId).ExecuteDelete();
+                    db.ModelKrosovocks.Where(x => x.ModelKrosovockId == modelKrosovoks[i].ModelKrosovockId).ExecuteDelete();
                     modelKrosovoks.RemoveAt(i);
                 }
             }

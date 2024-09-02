@@ -7,6 +7,7 @@ using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
 using Microsoft.EntityFrameworkCore;
 using Product = artur_gde_krosi_Vue.Server.Models.BdModel.Product;
 using System.Drawing.Drawing2D;
+using artur_gde_krosi_Vue.Server.Contracts.Services.Parser;
 
 namespace artur_gde_krosi_Vue.Server.Services.Parser;
 
@@ -18,10 +19,10 @@ public class ProductParserService : IAllProductParserService, IStokProductParser
         _postImegesS3Service = postImegesS3Service;
     }
 
-    public async Task<List<Product>> ProductPars(ApplicationIdentityContext _db, ProductApi productApi, List<ModelKrosovock> modelKrosovoks)
+    public async Task<List<Product>> ProductPars(ApplicationIdentityContext db, ProductApi productApi, List<ModelKrosovock> modelKrosovoks)
     {
-        List<Product> products = _db.Products.AsNoTracking().ToList();
-        List<Image> images = _db.Images.AsNoTracking().ToList();
+        List<Product> products = db.Products.AsNoTracking().ToList();
+        List<Image> images = db.Images.AsNoTracking().ToList();
         getApiRequest<StockApi.Root> requestVariantStok = new getApiRequest<StockApi.Root>();
         foreach (var item in productApi.root.rows)
         {
@@ -29,7 +30,7 @@ public class ProductParserService : IAllProductParserService, IStokProductParser
             {
                 if (!products.Any(x => x.ProductId == item.id))
                 {
-                    _db.Products.Add(new Product()
+                    db.Products.Add(new Product()
                     {
                         ProductId = item.id,
                         name = item.name,
@@ -48,7 +49,7 @@ public class ProductParserService : IAllProductParserService, IStokProductParser
                         product.description != item.description ||
                         product.views != 0)
                     {
-                        _db.Products.Update(new Product()
+                        db.Products.Update(new Product()
                         {
                             ProductId = item.id,
                             name = item.name,
@@ -73,7 +74,7 @@ public class ProductParserService : IAllProductParserService, IStokProductParser
         {
             if (!productApi.root.rows.Any(x => x.id == products[i].ProductId))
             {
-                _db.Products.Where(x => x.ProductId == products[i].ProductId).ExecuteDelete();
+                db.Products.Where(x => x.ProductId == products[i].ProductId).ExecuteDelete();
                 products.RemoveAt(i);
             }
         }
@@ -81,9 +82,9 @@ public class ProductParserService : IAllProductParserService, IStokProductParser
         return products;
     }
 
-    public async Task VariantPars(ApplicationIdentityContext _db, VariantApi variantApi, StockApi stockApi, List<Product> products)
+    public async Task VariantPars(ApplicationIdentityContext db, VariantApi variantApi, StockApi stockApi, List<Product> products)
     {
-        List<Variant> variants = _db.Variants.AsNoTracking().ToList();
+        List<Variant> variants = db.Variants.AsNoTracking().ToList();
         foreach (var item in variantApi.root.rows)
         {
             if (item.product != null && products.Find(x => x.ProductId == item.product.id) != null)
@@ -99,7 +100,7 @@ public class ProductParserService : IAllProductParserService, IStokProductParser
                 }
                 if (!variants.Any(x => x.VariantId == item.id))
                 {
-                    _db.Variants.Add(new Variant()
+                    db.Variants.Add(new Variant()
                     {
                         VariantId = item.id,
                         shoeSize = Convert.ToDouble(item.characteristics[0].value),
@@ -119,7 +120,7 @@ public class ProductParserService : IAllProductParserService, IStokProductParser
                         variant.ProductId != item.product.id ||
                         variant.quantityInStock != Convert.ToInt32(stock))
                     {
-                        _db.Variants.Update(new Variant()
+                        db.Variants.Update(new Variant()
                         {
                             VariantId = item.id,
                             shoeSize = Convert.ToDouble(item.characteristics[0].value),
@@ -136,15 +137,15 @@ public class ProductParserService : IAllProductParserService, IStokProductParser
         {
             if (!variantApi.root.rows.Any(x => x.id == variants[i].VariantId))
             {
-                _db.Variants.Where(x => x.VariantId == variants[i].VariantId).ExecuteDelete();
+                db.Variants.Where(x => x.VariantId == variants[i].VariantId).ExecuteDelete();
             }
         }
         Console.WriteLine("конец 2 - 2");
     }
 
-    public async Task QuantityInStockPars(ApplicationIdentityContext _db, StockApi stockApi)
+    public async Task QuantityInStockPars(ApplicationIdentityContext db, StockApi stockApi)
     {
-        List<Variant> variants = _db.Variants.AsNoTracking().ToList();
+        List<Variant> variants = db.Variants.AsNoTracking().ToList();
         foreach (StockApi.Row item in stockApi.root.rows)
         {
             if (item.stock.Contains("."))
@@ -156,7 +157,7 @@ public class ProductParserService : IAllProductParserService, IStokProductParser
                 {
                     try
                     {
-                        _db.Variants.FirstOrDefault(x => x.externalCode == item.externalCode).quantityInStock = Convert.ToInt32(item.stock);
+                        db.Variants.FirstOrDefault(x => x.externalCode == item.externalCode).quantityInStock = Convert.ToInt32(item.stock);
                     }
                     catch (Exception ex)
                     {

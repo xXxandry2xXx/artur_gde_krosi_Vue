@@ -1,7 +1,9 @@
 ﻿using Amazon.Runtime.Internal.Util;
+using artur_gde_krosi_Vue.Server.Contracts.Repositories;
 using artur_gde_krosi_Vue.Server.Models.BdModel;
 using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using static artur_gde_krosi_Vue.Server.Models.moyskladApi.VariantApi;
@@ -10,33 +12,34 @@ namespace artur_gde_krosi_Vue.Server.Services.ControlerService.CharacteristicPro
 {
     public class CharacteristicProductValueService
     {
-        private readonly ApplicationIdentityContext db;
+        private readonly IRepositoryManager _repository;
 
-        public CharacteristicProductValueService(ApplicationIdentityContext context)
+        public CharacteristicProductValueService(IRepositoryManager repository)
         {
-            db = context;
+            _repository = repository;
         }
+
         public string AddCharacteristicProductsValue(string value, string CharacteristicProductId)
         {
-            db.CharacteristicProductValues.Add(new CharacteristicProductValue
+            _repository.CharacteristicProductsValue.CreateCharacVal(new CharacteristicProductValue
             {
                 Value = value,
                 CharacteristicProductId = CharacteristicProductId
             });
-            db.SaveChanges();
-            return db.CharacteristicProductValues.Where(x => x.Value == value && x.CharacteristicProductId == CharacteristicProductId).FirstOrDefault().CharacteristicProductValueId;
+            _repository.Save();            
+            return _repository.CharacteristicProductsValue.GetCharacteristicProductId(true, value, CharacteristicProductId);
         }
         public async Task EditCharacteristicProductsValue(string CharacteristicProductValueId, string value)
         {
-            CharacteristicProductValue characteristicProductValue = db.CharacteristicProductValues.Where(x => x.CharacteristicProductValueId == CharacteristicProductValueId).FirstOrDefault();
+            CharacteristicProductValue characteristicProductValue = _repository.CharacteristicProductsValue.GetCharacteristicProduct(true, CharacteristicProductValueId);
             if (characteristicProductValue == null) throw new ArgumentException("значение характеристики не найдено");
             characteristicProductValue.Value = value;
-            await db.SaveChangesAsync();
+            _repository.Save();
         }
         public async Task DeleteCharacteristicProductsValue(string CharacteristicProductValueId)
         {
-            await db.CharacteristicProductValues.Where(x => x.CharacteristicProductValueId == CharacteristicProductValueId).ExecuteDeleteAsync();
-            await db.SaveChangesAsync();
+            _repository.CharacteristicProductsValue.RemoveCharac(true, CharacteristicProductValueId);
+            _repository.Save();
         }
     }
 }

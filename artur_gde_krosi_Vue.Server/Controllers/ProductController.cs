@@ -21,13 +21,11 @@ public class ProductController : ControllerBase
 {
     private readonly ILogger<ProductController> _logger;
 
-    private readonly ApplicationIdentityContext db;
     private readonly ProductService _product;
 
-    public ProductController(ILogger<ProductController> logger, ApplicationIdentityContext context, ProductService product)
+    public ProductController(ILogger<ProductController> logger, ProductService product)
     {
         _logger = logger;
-        db = context;
         _product = product;
     }
 

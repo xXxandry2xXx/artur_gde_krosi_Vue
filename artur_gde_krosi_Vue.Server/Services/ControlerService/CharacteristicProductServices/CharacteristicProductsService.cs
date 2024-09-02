@@ -1,4 +1,6 @@
-﻿using artur_gde_krosi_Vue.Server.Models.BdModel;
+﻿using artur_gde_krosi_Vue.Server.Contracts;
+using artur_gde_krosi_Vue.Server.Contracts.Repositories;
+using artur_gde_krosi_Vue.Server.Models.BdModel;
 using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Mvc;
@@ -8,34 +10,34 @@ namespace artur_gde_krosi_Vue.Server.Services.ControlerService.CharacteristicPro
 {
     public class CharacteristicProductsService
     {
-        private readonly ApplicationIdentityContext db;
+        private readonly IRepositoryManager _repository;
 
-        public CharacteristicProductsService(ApplicationIdentityContext db)
+        public CharacteristicProductsService(IRepositoryManager repository)
         {
-            this.db = db;
+            _repository = repository;
         }
         public string AddCharacteristicProducts(string ProductId, string name)
         {
-            db.CharacteristicProducts.Add(new CharacteristicProduct
+            _repository.CharacteristicProducts.CreateCharac(new CharacteristicProduct
             {
                 name = name, 
                 ProductId = ProductId
             });
-             db.SaveChanges();
-            return db.CharacteristicProducts.Where(x => x.name == name && x.ProductId == ProductId).FirstOrDefault().CharacteristicProductId;
+            _repository.Save();
+            return _repository.CharacteristicProducts.GetCharacteristicProductId(true,name,ProductId);
 
         }
         public async Task EditCharacteristicProducts(string CharacteristicProductId, string name)
-        { 
-            CharacteristicProduct characteristic = db.CharacteristicProducts.Where(x => x.CharacteristicProductId == CharacteristicProductId).FirstOrDefault();
+        {
+            CharacteristicProduct characteristic = _repository.CharacteristicProducts.GetCharacteristicProduct(true, CharacteristicProductId);
             if (characteristic == null) throw new ArgumentException("характеристика не найдена");
             characteristic.name = name;
-            await db.SaveChangesAsync();
+            _repository.Save();
         }
         public async Task DeleteCharacteristicProducts(string CharacteristicProductId)
         {
-            await db.CharacteristicProducts.Where(x => x.CharacteristicProductId == CharacteristicProductId).ExecuteDeleteAsync();
-            await db.SaveChangesAsync();
+            _repository.CharacteristicProducts.RemoveCharac(true ,CharacteristicProductId);
+            _repository.Save();
         }
 
     }

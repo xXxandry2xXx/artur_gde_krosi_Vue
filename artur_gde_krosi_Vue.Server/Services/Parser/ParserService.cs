@@ -4,12 +4,13 @@ using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
 using artur_gde_krosi_Vue.Server.Models;
 using System.Configuration;
 using NuGet.Common;
+using artur_gde_krosi_Vue.Server.Contracts.Services.Parser;
 
 namespace artur_gde_krosi_Vue.Server.Services.Parser
 {
     public class ParserService
     {
-        private readonly ApplicationIdentityContext _db;
+        private readonly ApplicationIdentityContext db;
         private readonly IGroupParserService _groupParserService;
         private readonly IAllProductParserService _productParserService;
         private readonly IStokProductParserService _stokProductParserService;
@@ -19,7 +20,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
 
         public ParserService(ApplicationIdentityContext db, IGroupParserService groupParserService, IAllProductParserService productParserService, IConfiguration configuration, IStokProductParserService stokProductParserService)
         {
-            _db = db;
+            this.db = db;
             _groupParserService = groupParserService;
             _productParserService = productParserService;
             _configuration = configuration;
@@ -58,17 +59,17 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
                 try
                 {
                     Console.WriteLine("1 - 1");
-                    List<Brend> brends = await _groupParserService.BrendsPars(_db, groupApi);
+                    List<Brend> brends = await _groupParserService.BrendsPars(db, groupApi);
                     Console.WriteLine("1 - 2");
-                    List<ModelKrosovock> modelKrosovocks = await _groupParserService.ModelKrosovoksPars(_db, groupApi, brends);
+                    List<ModelKrosovock> modelKrosovocks = await _groupParserService.ModelKrosovoksPars(db, groupApi, brends);
 
                     Console.WriteLine("2 - 1");
-                    List<Product> products = await _productParserService.ProductPars(_db, productApi, modelKrosovocks);
+                    List<Product> products = await _productParserService.ProductPars(db, productApi, modelKrosovocks);
                     Console.WriteLine("2 - 2");
-                    await _productParserService.VariantPars(_db, variantApi, stockApi, products);
+                    await _productParserService.VariantPars(db, variantApi, stockApi, products);
 
                     Console.WriteLine("конец заполнения контекста");
-                    _db.SaveChanges();
+                    db.SaveChanges();
                     Console.WriteLine("конец");
                 }
                 catch (Exception ex)
@@ -97,8 +98,8 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
                 var loggerFactory = serviceProviderWithLogger.GetRequiredService<ILoggerFactory>();
                 loggerFactory.AddProvider(new LoggerProvider());
 
-                await _stokProductParserService.QuantityInStockPars(_db, stockApi);
-                _db.SaveChanges();
+                await _stokProductParserService.QuantityInStockPars(db, stockApi);
+                db.SaveChanges();
             }
             finally
             {

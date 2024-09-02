@@ -18,6 +18,11 @@ using artur_gde_krosi_Vue.Server.Services.Parser;
 using artur_gde_krosi_Vue.Server.Services.EmailService;
 using artur_gde_krosi_Vue.Server.Services.ControlerService;
 using artur_gde_krosi_Vue.Server.Services.ControlerService.CharacteristicProductServices;
+using artur_gde_krosi_Vue.Server.Repositories;
+using artur_gde_krosi_Vue.Server.Contracts.Services.Account;
+using artur_gde_krosi_Vue.Server.Contracts.Services.Parser;
+using artur_gde_krosi_Vue.Server.Contracts.Services.EmailService;
+using artur_gde_krosi_Vue.Server.Contracts.Repositories;
 
 internal class Program
 {
@@ -67,6 +72,7 @@ internal class Program
         });
 
         builder.Services.AddMemoryCache();
+        builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 
         builder.Services.AddScoped<ProductService>();
         builder.Services.AddTransient<EmailBodyService>();

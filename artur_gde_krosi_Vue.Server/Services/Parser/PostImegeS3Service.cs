@@ -4,17 +4,18 @@ using artur_gde_krosi_Vue.Server.Models;
 using artur_gde_krosi_Vue.Server.Models.ProjecktSetings;
 using artur_gde_krosi_Vue.Server.Models.BdModel;
 using System.Configuration;
+using artur_gde_krosi_Vue.Server.Contracts.Services.Parser;
 
 namespace artur_gde_krosi_Vue.Server.Services.Parser
 {
     public class PostImegesS3Service : IPostImegesS3Service
     {
-        private readonly ApplicationIdentityContext _db;
+        private readonly ApplicationIdentityContext db;
         private readonly IConfiguration configuration;
 
         public PostImegesS3Service(ApplicationIdentityContext db, IConfiguration config)
         {
-            _db = db;
+            this.db = db;
             configuration = config;
         }
         public async Task PostImageS3Reqesi(ProductApi.Row itemImg, int index,  string ProductId)
@@ -60,7 +61,7 @@ namespace artur_gde_krosi_Vue.Server.Services.Parser
                         throw;
                     }
                 }
-                _db.Images.Add(new Image()
+                db.Images.Add(new Image()
                 {
                     ImageId = itemImg.title,
                     Index = index,

@@ -1,5 +1,5 @@
-﻿using artur_gde_krosi_Vue.Server.Models.UserModel;
-using artur_gde_krosi_Vue.Server.Services.Account;
+﻿using artur_gde_krosi_Vue.Server.Contracts.Services.Account;
+using artur_gde_krosi_Vue.Server.Models.UserModel;
 using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

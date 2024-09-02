@@ -2,6 +2,7 @@
 using System.Net.Mail;
 using System.Net;
 using artur_gde_krosi_Vue.Server.Models.BdModel;
+using artur_gde_krosi_Vue.Server.Contracts.Services.EmailService;
 
 namespace artur_gde_krosi_Vue.Server.Services.EmailService
 {

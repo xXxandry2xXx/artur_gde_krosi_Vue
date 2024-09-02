@@ -12,12 +12,10 @@ namespace artur_gde_krosi_Vue.Server.Controller.CharacteristicProductFolder
     [ApiController]
     public class CharacteristicProductValueController : ControllerBase
     {
-        private readonly ApplicationIdentityContext db;
         private readonly CharacteristicProductValueService _characteristicProductValueService;
 
-        public CharacteristicProductValueController(ApplicationIdentityContext context, CharacteristicProductValueService characteristicProductValueService)
+        public CharacteristicProductValueController( CharacteristicProductValueService characteristicProductValueService)
         {
-            db = context;
             _characteristicProductValueService = characteristicProductValueService;
         }
 

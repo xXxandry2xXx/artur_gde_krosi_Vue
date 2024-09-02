@@ -18,14 +18,12 @@ namespace artur_gde_krosi_Vue.Server.Controller
     public class DBParserController : ControllerBase
     {
         private readonly ILogger<DBParserController> _logger;
-        private readonly ApplicationIdentityContext db;
         private readonly ISchedulerFactory factory;
         private readonly ParserService _parserService;
 
-        public DBParserController(ILogger<DBParserController> logger, ApplicationIdentityContext context, ISchedulerFactory factory, ParserService parserService)
+        public DBParserController(ILogger<DBParserController> logger, ISchedulerFactory factory, ParserService parserService)
         {
             _logger = logger;
-            db = context;
             this.factory = factory;
             _parserService = parserService;
         }

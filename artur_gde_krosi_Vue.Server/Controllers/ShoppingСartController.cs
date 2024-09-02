@@ -19,13 +19,11 @@ public class ShoppingСartController : ControllerBase
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly ILogger<ShoppingСartController> _logger;
-    private readonly ApplicationIdentityContext db;
     private readonly ShoppingCartService _shoppingCartService;
 
-    public ShoppingСartController(ILogger<ShoppingСartController> logger, ApplicationIdentityContext context, UserManager<ApplicationUser> userManager, ShoppingCartService shoppingCartService)
+    public ShoppingСartController(ILogger<ShoppingСartController> logger, UserManager<ApplicationUser> userManager, ShoppingCartService shoppingCartService)
     {
         _logger = logger;
-        db = context;
         _userManager = userManager;
         _shoppingCartService = shoppingCartService;
     }

@@ -13,12 +13,10 @@ namespace artur_gde_krosi_Vue.Server.Controller;
 [ApiController]
 public class FilterController : ControllerBase
 {
-    ApplicationIdentityContext db;
     private readonly FilterService _filterService;
 
-    public FilterController(ApplicationIdentityContext context, FilterService filterService)
+    public FilterController( FilterService filterService)
     {
-        db = context;
         _filterService = filterService;
     }
 
