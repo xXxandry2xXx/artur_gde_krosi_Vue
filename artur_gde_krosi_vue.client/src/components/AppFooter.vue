@@ -28,24 +28,11 @@
             </div>
         </div>
         <div class="social-links">
-            <div class="social-links-authors">
-                <div class="social-links-author">
-                    <a href="#" class="social-links-author-link">Стрижак Кирилл Александрович</a>
-                    <div class="social-links-media">
-                        <a href="mailto:holdup0192@mail.ru"><font-awesome-icon :icon="['fas', 'envelope']" /></a>
-                        <a href="https://www.instagram.com/suckmy.plague?igsh=M3VydHIyMTk0czc%3D&utm_source=qr" target="_blank"><font-awesome-icon :icon="['fab', 'instagram']" /></a>
-                        <a href="https://vk.com/suckmyplague" target="_blank"><font-awesome-icon :icon="['fab', 'vk']" /></a>
-                        <a href="https://t.me/suckmyplague" target="_blank"><font-awesome-icon :icon="['fab', 'telegram']" /></a>
-                    </div>
-                </div>
-                <div class="social-links-author">
-                    <a href="#" class="social-links-author-link">Белозеров Андрей Петрович</a>
-                    <div class="social-links-media">
-                        <a href="mailto:andre.bel0zerov@yandex.ru"><font-awesome-icon :icon="['fas', 'envelope']" /></a>
-                        <a href="https://vk.com/id274554731" target="_blank"><font-awesome-icon :icon="['fab', 'vk']" /></a>
-                        <a href="https://t.me/AndrushaBelozer" target="_blank"><font-awesome-icon :icon="['fab', 'telegram']" /></a>
-                    </div>
-                </div>
+            <div class="social-links-media">
+                <a href="#"><font-awesome-icon :icon="['fas', 'envelope']" /></a>
+                <a href="#" target="_blank"><font-awesome-icon :icon="['fab', 'instagram']" /></a>
+                <a href="#" target="_blank"><font-awesome-icon :icon="['fab', 'vk']" /></a>
+                <a href="#" target="_blank"><font-awesome-icon :icon="['fab', 'telegram']" /></a>
             </div>
         </div>
     </footer>
